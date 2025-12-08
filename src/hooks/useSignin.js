@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { userApi } from '../api/user';
 import { QUERY_KEYS } from '../constants/query';
+import Cookies from 'js-cookie';
 
 export function useSignin() {
     const [id, setId] = useState('');
@@ -14,8 +15,8 @@ export function useSignin() {
         mutationFn: ({ username, password }) => userApi.signin({ username, password }),
         onSuccess: (res) => {
             const { accessToken, refreshToken } = res.data.data;
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+            Cookies.set('accessToken', accessToken, { expires: 7 });
+            Cookies.set('refreshToken', refreshToken, { expires: 7 });
             setError('');
             window.location.href = '/dashboard';
         },

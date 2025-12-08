@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const url = import.meta.env.VITE_API_URL
 
@@ -24,7 +25,7 @@ function onRefreshed(token) {
 CustomAxios.interceptors.request.use(
   config => {
     // accessToken이 있으면 헤더에 추가
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -41,15 +42,14 @@ CustomAxios.interceptors.response.use(
       originalRequest._retry = true;
       if (!isRefreshing) {
         isRefreshing = true;
-        const refreshToken = localStorage.getItem('refreshToken');
+        const refreshToken = Cookies.get('refreshToken');
         try {
-          // reissue는 axios로 직접 호출 (CustomAxios 사용 X)
           const res = await axios.post(`${url}/user/reissue`, { refreshToken }, {
             headers: { 'Content-Type': 'application/json' }
           });
           const { accessToken, refreshToken: newRefreshToken } = res.data.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', newRefreshToken);
+          Cookies.set('accessToken', accessToken, { expires: 7 });
+          Cookies.set('refreshToken', newRefreshToken, { expires: 7 });
           onRefreshed(accessToken);
           isRefreshing = false;
           // Authorization 헤더 갱신 후 재시도
