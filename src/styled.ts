@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+type ActiveProps = {
+  $active: boolean;
+};
 
 export const Wrapper = styled.div`
   min-height: 100vh;
@@ -9,7 +13,8 @@ export const Wrapper = styled.div`
   align-items: center;
   background: #181c2a;
   color: #e3e6f3;
-  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Nanum Gothic', Arial, sans-serif;
+  font-family:
+    "Apple SD Gothic Neo", "Malgun Gothic", "Nanum Gothic", Arial, sans-serif;
   overflow-x: auto;
 `;
 export const TopBar = styled.div`
@@ -38,8 +43,13 @@ export const NavButton = styled.button`
   font-size: 1.2rem;
   font-weight: 400;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  &:hover { background: #5b5fc7; color: #fff; }
+  transition:
+    background 0.15s,
+    color 0.15s;
+  &:hover {
+    background: #5b5fc7;
+    color: #fff;
+  }
 `;
 export const SelectBar = styled.div`
   margin: 0 auto 0 auto;
@@ -72,7 +82,11 @@ export const Total = styled.div`
   font-weight: 400;
   font-size: clamp(1rem, 2vw, 1.5rem);
   letter-spacing: 0.01em;
-  span { color: #5b5fc7; font-size: 1.1em; font-weight: 500; }
+  span {
+    color: #5b5fc7;
+    font-size: 1.1em;
+    font-weight: 500;
+  }
   margin-left: auto;
   margin-right: auto;
 `;
@@ -84,8 +98,8 @@ export const CalendarBox = styled.div`
   flex-direction: column;
   align-items: center;
   @media (max-width: 600px) {
-      max-width: 100vw;
-      margin: 0 auto 0.3rem auto;
+    max-width: 100vw;
+    margin: 0 auto 0.3rem auto;
   }
 `;
 export const MonthSummary = styled.div`
@@ -117,16 +131,16 @@ export const Table = styled.table`
   margin: 0 auto;
 `;
 export const Th = styled.th`
-  flex : 1;
+  flex: 1;
   border-bottom: 2px solid #5b5fc7;
   padding: 0.7em 0.3em;
   background: #23263a;
   font-weight: 600;
-  text-align : center;
+  text-align: center;
   color: #bfc6d1;
 `;
 export const Td = styled.td`
-  flex : 1;
+  flex: 1;
   border-bottom: 1px solid #23263a;
   padding: 0.7em 0.3em;
   text-align: center;
@@ -135,14 +149,14 @@ export const Td = styled.td`
 `;
 export const InputRow = styled.div`
   display: flex;
-  flex-wrap : wrap;
+  flex-wrap: wrap;
   gap: 0.5em;
   align-items: center;
   justify-content: center;
   margin: 1.2em 0 0.5em 0;
 `;
 export const Input = styled.input`
-  flex : 1;
+  flex: 1;
   padding: 0.4em 0.5em;
   border: 1.5px solid #5b5fc7;
   border-radius: 6px;
@@ -174,23 +188,25 @@ export const TabBar = styled.div`
   gap: 1em;
   margin: 1.2em 0 1.2em 0;
 `;
-export const TabBtn = styled.button`
+export const TabBtn = styled.button<ActiveProps>`
   padding: 0.5em 1.3em;
   border: 1.5px solid #5b5fc7;
   border-radius: 7px 7px 0 0;
-  background: ${({active})=>active ? '#5b5fc7' : '#23263a'};
-  color: ${({active})=>active ? '#fff' : '#bfc6d1'};
+  background: ${({ $active }) => ($active ? "#5b5fc7" : "#23263a")};
+  color: ${({ $active }) => ($active ? "#fff" : "#bfc6d1")};
   font-size: 1em;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   outline: none;
 `;
 export const Layout = styled.div`
   display: flex;
-  height : 100vh;
+  height: 100vh;
   background: #181c2a;
-  flex-direction : column;
+  flex-direction: column;
   @media (max-width: 1000px) {
     width: 100vw;
   }
@@ -207,7 +223,7 @@ export const Sidebar = styled.nav`
   position: relative;
   @media (max-width: 1000px) {
     width: 100%;
-    height : 200px;
+    height: 200px;
     padding: 0;
     flex-direction: row;
   }
@@ -239,26 +255,29 @@ export const SidebarMenu = styled.ul`
   }
 `;
 export const SidebarItem = styled.li`
-  flex : 1;
+  flex: 1;
   margin: 0.2em 0;
 `;
-export const SidebarLink = styled.button`
+export const SidebarLink = styled.button<ActiveProps>`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
   gap: 0.9em;
-  background: ${({ $active }) => $active ? '#23263a' : 'none'};
-  color: ${({ $active }) => $active ? '#5b5fc7' : '#e3e6f3'};
+  background: ${({ $active }) => ($active ? "#23263a" : "none")};
+  color: ${({ $active }) => ($active ? "#5b5fc7" : "#e3e6f3")};
   border: none;
   outline: none;
   font-size: 1.08em;
   font-weight: 500;
   padding: 0.95em 2em 0.95em 2em;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  border-left: 4px solid ${({ $active }) => $active ? '#5b5fc7' : 'transparent'};
+  transition:
+    background 0.15s,
+    color 0.15s;
+  border-left: 4px solid
+    ${({ $active }) => ($active ? "#5b5fc7" : "transparent")};
   &:hover {
     background: #23263a;
     color: #5b5fc7;
@@ -292,7 +311,7 @@ export const MainContent = styled.div`
   height: 100%;
   overflow-y: auto;
   scrollbar-width: none;
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -311,42 +330,44 @@ export const DashboardYearSelectBar = styled.div`
   }
 `;
 export const HeaderBar = styled.header`
-  position : fixed;
-  width : 100%;
-  margin : 0, auto;
-  background:rgb(29, 32, 50);
+  position: fixed;
+  width: 100%;
+  margin: 0, auto;
+  background: rgb(29, 32, 50);
   color: #e3e6f3;
-  padding : 0.5em 0 0.5em 0;
+  padding: 0.5em 0 0.5em 0;
   align-items: center;
   justify-content: space-between;
   box-shadow: 2px 0 16px 0 #181c2a44;
 `;
 
 export const HeaderWrapper = styled.div`
-  width : 100%;
-  display : flex;
-  flex-direction : row;
-  max-width : 900px;
-  margin : auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;
+  margin: auto;
   align-items: center;
   justify-content: space-between;
 `;
 
-export const HeaderLogo = styled.div`
+export const HeaderLogo = styled.a`
   font-size: 1.25em;
   font-weight: 700;
   color: #fff;
   text-align: left;
+  border: none;
+  outline: none;
+  text-decoration-line: none;
 `;
 export const HeaderMenu = styled.ul`
   list-style: none;
-  gap : 2em;
+  gap: 2em;
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
-export const HeaderItem = styled.li`
-`;
+export const HeaderItem = styled.li``;
 export const HeaderLink = styled.a`
   display: flex;
   align-items: center;
@@ -356,11 +377,13 @@ export const HeaderLink = styled.a`
   color: #e3e6f3;
   border: none;
   outline: none;
-  text-decoration-line : none;
+  text-decoration-line: none;
   font-size: 1.08em;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   border-bottom: 2px solid transparent;
   &:hover {
     background: #23263a;

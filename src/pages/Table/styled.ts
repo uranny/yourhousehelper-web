@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TablePageWrapper = styled.div`
   margin: 0 auto;
@@ -7,7 +7,7 @@ export const TablePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2em;
-  margin-top : 2em;
+  margin-top: 2em;
 `;
 
 export const ControlBar = styled.div`

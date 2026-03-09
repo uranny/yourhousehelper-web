@@ -1,13 +1,22 @@
-import RecordInput from '../../components/RecordInput';
-import RecordTable from '../../components/RecordTable';
-import { useTable } from '../../hooks/useTable';
-import * as S from './styled';
+import RecordInput from "../../components/RecordInput";
+import RecordTable from "../../components/RecordTable";
+import { useTable } from "../../hooks/useTable";
+import * as S from "./styled";
 
 function Table() {
   const {
-    newRecord, setNewRecord, handleAddRecord,
-    selectedYear, selectedMonth, setSelectedYear, setSelectedMonth,
-    filteredRecords, handleEditRecord, handleDeleteRecord, CATEGORIES, navigate
+    newRecord,
+    setNewRecord,
+    handleAddRecord,
+    selectedYear,
+    selectedMonth,
+    setSelectedYear,
+    setSelectedMonth,
+    filteredRecords,
+    handleEditRecord,
+    handleDeleteRecord,
+    CATEGORIES,
+    navigate,
   } = useTable();
 
   return (
@@ -42,7 +51,9 @@ function Table() {
             ))}
           </S.Select>
         </S.SelectGroup>
-        <S.AnalysisButton onClick={() => navigate('/table/analysis')}>분석</S.AnalysisButton>
+        <S.AnalysisButton onClick={() => navigate("/table/analysis")}>
+          분석
+        </S.AnalysisButton>
       </S.ControlBar>
       <RecordInput
         newRecord={newRecord}
