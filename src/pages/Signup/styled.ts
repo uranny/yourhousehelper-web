@@ -57,9 +57,9 @@ export const TextBtn = styled.button`
   margin-bottom: 2rem;
 `;
 export const Title = styled.h2`
-  color: "#fff";
+  color: #fff;
   font-weight: 600;
-  font-size: "1.5em";
-  margin-top: "2em";
-  margin-left: "12rem";
+  font-size: 1.5em;
+  margin-top: 2em;
+  margin-left: 12rem;
 `;
