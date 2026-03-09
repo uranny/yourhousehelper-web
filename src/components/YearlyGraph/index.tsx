@@ -1,42 +1,41 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import * as S from './styled';
-import { ChartData } from 'chart.js';
+import { Bar } from "react-chartjs-2";
+import * as S from "./styled";
+import { ChartData } from "chart.js";
 
 type YearlyGraphProps = {
-  data: ChartData<'bar'>;
+  data: ChartData<"bar">;
 };
 
 function YearlyGraph({ data }: YearlyGraphProps) {
-    return (
-        <S.GraphBox>
-            <S.GraphTitle>월별 수입/지출 그래프</S.GraphTitle> 
-            <S.ChartBox>
-                <Bar
-                    data={data}
-                    options={{
-                        plugins: { legend: { display: true } },
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        scales: { 
-                            y: { 
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: (value) => `${value} 원`,
-                                },
-                            },
-                            x : {
-                                title: {
-                                    display: true,
-                                },
-                            }
-                        }
-                    }}
-                    height={260} 
-                />
-            </S.ChartBox>
-        </S.GraphBox>
-    );
+  return (
+    <S.GraphBox>
+      <S.GraphTitle>월별 수입/지출 그래프</S.GraphTitle>
+      <S.ChartBox>
+        <Bar
+          data={data}
+          options={{
+            plugins: { legend: { display: true } },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: (value) => `${value} 원`,
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                },
+              },
+            },
+          }}
+          height={260}
+        />
+      </S.ChartBox>
+    </S.GraphBox>
+  );
 }
 
 export default YearlyGraph;

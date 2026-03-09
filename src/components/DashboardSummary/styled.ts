@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const SummaryBox = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const SummaryBox = styled.div`
 
 export const SummaryTitle = styled.div`
   color: #fff;
-  font-size: 0,9em;
+  font-size: 0, 9em;
   font-weight: 500;
   margin-bottom: 0.5em;
   @media (max-width: 600px) {
@@ -34,7 +34,7 @@ export const SummaryTitle = styled.div`
 `;
 
 export const SummaryValue = styled.div`
-  color: ${props => props.color || '#fff'};
+  color: ${(props) => props.color || "#fff"};
   font-size: 1.2em;
   font-weight: 700;
   max-width: 180px;
@@ -51,5 +51,4 @@ export const SummaryValue = styled.div`
   }
 `;
 
-export const SummaryContainer = styled.div`
-`;
+export const SummaryContainer = styled.div``;

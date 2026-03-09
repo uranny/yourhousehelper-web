@@ -1,78 +1,80 @@
-import * as S from './styled';
-import { ChangeEvent } from 'react';
-
-type EditValue = {
-  date: string;
-  recordType: string;
-  cost: string;
-  description: string;
-};
+import { RecordItem } from "../../types/record/record.type";
+import * as S from "./styled";
+import { ChangeEvent } from "react";
 
 type EditModalProps = {
   open: boolean;
-  value: EditValue;
+  value: RecordItem;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSave: () => void;
   onCancel: () => void;
 };
 
-function EditModal({ open, value, onChange, onSave, onCancel }: EditModalProps) {
-    if (!open) return null;
+function EditModal({
+  open,
+  value,
+  onChange,
+  onSave,
+  onCancel,
+}: EditModalProps) {
+  if (!open) return null;
 
-    return (
-        <S.Overlay> 
-            <S.ModalBox> 
-                <h2 style={{marginTop:0, marginBottom:'1.5em', fontWeight:700}}>내역 수정</h2>
-                <S.Row>
-                    <S.Label>날짜</S.Label>
-                    <S.Input
-                        type="date"
-                        name="date"
-                        value={value.date}
-                        onChange={onChange}
-                    />
-                </S.Row>
-                <S.Row>
-                    <S.Label>구분</S.Label>
-                    <S.Select
-                        name="recordType"
-                        value={value.recordType}
-                        onChange={onChange}
-                    >
-                        <option value="INCOME">수입</option>
-                        <option value="EXPENSE">지출</option>
-                    </S.Select>
-                </S.Row>
-                <S.Row>
-                    <S.Label>금액</S.Label>
-                    <S.Input
-                        type="number"
-                        name="cost"
-                        value={value.cost}
-                        onChange={onChange}
-                    />
-                </S.Row>
-                <S.Row>
-                    <S.Label>사유</S.Label>
-                    <S.Input
-                        type="text"
-                        name="description"
-                        value={value.description}
-                        onChange={onChange}
-                    />
-                </S.Row>
-                <S.ButtonRow>
-                    <S.Button
-                        style={{ background: '#444', color: '#fff' }}
-                        onClick={onCancel}
-                    >
-                        취소
-                    </S.Button>
-                    <S.Button onClick={onSave}>저장</S.Button>
-                </S.ButtonRow>
-            </S.ModalBox>
-        </S.Overlay>
-    );
+  return (
+    <S.Overlay>
+      <S.ModalBox>
+        <h2 style={{ marginTop: 0, marginBottom: "1.5em", fontWeight: 700 }}>
+          내역 수정
+        </h2>
+        <S.Row>
+          <S.Label>날짜</S.Label>
+          <S.Input
+            type="date"
+            name="date"
+            value={value.date}
+            onChange={onChange}
+          />
+        </S.Row>
+        <S.Row>
+          <S.Label>구분</S.Label>
+          <S.Select
+            name="recordType"
+            value={value.recordType}
+            onChange={onChange}
+          >
+            <option value="INCOME">수입</option>
+            <option value="EXPENSE">지출</option>
+          </S.Select>
+        </S.Row>
+        <S.Row>
+          <S.Label>금액</S.Label>
+          <S.Input
+            type="number"
+            name="cost"
+            value={value.cost}
+            onChange={onChange}
+          />
+        </S.Row>
+        <S.Row>
+          <S.Label>사유</S.Label>
+          <S.Input
+            type="text"
+            name="description"
+            value={value.description}
+            onChange={onChange}
+          />
+        </S.Row>
+        <S.ButtonRow>
+          <S.Button
+            style={{ background: "#444", color: "#fff" }}
+            onClick={onCancel}
+          >
+            취소
+          </S.Button>
+          <S.Button onClick={onSave}>저장</S.Button>
+        </S.ButtonRow>
+      </S.ModalBox>
+    </S.Overlay>
+  );
 }
 
 export default EditModal;
