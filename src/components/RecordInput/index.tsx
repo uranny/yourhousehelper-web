@@ -1,6 +1,20 @@
 import * as S from './styled';
+import { Dispatch, SetStateAction } from 'react';
 
-function RecordInput({ newRecord, setNewRecord, handleAddRecord }) {
+type NewRecord = {
+  recordType: string;
+  cost: string;
+  description: string;
+  date: string;
+};
+
+type RecordInputProps = {
+  newRecord: NewRecord;
+  setNewRecord: Dispatch<SetStateAction<NewRecord>>;
+  handleAddRecord: () => void;
+};
+
+function RecordInput({ newRecord, setNewRecord, handleAddRecord }: RecordInputProps) {
     return (
         <S.InputBox as="form" onSubmit={e => { e.preventDefault(); handleAddRecord(); }}>
             <S.Select

@@ -1,6 +1,18 @@
 import * as S from './styled';
 
-function DashboardTable({ records, CATEGORIES }) {
+type RecordItem = {
+  date: string;
+  category: string;
+  amount: number;
+  description: string;
+};
+
+type DashboardTableProps = {
+  records: RecordItem[];
+  CATEGORIES: Record<string, string>;
+};
+
+function DashboardTable({ records, CATEGORIES }: DashboardTableProps) {
   return (
     <S.TableWrapper>
       <S.Table>

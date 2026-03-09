@@ -1,6 +1,22 @@
 import * as S from './styled';
+import { ChangeEvent } from 'react';
 
-function EditModal({ open, value, onChange, onSave, onCancel }) {
+type EditValue = {
+  date: string;
+  recordType: string;
+  cost: string;
+  description: string;
+};
+
+type EditModalProps = {
+  open: boolean;
+  value: EditValue;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onSave: () => void;
+  onCancel: () => void;
+};
+
+function EditModal({ open, value, onChange, onSave, onCancel }: EditModalProps) {
     if (!open) return null;
 
     return (

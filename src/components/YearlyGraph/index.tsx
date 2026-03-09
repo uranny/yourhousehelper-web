@@ -1,8 +1,13 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import * as S from './styled';
+import { ChartData } from 'chart.js';
 
-function YearlyGraph({ data }) {
+type YearlyGraphProps = {
+  data: ChartData<'bar'>;
+};
+
+function YearlyGraph({ data }: YearlyGraphProps) {
     return (
         <S.GraphBox>
             <S.GraphTitle>월별 수입/지출 그래프</S.GraphTitle> 

@@ -1,7 +1,16 @@
 import React from 'react';
 import * as S from '../../styled';
 
-function TopBar({ selectedYear, selectedMonth, setSelectedYear, setSelectedMonth, yearRange, monthRange }) {
+type TopBarProps = {
+  selectedYear: number;
+  selectedMonth: number;
+  setSelectedYear: (year: number) => void;
+  setSelectedMonth: (month: number) => void;
+  yearRange: number[];
+  monthRange: number[];
+};
+
+function TopBar({ selectedYear, selectedMonth, setSelectedYear, setSelectedMonth, yearRange, monthRange }: TopBarProps) {
     return (
         <S.TopBar>
             <S.Title>{selectedYear}년 {selectedMonth}월 가계부</S.Title>

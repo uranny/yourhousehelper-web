@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import * as S from './styled';
 import EditModal from '../EditModal/index';
 
-function RecordTable({ filteredRecords, CATEGORIES, onEdit, onDelete }) {
-    const [editIndex, setEditIndex] = useState(null);
+type RecordItem = {
+  recordType: string;
+  cost: string;
+  description: string;
+  date: string;
+};
+
+type RecordTableProps = {
+  filteredRecords: RecordItem[];
+  CATEGORIES: Record<string, string>;
+  onEdit: (index: number, data: RecordItem) => void;
+  onDelete: (index: number) => void;
+};
+
+function RecordTable({ filteredRecords, CATEGORIES, onEdit, onDelete }: RecordTableProps) {
+    const [editIndex, setEditIndex] = useState<number | null>(null);
     const [editData, setEditData] = useState({ recordType: 'EXPENSE', cost: '', description: '', date: '' });
 
     const sortedRecords = [...filteredRecords].sort((a, b) => {
@@ -14,18 +28,19 @@ function RecordTable({ filteredRecords, CATEGORIES, onEdit, onDelete }) {
         return 1;
     });
 
-    const handleEditClick = (idx) => {
+    const handleEditClick = (idx : number) => {
         setEditIndex(idx);
         const r = sortedRecords[idx];
         setEditData({ ...r });
     };
 
-    const handleEditChange = (e) => {
+    const handleEditChange = (e : ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setEditData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleEditSave = () => {
+        if(!editIndex) return
         onEdit(filteredRecords.indexOf(sortedRecords[editIndex]), editData);
         setEditIndex(null);
     };

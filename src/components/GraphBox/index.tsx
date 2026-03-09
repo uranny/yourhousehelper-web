@@ -1,7 +1,19 @@
 import * as S from './styled';
 import { Bar } from 'react-chartjs-2';
+import { ChartData } from 'chart.js';
 
-function GraphBox({ title, color, data, graphView, setGraphView, legend = false }) {
+type GraphView = 'day' | 'month' | 'year';
+
+type GraphBoxProps = {
+  title: string;
+  color: string;
+  data: ChartData<'bar'>;
+  graphView: GraphView;
+  setGraphView: (view: GraphView) => void;
+  legend?: boolean;
+};
+
+function GraphBox({ title, color, data, graphView, setGraphView, legend = false }: GraphBoxProps) {
     return (
         <S.GraphBoxWrapper>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',width:'100%',marginBottom:'0.7em'}}>

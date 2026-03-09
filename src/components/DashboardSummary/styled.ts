@@ -50,3 +50,6 @@ export const SummaryValue = styled.div`
     max-width: 90px;
   }
 `;
+
+export const SummaryContainer = styled.div`
+`;

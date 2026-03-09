@@ -1,7 +1,13 @@
 import React from 'react';
 import * as S from './styled';
 
-function TotalBox({ totalIncome, totalExpense, totalNet }) {
+type TotalBoxProps = {
+  totalIncome: number;
+  totalExpense: number;
+  totalNet: number;
+};
+
+function TotalBox({ totalIncome, totalExpense, totalNet }: TotalBoxProps) {
     return (
         <S.Total> 
             <span style={{ fontSize: '0.9em', fontWeight: 700, paddingTop: '0.5em', paddingBottom: '0.5em' }}>
