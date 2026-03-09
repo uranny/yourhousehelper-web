@@ -7,7 +7,7 @@ function Signup() {
     const navigate = useNavigate();
     return (
         <S.Layout>
-            <h2 style={{ color: '#fff', fontWeight: 600, fontSize: '1.5em', marginTop : "2em", marginLeft : '12rem'}}>회원가입</h2>
+            <S.Title>회원가입</S.Title>
             <S.InputRow>
                 <S.Label>아이디</S.Label>
                 <S.Input type="text" value={id} onChange={e => setId(e.target.value)} placeholder="아이디" autoFocus />

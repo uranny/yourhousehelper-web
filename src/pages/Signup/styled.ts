@@ -51,5 +51,12 @@ export const TextBtn = styled.button`
     cursor: pointer;
     text-decoration: underline;
     margin-top : 1rem;
-    margin-bottom : 2rem
+    margin-bottom : 2rem;
+`;
+export const Title = styled.h2`
+    color: '#fff'; 
+    font-weight: 600; 
+    font-size: '1.5em'; 
+    margin-top : "2em"; 
+    margin-left : '12rem';
 `;
