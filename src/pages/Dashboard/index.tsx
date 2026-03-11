@@ -1,8 +1,7 @@
-import DashboardSummary from '../../components/DashboardSummary';
 import YearlyGraph from '../../components/YearlyGraph';
-import DashboardTable from '../../components/DashboardTable';
 import * as S from './styled';
 import { useDashboard } from '../../hooks/useDashboard';
+import DashboardSummary from '../../components/dashboard/DashboardSummary';
 
 function Dashboard() {
   const {

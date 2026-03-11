@@ -1,4 +1,4 @@
-import { RecordItem } from "../../types/record/record.type";
+import { RecordItem } from "../../../types/record/record.type";
 import * as S from "./styled";
 
 type DashboardTableProps = {
