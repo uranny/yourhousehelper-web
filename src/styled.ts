@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 type ActiveProps = {
@@ -368,7 +369,7 @@ export const HeaderMenu = styled.ul`
   align-items: center;
 `;
 export const HeaderItem = styled.li``;
-export const HeaderLink = styled.a`
+export const HeaderLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
