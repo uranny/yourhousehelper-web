@@ -352,7 +352,7 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const HeaderLogo = styled.a`
+export const HeaderLogo = styled(Link)`
   font-size: 1.25em;
   font-weight: 700;
   color: #fff;

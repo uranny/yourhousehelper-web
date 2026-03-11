@@ -2,15 +2,19 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { userApi } from "../api/user";
 import { QUERY_KEYS } from "../constants/query";
-import Cookies from "js-cookie";
 import { SigninRequest, SigninResponse } from "../types/user/signin.type";
 import { BaseResponse } from "../types/util/response.type";
+import useAuthStore from "../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import ROUTE_KEYS from "../constants/route";
 
 export function useSignin() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const login = useAuthStore((state) => state.login);
+  const navigate = useNavigate();
 
   const signinMutation = useMutation<
     BaseResponse<SigninResponse>,
@@ -23,10 +27,9 @@ export function useSignin() {
     },
     onSuccess: (res) => {
       const { accessToken, refreshToken } = res.data;
-      Cookies.set("accessToken", accessToken, { expires: 7 });
-      Cookies.set("refreshToken", refreshToken, { expires: 7 });
+      login(accessToken, refreshToken);
       setError("");
-      window.location.href = "/dashboard";
+      navigate(ROUTE_KEYS.DASHBOARD, { replace: true });
     },
     onError: () => {
       setError("아이디 또는 비밀번호가 올바르지 않습니다.");

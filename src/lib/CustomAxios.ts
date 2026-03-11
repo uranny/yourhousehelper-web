@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { ReissueResponse } from "../types/user/reissue.type";
+import COOKIES_KEYS from "../constants/cookies";
+import useAuthStore from "../store/useAuthStore";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -15,6 +17,11 @@ const CustomAxios = axios.create({
 let isRefreshing = false;
 let refreshSubscribers: any[] = [];
 
+function redirectToSignin() {
+  useAuthStore.getState().logout();
+  window.location.href = "/signin";
+}
+
 function subscribeTokenRefresh(cb: any) {
   refreshSubscribers.push(cb);
 }
@@ -26,7 +33,7 @@ function onRefreshed(token: string) {
 CustomAxios.interceptors.request.use(
   (config) => {
     // accessToken이 있으면 헤더에 추가
-    const token = Cookies.get("accessToken");
+    const token = Cookies.get(COOKIES_KEYS.ACCESS_TOKEN);
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -39,6 +46,12 @@ CustomAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
+    if (error.response && error.response.status === 403) {
+      redirectToSignin();
+      return Promise.reject(error);
+    }
+
     if (
       error.response &&
       error.response.status === 401 &&
@@ -47,7 +60,7 @@ CustomAxios.interceptors.response.use(
       originalRequest._retry = true;
       if (!isRefreshing) {
         isRefreshing = true;
-        const refreshToken = Cookies.get("refreshToken");
+        const refreshToken = Cookies.get(COOKIES_KEYS.REFRESH_TOKEN);
         try {
           const res = await axios.post(
             `${url}/user/reissue`,
@@ -60,8 +73,7 @@ CustomAxios.interceptors.response.use(
             accessToken,
             refreshToken: newRefreshToken,
           }: ReissueResponse = res.data.data;
-          Cookies.set("accessToken", accessToken, { expires: 7 });
-          Cookies.set("refreshToken", newRefreshToken, { expires: 7 });
+          useAuthStore.getState().login(accessToken, newRefreshToken);
           onRefreshed(accessToken);
           isRefreshing = false;
           // Authorization 헤더 갱신 후 재시도
@@ -69,7 +81,7 @@ CustomAxios.interceptors.response.use(
           return CustomAxios(originalRequest);
         } catch (e) {
           isRefreshing = false;
-          window.location.href = "/signin";
+          redirectToSignin();
           return Promise.reject(e);
         }
       }
