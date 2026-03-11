@@ -4,7 +4,7 @@ import Table from '../pages/Table';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
 import Start from '../pages/Start';
-import Analysis from '../pages/Analysis';
+import Report from '../pages/Report';
 
 function RouterSetup() {
   return (
@@ -14,7 +14,7 @@ function RouterSetup() {
       <Route path="/table" element={<Table />}/>
       <Route path='/signin' element={<Signin/>}/>
       <Route path='/signup' element={<Signup/>}/>
-      <Route path='/table/analysis' element={<Analysis/>}/>
+      <Route path='/report' element={<Report/>}/>
     </Routes>
   );
 }
