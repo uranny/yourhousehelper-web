@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styled";
+import useAuthStore from "../../store/useAuthStore";
+import ROUTE_KEYS from "../../constants/route";
 
 type FunctionTextBoxProps = {
   order: string;
@@ -10,6 +12,7 @@ type FunctionTextBoxProps = {
 
 function Start() {
   const navigate = useNavigate();
+  const isLogin = useAuthStore((state) => state.isLogin);
 
   const textBoxList: FunctionTextBoxProps[] = [
     {
@@ -49,7 +52,13 @@ function Start() {
       <S.HeroSection>
         <S.HeroTitle>당신의 하우스 헬퍼</S.HeroTitle>
         <S.HeroSubtitle>청년을 위한 자산 관리 서비스</S.HeroSubtitle>
-        <S.StartButton onClick={() => navigate("/signin")}>
+        <S.StartButton
+          onClick={() => {
+            isLogin
+              ? navigate(ROUTE_KEYS.DASHBOARD)
+              : navigate(ROUTE_KEYS.SIGNIN);
+          }}
+        >
           시작하기
         </S.StartButton>
       </S.HeroSection>
