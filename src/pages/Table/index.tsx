@@ -51,9 +51,6 @@ function Table() {
             ))}
           </S.Select>
         </S.SelectGroup>
-        <S.AnalysisButton onClick={() => navigate("/table/analysis")}>
-          분석
-        </S.AnalysisButton>
       </S.ControlBar>
       <RecordInput
         newRecord={newRecord}

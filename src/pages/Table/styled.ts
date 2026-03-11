@@ -42,20 +42,3 @@ export const Select = styled.select`
     background: #2d3148;
   }
 `;
-
-export const AnalysisButton = styled.button`
-  background: #5b5fc7;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #3ad29f;
-    color: #23263a;
-  }
-`;
