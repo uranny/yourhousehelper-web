@@ -38,7 +38,7 @@ function App() {
             >
               대시 보드
             </S.HeaderLink>
-            <S.HeaderLink to={isLogin ? ROUTE_KEYS.TABLE : ROUTE_KEYS.SIGNIN}>
+            <S.HeaderLink to={isLogin ? ROUTE_KEYS.RECORD : ROUTE_KEYS.SIGNIN}>
               수입 · 지출 관리
             </S.HeaderLink>
             <S.HeaderLink to={isLogin ? ROUTE_KEYS.REPORT : ROUTE_KEYS.SIGNIN}>

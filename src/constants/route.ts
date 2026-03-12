@@ -1,7 +1,7 @@
 const ROUTE_KEYS = {
     ROOT : "/",
     DASHBOARD : "/dashboard",
-    TABLE : "/table",
+    RECORD : "/record",
     REPORT : "/report",
     SIGNIN : "/signin",
     SIGNUP : "/signup",
