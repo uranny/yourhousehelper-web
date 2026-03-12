@@ -1,22 +1,12 @@
-import { RecordItem } from "../../types/record/record.type";
 import * as S from "./styled";
-import { ChangeEvent } from "react";
+import { useRecordContext } from "../../contexts/record/RecordContext";
 
-type EditModalProps = {
-  open: boolean;
-  value: RecordItem;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  onSave: () => void;
-  onCancel: () => void;
-};
+function EditModal() {
+  const { editIndex, editData, handleEditChange, handleEditSave, handleEditCancel } =
+    useRecordContext();
 
-function EditModal({
-  open,
-  value,
-  onChange,
-  onSave,
-  onCancel,
-}: EditModalProps) {
+  const open = editIndex !== null;
+
   if (!open) return null;
 
   return (
@@ -30,16 +20,16 @@ function EditModal({
           <S.Input
             type="date"
             name="date"
-            value={value.date}
-            onChange={onChange}
+            value={editData.date}
+            onChange={handleEditChange}
           />
         </S.Row>
         <S.Row>
           <S.Label>구분</S.Label>
           <S.Select
             name="recordType"
-            value={value.recordType}
-            onChange={onChange}
+            value={editData.recordType}
+            onChange={handleEditChange}
           >
             <option value="INCOME">수입</option>
             <option value="EXPENSE">지출</option>
@@ -50,8 +40,8 @@ function EditModal({
           <S.Input
             type="number"
             name="cost"
-            value={value.cost}
-            onChange={onChange}
+            value={editData.cost}
+            onChange={handleEditChange}
           />
         </S.Row>
         <S.Row>
@@ -59,18 +49,18 @@ function EditModal({
           <S.Input
             type="text"
             name="description"
-            value={value.description}
-            onChange={onChange}
+            value={editData.description}
+            onChange={handleEditChange}
           />
         </S.Row>
         <S.ButtonRow>
           <S.Button
             style={{ background: "#444", color: "#fff" }}
-            onClick={onCancel}
+            onClick={handleEditCancel}
           >
             취소
           </S.Button>
-          <S.Button onClick={onSave}>저장</S.Button>
+          <S.Button onClick={handleEditSave}>저장</S.Button>
         </S.ButtonRow>
       </S.ModalBox>
     </S.Overlay>

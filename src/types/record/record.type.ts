@@ -31,9 +31,14 @@ interface UpdateRecordResponse {}
 
 interface DeleteRecordResponse {}
 
+type RecordForm = RecordItem;
+type RecordEntity = GetRecordItem;
+
 export {
   RecordItem,
   GetRecordItem,
+  RecordForm,
+  RecordEntity,
   CreateRecordRequest,
   CreateRecordResponse,
   GetRecordRequest,

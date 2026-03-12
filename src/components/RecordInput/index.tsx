@@ -1,18 +1,11 @@
-import { RecordItem, RecordType } from "../../types/record/record.type";
+import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../constants/record";
+import { RecordType } from "../../types/record/record.type";
 import * as S from "./styled";
-import { Dispatch, SetStateAction } from "react";
+import { useRecordContext } from "../../contexts/record/RecordContext";
 
-type RecordInputProps = {
-  newRecord: RecordItem;
-  setNewRecord: Dispatch<SetStateAction<RecordItem>>;
-  handleAddRecord: () => void;
-};
+function RecordInput() {
+  const { newRecord, setNewRecord, handleAddRecord } = useRecordContext();
 
-function RecordInput({
-  newRecord,
-  setNewRecord,
-  handleAddRecord,
-}: RecordInputProps) {
   return (
     <S.InputBox
       as="form"
@@ -31,8 +24,12 @@ function RecordInput({
           })
         }
       >
-        <option value="INCOME">수입</option>
-        <option value="EXPENSE">지출</option>
+        <option value={RECORD_BACK_KEYS.INCOME}>
+          {RECORD_FRONT_KEYS.INCOME}
+        </option>
+        <option value={RECORD_BACK_KEYS.EXPENSE}>
+          {RECORD_FRONT_KEYS.EXPENSE}
+        </option>
       </S.Select>
       <S.Input
         name="cost"

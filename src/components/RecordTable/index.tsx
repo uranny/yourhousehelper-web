@@ -1,69 +1,18 @@
-import { ChangeEvent, useState } from "react";
 import * as S from "./styled";
 import EditModal from "../EditModal/index";
-import { RecordItem } from "../../types/record/record.type";
+import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../constants/record";
+import { useRecordContext } from "../../contexts/record/RecordContext";
 
-type RecordTableProps = {
-  filteredRecords: RecordItem[];
-  CATEGORIES: Record<string, string>;
-  onEdit: (index: number, data: RecordItem) => void;
-  onDelete: (index: number) => void;
-};
-
-function RecordTable({
-  filteredRecords,
-  CATEGORIES,
-  onEdit,
-  onDelete,
-}: RecordTableProps) {
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [editData, setEditData] = useState<RecordItem>({
-    recordType: "EXPENSE",
-    cost: 0,
-    description: "",
-    date: "",
-  });
-
-  const sortedRecords = [...filteredRecords].sort((a, b) => {
-    if (a.date < b.date) return -1;
-    if (a.date > b.date) return 1;
-    if (a.recordType === b.recordType) return 0;
-    if (a.recordType === "EXPENSE") return -1;
-    return 1;
-  });
-
-  const handleEditClick = (idx: number) => {
-    setEditIndex(idx);
-    const r = sortedRecords[idx];
-    setEditData({ ...r });
-  };
-
-  const handleEditChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setEditData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleEditSave = () => {
-    if (!editIndex) return;
-    onEdit(filteredRecords.indexOf(sortedRecords[editIndex]), editData);
-    setEditIndex(null);
-  };
-
-  const handleEditCancel = () => {
-    setEditIndex(null);
-  };
+function RecordTable() {
+  const {
+    sortedRecords,
+    handleEditClick,
+    handleDeleteRecordById,
+  } = useRecordContext();
 
   return (
     <>
-      <EditModal
-        open={editIndex !== null}
-        value={editData}
-        onChange={handleEditChange}
-        onSave={handleEditSave}
-        onCancel={handleEditCancel}
-      />
+      <EditModal />
       <S.TableWrapper>
         <S.Table>
           <thead>
@@ -88,12 +37,12 @@ function RecordTable({
               </tr>
             ) : (
               sortedRecords.map((r, i) => (
-                <S.Tr key={i}>
+                <S.Tr key={r.id}>
                   <S.Td>{r.date}</S.Td>
-                  <S.Td>{CATEGORIES[r.recordType]}</S.Td>
+                  <S.Td>{RECORD_FRONT_KEYS[r.recordType]}</S.Td>
                   <S.Td
                     style={{
-                      color: r.recordType === "INCOME" ? "#3ad29f" : "#5b5fc7",
+                      color: r.recordType === RECORD_BACK_KEYS.INCOME ? "#3ad29f" : "#5b5fc7",
                       fontWeight: 500,
                     }}
                   >
@@ -121,7 +70,7 @@ function RecordTable({
                         border: "none",
                         cursor: "pointer",
                       }}
-                      onClick={() => onDelete(filteredRecords.indexOf(r))}
+                      onClick={() => handleDeleteRecordById(r.id)}
                     >
                       삭제
                     </button>
