@@ -1,37 +1,29 @@
-import { useMemo } from "react";
-import { useAccountBook } from "./useAccountBook";
-import { useQuery } from "@tanstack/react-query";
-import { recordApi } from "../api/record";
-import { QUERY_KEYS } from "../constants/query";
+import { ChangeEvent, useMemo, useState } from "react";
+import {
+  useYearRecords,
+  useMonthRecords,
+} from "../queries/record/record.query";
+import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../constants/record";
 
 export function useDashboard() {
-  const { dashboardYear, setDashboardYear, dashboardMonth, setDashboardMonth } =
-    useAccountBook();
+  const now = new Date()
+  const [dashboardYear, setDashboardYear] = useState(now.getFullYear());
+  const [dashboardMonth, setDashboardMonth] = useState(now.getMonth() + 1);
 
-  // 이번 연도 1~12월 기록 조회
-  const { data: yearRecords = [], isLoading: yearLoading } = useQuery({
-    queryKey: [QUERY_KEYS.RECORDS, dashboardYear],
-    queryFn: async () => {
-      const startDate = `${dashboardYear}-01-01`;
-      const endDate = `${dashboardYear}-12-31`;
-      const res = await recordApi.list({ startDate, endDate });
-      return res.data || [];
-    },
-  });
+  const handleChangeDashboardYear = (
+    e: ChangeEvent<HTMLSelectElement>,
+  ) => setDashboardYear(Number(e.target.value));
 
-  // 이번 달 기록 조회
-  const { data: monthRecords = [], isLoading: monthLoading } = useQuery({
-    queryKey: [QUERY_KEYS.RECORDS, dashboardYear, dashboardMonth],
-    queryFn: async () => {
-      const lastDay = String(
-        new Date(dashboardYear, dashboardMonth, 0).getDate(),
-      ).padStart(2, "0");
-      const startDate = `${dashboardYear}-${String(dashboardMonth).padStart(2, "0")}-01`;
-      const endDate = `${dashboardYear}-${String(dashboardMonth).padStart(2, "0")}-${lastDay}`;
-      const res = await recordApi.list({ startDate, endDate });
-      return res.data || [];
-    },
-  });
+  const handleChangeDashboardMonth = (e: ChangeEvent<HTMLSelectElement>) =>
+    setDashboardMonth(Number(e.target.value));
+
+  const { data: yearRecords = [], isLoading: yearLoading } =
+    useYearRecords(dashboardYear);
+
+  const { data: monthRecords = [], isLoading: monthLoading } = useMonthRecords(
+    dashboardYear,
+    dashboardMonth,
+  );
 
   // 월별 통계
   const monthLabels = Array.from({ length: 12 }, (_, i) => String(i + 1));
@@ -68,7 +60,7 @@ export function useDashboard() {
     let income = 0,
       expense = 0;
     monthRecords.forEach((r) => {
-      if (r.recordType === "INCOME") income += Number(r.cost) || 0;
+      if (r.recordType === RECORD_BACK_KEYS.INCOME) income += Number(r.cost) || 0;
       else expense += Number(r.cost) || 0;
     });
     return {
@@ -83,7 +75,7 @@ export function useDashboard() {
     let income = 0,
       expense = 0;
     yearRecords.forEach((r) => {
-      if (r.recordType === "INCOME") income += Number(r.cost) || 0;
+      if (r.recordType === RECORD_BACK_KEYS.INCOME) income += Number(r.cost) || 0;
       else expense += Number(r.cost) || 0;
     });
     return {
@@ -93,18 +85,32 @@ export function useDashboard() {
     };
   }, [yearRecords]);
 
+  const dashboardSummary = useMemo(() => {
+    const year = String(dashboardYear);
+    const safeIncome = Number(yearTotal.income) || 0;
+    const safeExpense = Number(yearTotal.expense) || 0;
+    const safeNet = Number(yearTotal.net) || 0;
+
+    return {
+      year,
+      safeIncome,
+      safeExpense,
+      safeNet,
+    };
+  }, [dashboardYear, yearTotal]);
+
   // 그래프 데이터
   const totalGraphData = useMemo(() => {
     return {
       labels: monthLabels.map((v) => `${v}월`),
       datasets: [
         {
-          label: "수입",
+          label: RECORD_FRONT_KEYS.INCOME,
           data: monthLabels.map((m) => monthStats[Number(m)]?.income || 0),
           backgroundColor: "#3ad29f",
         },
         {
-          label: "지출",
+          label: RECORD_FRONT_KEYS.EXPENSE,
           data: monthLabels.map((m) => monthStats[Number(m)]?.expense || 0),
           backgroundColor: "#5b5fc7",
         },
@@ -114,14 +120,16 @@ export function useDashboard() {
 
   return {
     dashboardYear,
-    setDashboardYear,
+    handleChangeDashboardYear,
     dashboardMonth,
     setDashboardMonth,
-    monthlySummary,
+    handleChangeDashboardMonth,
     totalGraphData,
+    dashboardSummary,
     yearTotal,
     monthTotal,
     yearLoading,
     monthLoading,
+    monthlySummary
   };
 }

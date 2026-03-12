@@ -1,14 +1,17 @@
 import YearlyGraph from '../../components/YearlyGraph';
 import * as S from './styled';
-import { useDashboard } from '../../hooks/useDashboard';
 import DashboardSummary from '../../components/dashboard/DashboardSummary';
+import {
+  DashboardProvider,
+  useDashboardContext,
+} from '../../contexts/dashboard/DashboardContext';
 
-function Dashboard() {
+function DashboardContent() {
   const {
-    dashboardYear, setDashboardYear, dashboardMonth,
+    dashboardYear, handleChangeDashboardYear,
     monthlySummary, totalGraphData,
-    yearTotal, monthTotal,
-  } = useDashboard();
+    yearTotal,
+  } = useDashboardContext();
 
   return (
     <S.DashboardPageWrapper>
@@ -19,7 +22,7 @@ function Dashboard() {
         <S.Select
           id="dashboard-year-select"
           value={dashboardYear}
-          onChange={(e) => setDashboardYear(Number(e.target.value))}
+          onChange={handleChangeDashboardYear}
         >
           {Array.from({ length: 10 }, (_, i) => {
             const y = new Date().getFullYear() - i;
@@ -31,13 +34,8 @@ function Dashboard() {
           })}
         </S.Select>
       </S.DashboardYearSelectBar>
-      <DashboardSummary
-        year={String(dashboardYear)}
-        income={yearTotal.income}
-        expense={yearTotal.expense}
-        net={yearTotal.net}
-      />
-      <YearlyGraph data={totalGraphData} />
+      <DashboardSummary />
+      <YearlyGraph />
       <S.TableWrapper>
         <S.Table>
           <S.Thead>
@@ -67,6 +65,14 @@ function Dashboard() {
         </S.Table>
       </S.TableWrapper>
     </S.DashboardPageWrapper>
+  );
+}
+
+function Dashboard() {
+  return (
+    <DashboardProvider>
+      <DashboardContent />
+    </DashboardProvider>
   );
 }
 

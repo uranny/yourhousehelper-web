@@ -1,18 +1,16 @@
 import { Bar } from "react-chartjs-2";
 import * as S from "./styled";
-import { ChartData } from "chart.js";
+import { useDashboardContext } from "../../contexts/dashboard/DashboardContext";
 
-type YearlyGraphProps = {
-  data: ChartData<"bar">;
-};
+function YearlyGraph() {
+  const { totalGraphData } = useDashboardContext();
 
-function YearlyGraph({ data }: YearlyGraphProps) {
   return (
     <S.GraphBox>
       <S.GraphTitle>월별 수입/지출 그래프</S.GraphTitle>
       <S.ChartBox>
         <Bar
-          data={data}
+          data={totalGraphData}
           options={{
             plugins: { legend: { display: true } },
             responsive: true,

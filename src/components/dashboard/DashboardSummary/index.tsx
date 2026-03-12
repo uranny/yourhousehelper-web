@@ -1,21 +1,9 @@
 import * as S from "./styled";
+import { useDashboardContext } from "../../../contexts/dashboard/DashboardContext";
 
-type DashboardSummaryProps = {
-  year?: string;
-  income?: number;
-  expense?: number;
-  net?: number;
-};
-
-function DashboardSummary({
-  year = "0000",
-  income = 0,
-  expense = 0,
-  net = 0,
-}: DashboardSummaryProps) {
-  const safeIncome = Number(income) || 0;
-  const safeExpense = Number(expense) || 0;
-  const safeNet = Number(net) || 0;
+function DashboardSummary() {
+  const { dashboardSummary } = useDashboardContext();
+  const { year, safeIncome, safeExpense, safeNet } = dashboardSummary;
 
   return (
     <S.SummaryBox>
