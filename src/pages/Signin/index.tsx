@@ -3,8 +3,15 @@ import { useSignin } from "../../hooks/useSignin";
 import { useNavigate } from "react-router-dom";
 
 function Signin() {
-  const { id, setId, pw, setPw, error, loading, handleSignin } = useSignin();
-  const navigate = useNavigate();
+  const {
+    id,
+    pw,
+    loading,
+    handleSignin,
+    handleChangeId,
+    handleChangePassword,
+    handleNavigateSignup,
+  } = useSignin();
   return (
     <S.Layout>
       <S.Title>로그인</S.Title>
@@ -13,7 +20,7 @@ function Signin() {
         <S.Input
           type="text"
           value={id}
-          onChange={(e) => setId(e.target.value)}
+          onChange={handleChangeId}
           placeholder="아이디"
           autoFocus
         />
@@ -23,27 +30,14 @@ function Signin() {
         <S.Input
           type="password"
           value={pw}
-          onChange={(e) => setPw(e.target.value)}
+          onChange={handleChangePassword}
           placeholder="비밀번호"
         />
       </S.InputRow>
-      {error && (
-        <div
-          style={{
-            color: "#ff5b5b",
-            fontWeight: 500,
-            marginTop: "1em",
-            marginLeft: "12rem",
-            marginRight: "12rem",
-          }}
-        >
-          {error}
-        </div>
-      )}
       <S.Button onClick={handleSignin} disabled={loading}>
         {loading ? "로그인 중..." : "로그인"}
       </S.Button>
-      <S.TextBtn type="button" onClick={() => navigate("/signup")}>
+      <S.TextBtn type="button" onClick={handleNavigateSignup}>
         회원가입
       </S.TextBtn>
     </S.Layout>
