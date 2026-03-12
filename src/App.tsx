@@ -11,6 +11,7 @@ import {
 import RouterSetup from "./router/RouterSetup";
 import ROUTE_KEYS from "./constants/route";
 import useAuthStore from "./store/useAuthStore";
+import GlobalToastContainer from "./components/toast";
 
 ChartJS.register(
   CategoryScale,
@@ -37,14 +38,10 @@ function App() {
             >
               대시 보드
             </S.HeaderLink>
-            <S.HeaderLink
-              to={isLogin ? ROUTE_KEYS.TABLE : ROUTE_KEYS.SIGNIN}
-            >
+            <S.HeaderLink to={isLogin ? ROUTE_KEYS.TABLE : ROUTE_KEYS.SIGNIN}>
               수입 · 지출 관리
             </S.HeaderLink>
-            <S.HeaderLink
-              to={isLogin ? ROUTE_KEYS.REPORT : ROUTE_KEYS.SIGNIN}
-            >
+            <S.HeaderLink to={isLogin ? ROUTE_KEYS.REPORT : ROUTE_KEYS.SIGNIN}>
               분석 보고서
             </S.HeaderLink>
           </S.HeaderMenu>
@@ -53,6 +50,7 @@ function App() {
       </S.HeaderBar>
       <S.Main>
         <RouterSetup />
+        <GlobalToastContainer />
       </S.Main>
     </S.Layout>
   );
