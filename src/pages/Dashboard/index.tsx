@@ -1,4 +1,4 @@
-import YearlyGraph from '../../components/YearlyGraph';
+import YearlyGraph from '../../components/dashboard/YearlyGraph';
 import * as S from './styled';
 import DashboardSummary from '../../components/dashboard/DashboardSummary';
 import {

@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import * as S from "./styled";
-import { useDashboardContext } from "../../contexts/dashboard/DashboardContext";
+import { useDashboardContext } from "../../../contexts/dashboard/DashboardContext";
 
 function YearlyGraph() {
   const { totalGraphData } = useDashboardContext();
