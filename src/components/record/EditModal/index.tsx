@@ -1,5 +1,5 @@
 import * as S from "./styled";
-import { useRecordContext } from "../../contexts/record/RecordContext";
+import { useRecordContext } from "../../../contexts/record/RecordContext";
 
 function EditModal() {
   const { editIndex, editData, handleEditChange, handleEditSave, handleEditCancel } =

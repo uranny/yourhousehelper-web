@@ -1,5 +1,5 @@
-import RecordInput from "../../components/RecordInput";
-import RecordTable from "../../components/RecordTable";
+import RecordInput from "../../components/record/RecordInput";
+import RecordTable from "../../components/record/RecordTable";
 import {
   RecordProvider,
   useRecordContext,
@@ -47,7 +47,7 @@ function RecordContent() {
           </S.Select>
         </S.SelectGroup>
       </S.ControlBar>
-      <RecordInput />
+      <RecordInput/>
       <RecordTable />
     </S.RecordPageWrapper>
   );

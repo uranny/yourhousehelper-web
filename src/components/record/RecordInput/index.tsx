@@ -1,7 +1,7 @@
-import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../constants/record";
-import { RecordType } from "../../types/record/record.type";
+import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../../constants/record";
+import { RecordType } from "../../../types/record/record.type";
 import * as S from "./styled";
-import { useRecordContext } from "../../contexts/record/RecordContext";
+import { useRecordContext } from "../../../contexts/record/RecordContext";
 
 function RecordInput() {
   const { newRecord, setNewRecord, handleAddRecord } = useRecordContext();

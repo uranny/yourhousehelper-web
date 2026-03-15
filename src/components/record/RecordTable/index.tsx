@@ -1,7 +1,7 @@
 import * as S from "./styled";
 import EditModal from "../EditModal/index";
-import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../constants/record";
-import { useRecordContext } from "../../contexts/record/RecordContext";
+import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../../constants/record";
+import { useRecordContext } from "../../../contexts/record/RecordContext";
 
 function RecordTable() {
   const {
