@@ -1,50 +1,48 @@
 import styled from "styled-components";
+import { bodyText } from "../../../constants/typography";
 
 export const InputBox = styled.form`
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 0.6em;
-  border-radius: 10px;
+  gap: 0.6rem;
+  border-radius: 1rem;
   box-shadow: none;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 700px) {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.5em;
+    gap: 0.5rem;
   }
 `;
 
 export const Input = styled.input`
   flex: 1;
   background: #23263a;
-  border: 1.5px solid #5b5fc7;
-  border-radius: 6px;
+  border: 0.15rem solid #5b5fc7;
+  border-radius: 0.6rem;
   color: #fff;
-  padding: 0.4em 0.5em;
-  font-size: 1em;
-  font-weight: 400;
+  padding: 0.4rem 0.5rem;
+  ${bodyText};
 `;
 
 export const Select = styled.select`
   flex: 1;
   padding: 0.4rem 0.5rem;
-  border: 1.5px solid #5b5fc7;
-  border-radius: 6px;
-  font-size: 1rem;
+  border: 0.15rem solid #5b5fc7;
+  border-radius: 0.6rem;
+  ${bodyText};
   color: #fff;
   background: #23263a;
-  font-weight: 400;
 `;
 
 export const Button = styled.button`
   background: #5b5fc7;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.4em 0.97em;
-  font-size: 1em;
-  font-weight: 500;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.97rem;
+  ${bodyText};
   cursor: pointer;
   transition: background 0.2s;
   &:hover {

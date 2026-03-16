@@ -1,33 +1,33 @@
 import styled from 'styled-components';
+import { bodyText } from "../../constants/typography";
 
 export const DashboardPageWrapper = styled.div`
   margin: 0 auto;
-  max-width: 900px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top : 2em;
-  gap : 2em;
+  margin-top : 2rem;
+  gap : 2rem;
 `;
 
 export const DashboardYearSelectBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 1em;
+  gap: 1rem;
 `;
 
 export const Label = styled.label`
   color: #fff;
-  font-weight: 500;
+  ${bodyText};
 `;
 
 export const Select = styled.select`
   background: #23263a;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.5em 1em;
-  font-size: 1em;
+  border-radius: 0.6rem;
+  padding: 0.5rem 1rem;
+  ${bodyText};
   cursor: pointer;
   transition: background 0.2s;
 
@@ -40,18 +40,17 @@ export const Button = styled.button`
   background: #5b5fc7;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.5em;
-  font-size: 1em;
-  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.5rem;
+  ${bodyText};
   cursor: pointer;
   text-decoration : none;
 `;
 
 export const TableWrapper = styled.div`
   background: #23263a;
-  border-radius: 12px;
-  padding: 1.5em;
+  border-radius: 1.2rem;
+  padding: 1.5rem;
   overflow-x: auto;
 `;
 
@@ -59,7 +58,7 @@ export const Table = styled.table`
   width: 100%;
   color: #fff;
   border-collapse: collapse;
-  font-size: 1em;
+  ${bodyText};
   overflow-x: auto;
 `;
 
@@ -72,7 +71,7 @@ type TrProps = {
 };
 
 export const Tr = styled.tr<TrProps>`
-  border-bottom: 1px solid ${props => props.$isHeader ? '#444' : '#333'};
+  border-bottom: 0.1rem solid ${props => props.$isHeader ? '#444' : '#333'};
 `;
 
 type ThProps = {
@@ -81,8 +80,9 @@ type ThProps = {
 
 export const Th = styled.th<ThProps>`
   flex: 1;
-  padding: 0.5em;
+  padding: 0.5rem;
   color: ${props => props.$color || '#fff'};
+  ${bodyText};
 `;
 
 type TdProps = {
@@ -92,8 +92,8 @@ type TdProps = {
 
 export const Td = styled.td<TdProps>`
   flex: 1;
-  padding: 0.5em;
+  padding: 0.5rem;
   text-align: center;
   color: ${props => props.$color || '#fff'};
-  font-weight: ${props => props.$bold ? 600 : 400};
+  ${bodyText};
 `;

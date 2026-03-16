@@ -12,9 +12,7 @@ function EditModal() {
   return (
     <S.Overlay>
       <S.ModalBox>
-        <h2 style={{ marginTop: 0, marginBottom: "1.5em", fontWeight: 700 }}>
-          내역 수정
-        </h2>
+        <S.Title>내역 수정</S.Title>
         <S.Row>
           <S.Label>날짜</S.Label>
           <S.Input

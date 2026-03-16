@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { bodyText, subtitleText } from "../../../constants/typography";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -14,53 +15,57 @@ export const Overlay = styled.div`
 `;
 export const ModalBox = styled.div`
   background: #23263a;
-  border-radius: 12px;
-  padding: 2.2em 2em 1.5em 2em;
-  min-width: 320px;
+  border-radius: 1.2rem;
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  min-width: 32rem;
   max-width: 95vw;
-  box-shadow: 0 4px 32px 0 #0008;
+  box-shadow: 0 0.4rem 3.2rem 0 #0008;
   color: #fff;
+`;
+export const Title = styled.h2`
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  ${subtitleText};
 `;
 export const Row = styled.div`
   display: flex;
   align-items: center;
-  gap: 1em;
-  margin-bottom: 1.2em;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
 `;
 export const Label = styled.label`
-  min-width: 60px;
-  font-size: 1.08em;
+  min-width: 6rem;
+  ${bodyText};
 `;
 export const Input = styled.input`
   background: #181a28;
-  border: 1px solid #5b5fc7;
-  border-radius: 6px;
+  border: 0.1rem solid #5b5fc7;
+  border-radius: 0.6rem;
   color: #fff;
-  padding: 0.5em 0.8em;
-  font-size: 1em;
+  padding: 0.5rem 0.8rem;
+  ${bodyText};
   outline: none;
 `;
 export const Select = styled.select`
   background: #181a28;
-  border: 1px solid #5b5fc7;
-  border-radius: 6px;
+  border: 0.1rem solid #5b5fc7;
+  border-radius: 0.6rem;
   color: #fff;
-  padding: 0.5em 0.8em;
-  font-size: 1em;
+  padding: 0.5rem 0.8rem;
+  ${bodyText};
 `;
 export const ButtonRow = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 1em;
+  gap: 1rem;
 `;
 export const Button = styled.button`
   background: #5b5fc7;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.5em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  border-radius: 0.6rem;
+  padding: 0.5rem 1.2rem;
+  ${bodyText};
   cursor: pointer;
   transition: background 0.2s;
   &:hover {

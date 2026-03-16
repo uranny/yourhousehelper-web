@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { bodyText } from "../../../constants/typography";
 
 export const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
   background: #23263a;
-  border-radius: 10px;
-  margin-bottom: 1.2em;
+  border-radius: 1rem;
+  margin-bottom: 1.2rem;
   box-shadow: none;
 `;
 
@@ -18,19 +19,18 @@ export const Table = styled.table`
 export const Th = styled.th`
   background: #23263a;
   color: #fff;
-  font-weight: 600;
-  padding: 0.7em 0.5em;
-  border-bottom: 1.5px solid #5b5fc7;
-  font-size: 1em;
+  padding: 0.7rem 0.5rem;
+  border-bottom: 0.15rem solid #5b5fc7;
+  ${bodyText};
 `;
 
 export const Td = styled.td`
   color: #fff;
-  padding: 0.7em 0.5em;
+  padding: 0.7rem 0.5rem;
   text-align: center;
-  font-size: 1em;
-  border-bottom: 1px solid #23263a;
-  max-width: 120px;
+  ${bodyText};
+  border-bottom: 0.1rem solid #23263a;
+  max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

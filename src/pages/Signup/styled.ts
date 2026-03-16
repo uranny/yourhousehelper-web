@@ -1,45 +1,40 @@
 import styled from "styled-components";
+import { bodyText, titleText } from "../../constants/typography";
 
 export const Layout = styled.div`
-  margin: 0 auto;
-  max-width: 900px;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
-  gap: 1em;
-  border-radius: 12px;
+  gap: 1rem;
 `;
+
 export const InputRow = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 12rem 0 12rem;
 `;
 export const Label = styled.label`
   color: #bfc6d1;
-  font-size: 1.1em;
-  min-width: 120px;
-  font-weight: 500;
+  ${bodyText};
+  min-width: 12rem;
 `;
 export const Input = styled.input`
   flex: 1;
-  padding: 0.7em 1em;
-  border: 1.5px solid #5b5fc7;
-  border-radius: 6px;
-  font-size: 1em;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 0.15rem solid #5b5fc7;
+  border-radius: 0.6rem;
+  ${bodyText};
   background: #181c2a;
   color: #e3e6f3;
 `;
 export const Button = styled.button`
   background: #5b5fc7;
   color: #fff;
+  width: 100%;
   border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.5em;
-  font-size: 1em;
-  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.5rem;
+  ${bodyText};
   cursor: pointer;
-  margin: 0 12rem 0 12rem;
   &:disabled {
     background: #444;
     color: #bbb;
@@ -49,8 +44,7 @@ export const TextBtn = styled.button`
   background: none;
   color: #3ad29f;
   border: none;
-  font-size: 1em;
-  font-weight: 500;
+  ${bodyText};
   cursor: pointer;
   text-decoration: underline;
   margin-top: 1rem;
@@ -58,8 +52,5 @@ export const TextBtn = styled.button`
 `;
 export const Title = styled.h2`
   color: #fff;
-  font-weight: 600;
-  font-size: 1.5em;
-  margin-top: 2em;
-  margin-left: 12rem;
+  ${titleText};
 `;

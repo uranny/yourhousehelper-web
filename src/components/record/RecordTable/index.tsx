@@ -50,30 +50,14 @@ function RecordTable() {
                   </S.Td>
                   <S.Td>{r.description}</S.Td>
                   <S.Td>
-                    <button
-                      style={{
-                        background: "none",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => handleEditClick(i)}
-                    >
+                    <S.ActionButton onClick={() => handleEditClick(i)}>
                       수정
-                    </button>
+                    </S.ActionButton>
                   </S.Td>
                   <S.Td>
-                    <button
-                      style={{
-                        background: "none",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => handleDeleteRecordById(r.id)}
-                    >
+                    <S.ActionButton onClick={() => handleDeleteRecordById(r.id)}>
                       삭제
-                    </button>
+                    </S.ActionButton>
                   </S.Td>
                 </S.Tr>
               ))
