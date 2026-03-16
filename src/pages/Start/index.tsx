@@ -17,19 +17,19 @@ function Start() {
   const textBoxList: FunctionTextBoxProps[] = [
     {
       order: "첫번째",
-      title: "수입 · 지출 내역 관리",
-      content:
-        "연 · 월별 카테고리 · 금액 · 사유 · 날짜를\n 기록하여 자산을 관리할 수 있습니다.",
-    },
-    {
-      order: "두번째",
       title: "대시보드 요약",
       content:
         "기간별 총수입 · 지출 · 순이익을 집계하여\n핵심 재정 상태를 파악할 수 있습니다.",
     },
     {
+      order: "두번째",
+      title: "수입 · 지출 내역 관리",
+      content:
+        "연 · 월별 카테고리 · 금액 · 사유 · 날짜를\n 기록하여 자산을 관리할 수 있습니다.",
+    },
+    {
       order: "세번째",
-      title: "수입 · 지출 내역 분석",
+      title: "분석 보고서",
       content:
         "연 · 월별 총수입 · 지출 · 순이익 분석으로 더 나은 소비 방향을 제공합니다.",
     },

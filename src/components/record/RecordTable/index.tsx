@@ -38,7 +38,7 @@ function RecordTable() {
             ) : (
               sortedRecords.map((r, i) => (
                 <S.Tr key={r.id}>
-                  <S.Td>{r.date}</S.Td>
+                  <S.Td>{parseInt(r.date.split('-')[2], 10) + '일'}</S.Td>
                   <S.Td>{RECORD_FRONT_KEYS[r.recordType]}</S.Td>
                   <S.Td
                     style={{

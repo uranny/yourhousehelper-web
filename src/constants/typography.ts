@@ -15,7 +15,7 @@ export const bodyText = css`
 
 export const titleText = css`
   font-size: 2.8rem;
-  font-weight: 800;
+  font-weight: 600;
 
   @media (max-width: 1024px) {
     font-size: 2.6rem;
@@ -28,7 +28,7 @@ export const titleText = css`
 
 export const subtitleText = css`
   font-size: 2.2rem;
-  font-weight: 600;
+  font-weight: 500;
 
   @media (max-width: 1024px) {
     font-size: 2.0rem;

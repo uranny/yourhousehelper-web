@@ -36,10 +36,16 @@ export const HeaderMenu = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 2rem;
+  gap: 4rem;
   display: flex;
   flex-direction: row;
   align-items: center;
+  @media (max-width : 1024px) {
+    gap: 3rem
+  }
+  @media (max-width : 512px) {
+    gap: 2rem
+  }
 `;
 export const HeaderItem = styled.li``;
 export const HeaderLink = styled(Link)`
