@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, KeyboardEvent, useRef, useState } from "react";
 import {
   useRecordsQuery,
   useCreateRecordMutation,
@@ -18,11 +18,70 @@ export function useRecord() {
   const queryClient = useQueryClient();
 
   const [newRecord, setNewRecord] = useState<RecordItem>(DEFAULT_RECORD);
+  const inputRefs = useRef<Array<HTMLSelectElement | HTMLInputElement | HTMLButtonElement | null>>([]);
 
   const handleChangeSelectedYear = (e: ChangeEvent<HTMLSelectElement>) =>
     setSelectedYear(Number(e.target.value));
   const handleChangeSelectedMonth = (e: ChangeEvent<HTMLSelectElement>) =>
     setSelectedMonth(Number(e.target.value));
+
+  const registerRecordInputRef = (
+    index: number,
+    element: HTMLSelectElement | HTMLInputElement | HTMLButtonElement | null,
+  ) => {
+    inputRefs.current[index] = element;
+  };
+
+  const focusRecordInput = (index: number) => {
+    const nextElement = inputRefs.current[index];
+
+    if (!nextElement) {
+      return;
+    }
+
+    nextElement.focus();
+
+    if (
+      nextElement instanceof HTMLInputElement
+      && nextElement.type === "date"
+      && typeof nextElement.showPicker === "function"
+    ) {
+      nextElement.showPicker();
+    }
+  };
+
+  const handleRecordInputKeyDown = (
+    event: KeyboardEvent<HTMLSelectElement | HTMLInputElement>,
+    nextIndex: number,
+  ) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+    focusRecordInput(nextIndex);
+  };
+
+  const handleRecordTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNewRecord({
+      ...newRecord,
+      recordType: e.target.value as RecordItem["recordType"],
+    });
+  };
+
+  const handleNewRecordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setNewRecord((prev) => ({
+      ...prev,
+      [name]: name === "cost" ? parseInt(value) : value,
+    }));
+  };
+
+  const handleRecordFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleAddRecord();
+  };
 
   // 기록 목록 조회
   const { data } = useRecordsQuery(
@@ -137,6 +196,11 @@ export function useRecord() {
     newRecord,
     setNewRecord,
     handleAddRecord,
+    registerRecordInputRef,
+    handleRecordInputKeyDown,
+    handleRecordTypeChange,
+    handleNewRecordInputChange,
+    handleRecordFormSubmit,
     selectedYear,
     selectedMonth,
     filteredRecords,
