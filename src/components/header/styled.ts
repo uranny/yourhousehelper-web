@@ -32,7 +32,7 @@ export const HeaderLogo = styled(Link)`
   outline: none;
   text-decoration-line: none;
 `;
-export const HeaderMenu = styled.ul`
+export const HeaderMenu = styled.div`
   list-style: none;
   margin: 0;
   padding: 0;
@@ -44,7 +44,7 @@ export const HeaderMenu = styled.ul`
     gap: 3rem
   }
   @media (max-width : 512px) {
-    gap: 2rem
+    gap: 1rem
   }
 `;
 export const HeaderItem = styled.li``;
