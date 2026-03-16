@@ -11,7 +11,7 @@ export const RECORD_FRONT_KEYS = {
 };
 
 export const DEFAULT_RECORD = {
-  recordType: RECORD_BACK_KEYS.EXPENSE as RecordType,
+  recordType: RECORD_BACK_KEYS.INCOME as RecordType,
   cost: 0,
   description: "",
   date: "",
