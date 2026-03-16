@@ -39,34 +39,36 @@ function Start() {
     return ({ order, title, content }: FunctionTextBoxProps) => (
       <S.FeatureCard key={title}>
         <S.FeatureOrder>{order}</S.FeatureOrder>
-        <div>
+        <S.ContentBox>
           <S.FeatureTitle>{title}</S.FeatureTitle>
           <S.FeatureContent>{content}</S.FeatureContent>
-        </div>
+        </S.ContentBox>
       </S.FeatureCard>
     );
   }, []);
 
   return (
     <S.Layout>
-      <S.HeroSection>
-        <S.HeroTitle>당신의 하우스 헬퍼</S.HeroTitle>
-        <S.HeroSubtitle>청년을 위한 자산 관리 서비스</S.HeroSubtitle>
-        <S.StartButton
-          onClick={() => {
-            isLogin
-              ? navigate(ROUTE_KEYS.DASHBOARD)
-              : navigate(ROUTE_KEYS.SIGNIN);
-          }}
-        >
-          시작하기
-        </S.StartButton>
-      </S.HeroSection>
-      <S.Description>
-        {
-          "이 서비스는 청년들이 자신의 자산을 체계적으로 관리하기 어렵고 소비 패턴을 파악하기 힘든 문제를 해결하기 위한 서비스입니다."
-        }
-      </S.Description>
+      <S.HeaderBox>
+        <S.HeroSection>
+          <S.HeroTitle>당신의 하우스 헬퍼</S.HeroTitle>
+          <S.HeroSubtitle>청년을 위한 자산 관리 서비스</S.HeroSubtitle>
+          <S.StartButton
+            onClick={() => {
+              isLogin
+                ? navigate(ROUTE_KEYS.DASHBOARD)
+                : navigate(ROUTE_KEYS.SIGNIN);
+            }}
+          >
+            시작하기
+          </S.StartButton>
+        </S.HeroSection>
+        <S.Description>
+          {
+            "이 서비스는 청년들이 자신의 자산을 체계적으로 관리하기 어렵고 소비 패턴을 파악하기 힘든 문제를 해결하기 위한 서비스입니다."
+          }
+        </S.Description>
+      </S.HeaderBox>
       <S.FeatureSection>
         <S.SectionTitle>주요기능</S.SectionTitle>
         <S.FeatureGrid>

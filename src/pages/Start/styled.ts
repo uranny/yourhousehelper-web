@@ -4,7 +4,7 @@ import { bodyText, subtitleText, titleText } from "../../constants/typography";
 export const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 4rem;
   width : 100%;
 `;
 
@@ -12,7 +12,7 @@ export const HeroSection = styled.div`
   background: linear-gradient(140deg, #23263a 0%, #1b1f31 70%);
   border: 0.1rem solid #333a57;
   border-radius: 1.6rem;
-  padding: 2rem 1.5rem;
+  padding: 4rem 1.5rem 3rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -64,20 +64,21 @@ export const Description = styled.p`
 export const FeatureSection = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 2rem;
   margin-top: 1rem;
 `;
 
-export const SectionTitle = styled.h2`
+export const SectionTitle = styled.div`
   margin: 0;
   color: #ffffff;
+  text-align : center;
   ${titleText};
 `;
 
 export const FeatureGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
+  gap: 2rem;
 
   @media (max-width: 90rem) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -88,10 +89,10 @@ export const FeatureCard = styled.div`
   background: #23263a;
   border: 0.1rem solid #333a57;
   border-radius: 1.2rem;
-  padding: 1rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 1rem;
 `;
 
 export const FeatureOrder = styled.div`
@@ -111,4 +112,16 @@ export const FeatureContent = styled.p`
   white-space: pre-line;
   line-height: 1.6;
   ${bodyText};
+`;
+
+export const ContentBox = styled.div`
+  display : flex; 
+  gap : 0.5rem; 
+  flex-direction : column;
+`;
+
+export const HeaderBox = styled.div`
+  display : flex;
+  flex-direction :column;
+  gap : 1rem;
 `;
