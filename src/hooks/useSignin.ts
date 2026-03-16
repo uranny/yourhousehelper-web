@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import ROUTE_KEYS from "../constants/route";
@@ -11,6 +11,27 @@ export function useSignin() {
   const [loading, setLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+
+  const pwInputRef = useRef<HTMLInputElement | null>(null);
+  const signinButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleMoveFocus = (
+    event: KeyboardEvent<HTMLInputElement>,
+    target: "pw" | "button",
+  ) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (target === "pw") {
+      pwInputRef.current?.focus();
+      return;
+    }
+
+    signinButtonRef.current?.focus();
+  };
 
   const signinMutation = useSigninMutation();
   const handleChangeId = (e: ChangeEvent<HTMLInputElement>) =>
@@ -46,6 +67,9 @@ export function useSignin() {
     handleChangePassword,
     loading,
     handleSignin,
-    handleNavigateSignup
+    handleNavigateSignup,
+    pwInputRef,
+    signinButtonRef,
+    handleMoveFocus,
   };
 }
