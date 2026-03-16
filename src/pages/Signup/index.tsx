@@ -11,7 +11,11 @@ function Signup() {
     handleChangePasswordCheck,
     loading,
     handleSignup,
-    handleNavigateSignin
+    handleNavigateSignin,
+    handleMoveFocus,
+    pwInputRef,
+    pwCheckInputRef,
+    signupButtonRef,
   } = useSignup();
   return (
     <S.Layout>
@@ -21,6 +25,7 @@ function Signup() {
         <S.Input
           type="text"
           value={id}
+          onKeyDown={(event) => handleMoveFocus(event, "pw")}
           onChange={handleChangeId}
           placeholder="아이디"
           autoFocus
@@ -29,8 +34,10 @@ function Signup() {
       <S.InputRow>
         <S.Label>비밀번호</S.Label>
         <S.Input
+          ref={pwInputRef}
           type="password"
           value={pw}
+          onKeyDown={(event) => handleMoveFocus(event, "pwCheck")}
           onChange={handleChangePassword}
           placeholder="비밀번호"
         />
@@ -38,13 +45,15 @@ function Signup() {
       <S.InputRow>
         <S.Label>비밀번호 확인</S.Label>
         <S.Input
+          ref={pwCheckInputRef}
           type="password"
           value={pwCheck}
+          onKeyDown={(event) => handleMoveFocus(event, "button")}
           onChange={handleChangePasswordCheck}
           placeholder="비밀번호 확인"
         />
       </S.InputRow>
-      <S.Button onClick={handleSignup} disabled={loading}>
+      <S.Button ref={signupButtonRef} onClick={handleSignup} disabled={loading}>
         {loading ? "회원가입 중..." : "회원가입"}
       </S.Button>
       <S.TextBtn type="button" onClick={handleNavigateSignin}>

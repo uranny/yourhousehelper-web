@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
 import { useSignupMutation } from "../queries/signup/signup.query";
 import { showToast } from "../utils/toast";
 import ROUTE_KEYS from "../constants/route";
@@ -10,6 +10,34 @@ export function useSignup() {
   const [pwCheck, setPwCheck] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+    const pwInputRef = useRef<HTMLInputElement | null>(null);
+    const pwCheckInputRef = useRef<HTMLInputElement | null>(null);
+    const signupButtonRef = useRef<HTMLButtonElement | null>(null);
+  
+    const handleMoveFocus = (
+      event: KeyboardEvent<HTMLInputElement>,
+      target: "pw" | "pwCheck" | "button",
+    ) => {
+      if (event.key !== "Enter") {
+        return;
+      }
+  
+      event.preventDefault();
+  
+      if (target === "pw") {
+        pwInputRef.current?.focus();
+        return;
+      }
+  
+      if (target === "pwCheck") {
+        pwCheckInputRef.current?.focus();
+        return;
+      }
+  
+      signupButtonRef.current?.focus();
+    };
+  
 
   const signupMutation = useSignupMutation();
 
@@ -64,6 +92,10 @@ export function useSignup() {
     handleChangePassword,
     handleChangePasswordCheck,
     handleSignup,
-    handleNavigateSignin
+    handleNavigateSignin,
+    pwInputRef,
+    pwCheckInputRef,
+    signupButtonRef,
+    handleMoveFocus
   };
 }

@@ -2,25 +2,25 @@ import styled from "styled-components";
 import { bodyText, titleText } from "../../constants/typography";
 
 export const Layout = styled.div`
-  margin : 0 auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width : 40rem;
+  gap: 2rem;
+  width: 100%;
+  max-width: 40rem;
 `;
 
 export const InputRow = styled.div`
   display: flex;
-  align-items: center;
+  gap: 0.5rem;
+  flex-direction: column;
 `;
 export const Label = styled.label`
   color: #bfc6d1;
   ${bodyText};
-  min-width: 12rem;
 `;
 export const Input = styled.input`
   flex: 1;
-  width: 100%;
   padding: 0.7rem 1rem;
   border: 0.15rem solid #5b5fc7;
   border-radius: 0.6rem;
