@@ -1,9 +1,6 @@
 import RecordInput from "../../components/record/RecordInput";
 import RecordTable from "../../components/record/RecordTable";
-import {
-  RecordProvider,
-  useRecordContext,
-} from "../../contexts/record/RecordContext";
+import { RecordProvider, useRecordContext } from "../../contexts/record";
 import * as S from "./styled";
 
 function RecordContent() {

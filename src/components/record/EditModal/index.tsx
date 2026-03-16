@@ -1,9 +1,14 @@
+import { useRecordContext } from "../../../contexts/record";
 import * as S from "./styled";
-import { useRecordContext } from "../../../contexts/record/RecordContext";
 
 function EditModal() {
-  const { editIndex, editData, handleEditChange, handleEditSave, handleEditCancel } =
-    useRecordContext();
+  const {
+    editIndex,
+    editData,
+    handleEditChange,
+    handleEditSave,
+    handleEditCancel,
+  } = useRecordContext();
 
   const open = editIndex !== null;
 

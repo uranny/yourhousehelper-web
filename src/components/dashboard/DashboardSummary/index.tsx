@@ -1,9 +1,10 @@
+import { useDashboardContext } from "../../../contexts/dashboard";
 import * as S from "./styled";
-import { useDashboardContext } from "../../../contexts/dashboard/DashboardContext";
 
 function DashboardSummary() {
-  const { dashboardSummary } = useDashboardContext();
-  const { year, safeIncome, safeExpense, safeNet } = dashboardSummary;
+  const {
+    dashboardSummary: { year, safeIncome, safeExpense, safeNet },
+  } = useDashboardContext();
 
   return (
     <S.SummaryBox>
