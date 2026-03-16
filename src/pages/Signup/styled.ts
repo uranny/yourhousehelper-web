@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { bodyText, titleText } from "../../constants/typography";
 
 export const Layout = styled.div`
+  margin : 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width : 40rem;
 `;
 
 export const InputRow = styled.div`
@@ -50,7 +52,7 @@ export const TextBtn = styled.button`
   margin-top: 1rem;
   margin-bottom: 2rem;
 `;
-export const Title = styled.h2`
+export const Title = styled.div`
   color: #fff;
   ${titleText};
 `;
