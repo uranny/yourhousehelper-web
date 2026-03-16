@@ -53,3 +53,10 @@ export const ActionButton = styled.button`
   cursor: pointer;
   ${bodyText};
 `;
+
+export const NullText = styled.div`
+  text-align: center;
+  color : #aaa;
+  margin : 1rem 0 1rem 0;
+  ${bodyText}
+`;

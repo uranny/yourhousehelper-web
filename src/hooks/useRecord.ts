@@ -6,10 +6,15 @@ import {
   useDeleteRecordMutation,
 } from "../queries/record/record.query";
 import { useQueryClient } from "@tanstack/react-query";
-import { RecordForm, RecordEntity, RecordItem } from "../types/record/record.type";
-import { DEFAULT_RECORD } from "../constants/record";
+import {
+  RecordForm,
+  RecordEntity,
+  RecordItem,
+} from "../types/record/record.type";
+import { DEFAULT_RECORD, RECORD_BACK_KEYS } from "../constants/record";
 import { showToast } from "../utils/toast";
 import { QUERY_KEYS } from "../constants/query";
+import TOAST_KEYS from "../constants/toast";
 
 export function useRecord() {
   const now = new Date();
@@ -18,7 +23,9 @@ export function useRecord() {
   const queryClient = useQueryClient();
 
   const [newRecord, setNewRecord] = useState<RecordItem>(DEFAULT_RECORD);
-  const inputRefs = useRef<Array<HTMLSelectElement | HTMLInputElement | HTMLButtonElement | null>>([]);
+  const inputRefs = useRef<
+    Array<HTMLSelectElement | HTMLInputElement | HTMLButtonElement | null>
+  >([]);
 
   const handleChangeSelectedYear = (e: ChangeEvent<HTMLSelectElement>) =>
     setSelectedYear(Number(e.target.value));
@@ -42,9 +49,9 @@ export function useRecord() {
     nextElement.focus();
 
     if (
-      nextElement instanceof HTMLInputElement
-      && nextElement.type === "date"
-      && typeof nextElement.showPicker === "function"
+      nextElement instanceof HTMLInputElement &&
+      nextElement.type === "date" &&
+      typeof nextElement.showPicker === "function"
     ) {
       nextElement.showPicker();
     }
@@ -84,10 +91,7 @@ export function useRecord() {
   };
 
   // 기록 목록 조회
-  const { data } = useRecordsQuery(
-    selectedYear,
-    selectedMonth,
-  );
+  const { data } = useRecordsQuery(selectedYear, selectedMonth);
 
   const addMutation = useCreateRecordMutation();
 
@@ -104,11 +108,15 @@ export function useRecord() {
     if (a.date < b.date) return -1;
     if (a.date > b.date) return 1;
     if (a.recordType === b.recordType) return 0;
-    if (a.recordType === "EXPENSE") return -1;
+    if (a.recordType === RECORD_BACK_KEYS.EXPENSE) return -1;
     return 1;
   });
 
-  const handleShowError = (error: Error) => showToast("error", error.message);
+  const handleShowError = (msg: Error | string) =>
+    showToast(TOAST_KEYS.ERROR, msg);
+
+  const handleShowSuccess = (msg: string) =>
+    showToast(TOAST_KEYS.SUCCESS, msg);
 
   const handleMutateSuccess = () => {
     queryClient.invalidateQueries({
@@ -117,7 +125,18 @@ export function useRecord() {
   };
 
   const handleAddRecord = () => {
-    if (!newRecord.cost || !newRecord.date) return;
+    if (!newRecord.description) {
+      handleShowError("사유를 입력해주세요.");
+      return;
+    }
+    if (!newRecord.cost) {
+      handleShowError("금액을 입력해주세요.");
+      return;
+    }
+    if (!newRecord.date) {
+      handleShowError("날짜를 입력해주세요.");
+      return;
+    }
     addMutation.mutate(
       {
         data: {
@@ -138,6 +157,18 @@ export function useRecord() {
   };
 
   const handleEditRecordById = (id: number, newData: RecordForm) => {
+    if (!newData.description) {
+      handleShowError("사유를 입력해주세요.");
+      return;
+    }
+    if (!newData.cost) {
+      handleShowError("금액을 입력해주세요.");
+      return;
+    }
+    if (!newData.date) {
+      handleShowError("날짜를 입력해주세요.");
+      return;
+    }
     editMutation.mutate(
       {
         id,
@@ -149,7 +180,10 @@ export function useRecord() {
         },
       },
       {
-        onSuccess: handleMutateSuccess,
+        onSuccess: () => {
+          handleMutateSuccess()
+          handleShowSuccess("기록 수정에 성공했습니다.");
+        },
         onError: handleShowError,
       },
     );
@@ -157,7 +191,10 @@ export function useRecord() {
 
   const handleDeleteRecordById = (id: number) => {
     deleteMutation.mutate(id, {
-      onSuccess: handleMutateSuccess,
+      onSuccess: () => {
+          handleMutateSuccess()
+          handleShowSuccess("기록 삭제에 성공했습니다.");
+        },
       onError: handleShowError,
     });
   };

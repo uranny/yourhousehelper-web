@@ -4,11 +4,8 @@ import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "../../../constants/record";
 import { useRecordContext } from "../../../contexts/record";
 
 function RecordTable() {
-  const {
-    sortedRecords,
-    handleEditClick,
-    handleDeleteRecordById,
-  } = useRecordContext();
+  const { sortedRecords, handleEditClick, handleDeleteRecordById } =
+    useRecordContext();
 
   return (
     <>
@@ -27,22 +24,20 @@ function RecordTable() {
           </thead>
           <tbody style={{ position: "relative", overflow: "visible" }}>
             {sortedRecords.length === 0 ? (
-              <tr>
-                <S.Td
-                  colSpan={6}
-                  style={{ textAlign: "center", color: "#aaa" }}
-                >
-                  내역이 없습니다.
-                </S.Td>
-              </tr>
+              <S.NullText>
+                내역이 없습니다.
+              </S.NullText>
             ) : (
               sortedRecords.map((r, i) => (
                 <S.Tr key={r.id}>
-                  <S.Td>{parseInt(r.date.split('-')[2], 10) + '일'}</S.Td>
+                  <S.Td>{parseInt(r.date.split("-")[2], 10) + "일"}</S.Td>
                   <S.Td>{RECORD_FRONT_KEYS[r.recordType]}</S.Td>
                   <S.Td
                     style={{
-                      color: r.recordType === RECORD_BACK_KEYS.INCOME ? "#3ad29f" : "#5b5fc7",
+                      color:
+                        r.recordType === RECORD_BACK_KEYS.INCOME
+                          ? "#3ad29f"
+                          : "#5b5fc7",
                       fontWeight: 500,
                     }}
                   >
@@ -55,7 +50,9 @@ function RecordTable() {
                     </S.ActionButton>
                   </S.Td>
                   <S.Td>
-                    <S.ActionButton onClick={() => handleDeleteRecordById(r.id)}>
+                    <S.ActionButton
+                      onClick={() => handleDeleteRecordById(r.id)}
+                    >
                       삭제
                     </S.ActionButton>
                   </S.Td>

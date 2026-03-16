@@ -5,7 +5,7 @@ export const InputBox = styled.form`
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 0.6rem;
+  gap: 1rem;
   border-radius: 1rem;
   box-shadow: none;
 
@@ -22,13 +22,23 @@ export const Input = styled.input`
   border: 0.15rem solid #5b5fc7;
   border-radius: 0.6rem;
   color: #fff;
-  padding: 0.4rem 0.5rem;
+  padding: 0.6rem;
+  ${bodyText};
+`;
+
+export const Date = styled.input`
+  flex: 1;
+  background: #23263a;
+  border: 0.15rem solid #5b5fc7;
+  border-radius: 0.6rem;
+  color: #fff;
+  padding: 0.4rem;
   ${bodyText};
 `;
 
 export const Select = styled.select`
   flex: 1;
-  padding: 0.4rem 0.5rem;
+  padding: 0.6rem;
   border: 0.15rem solid #5b5fc7;
   border-radius: 0.6rem;
   ${bodyText};
@@ -41,7 +51,7 @@ export const Button = styled.button`
   color: #fff;
   border: none;
   border-radius: 0.6rem;
-  padding: 0.4rem 0.97rem;
+  padding: 0.6rem 1.6rem;
   ${bodyText};
   cursor: pointer;
   transition: background 0.2s;

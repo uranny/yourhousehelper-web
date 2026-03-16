@@ -47,7 +47,7 @@ function RecordInput() {
         onKeyDown={(event) => handleRecordInputKeyDown(event, 3)}
         onChange={handleNewRecordInputChange}
       />
-      <S.Input
+      <S.Date
         ref={(element) => registerRecordInputRef(3, element)}
         name="date"
         type="date"
