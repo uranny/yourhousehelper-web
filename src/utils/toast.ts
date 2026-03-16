@@ -1,5 +1,10 @@
 import { toast } from "react-toastify";
+import type { ToastType } from "../types/util/toast.type";
 
-type ToastType = "info" | "success" | "warning" | "error"
-
-export const showToast = (type : ToastType, message : string) => toast[type](message) 
+export const showToast = (type : ToastType, message : Error | string) => {
+    if(typeof message === 'string'){
+        toast[type](message);
+        return
+    }
+    toast[type](message.message)
+}

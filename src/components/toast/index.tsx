@@ -14,6 +14,9 @@ export default function GlobalToastContainer(){
       pauseOnHover
       theme="colored"
       transition={Bounce}
+      toastStyle={{
+        fontSize: "1.6rem",
+      }}
     />
   );
 };
