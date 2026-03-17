@@ -4,6 +4,15 @@ import { ReissueResponse } from "../types/user/reissue.type";
 import COOKIES_KEYS from "../constants/cookies";
 import useAuthStore from "../store/useAuthStore";
 
+declare global {
+  interface ImportMeta {
+    env: {
+      VITE_API_URL: string;
+      [key: string]: any;
+    };
+  }
+}
+
 const url = import.meta.env.VITE_API_URL;
 
 const CustomAxios = axios.create({
