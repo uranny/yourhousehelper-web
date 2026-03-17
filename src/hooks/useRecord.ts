@@ -147,10 +147,7 @@ export function useRecord() {
         },
       },
       {
-        onSuccess: () => {
-          handleMutateSuccess();
-          setNewRecord(DEFAULT_RECORD);
-        },
+        onSuccess: handleMutateSuccess,
         onError: handleShowError,
       },
     );
