@@ -17,7 +17,7 @@ const url = import.meta.env.VITE_API_URL;
 
 const CustomAxios = axios.create({
   baseURL: url, // 실제 서버 baseURL로 변경 필요
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     "Content-Type": "application/json",
   },
