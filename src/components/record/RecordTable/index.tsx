@@ -24,9 +24,9 @@ function RecordTable() {
           </thead>
           <tbody style={{ position: "relative", overflow: "visible" }}>
             {sortedRecords.length === 0 ? (
-              <S.NullText>
-                내역이 없습니다.
-              </S.NullText>
+              <S.NullRow>
+                <S.NullCell colSpan={6}>내역이 없습니다.</S.NullCell>
+              </S.NullRow>
             ) : (
               sortedRecords.map((r, i) => (
                 <S.Tr key={r.id}>

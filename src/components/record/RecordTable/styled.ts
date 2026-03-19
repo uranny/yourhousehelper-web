@@ -54,9 +54,14 @@ export const ActionButton = styled.button`
   ${bodyText};
 `;
 
-export const NullText = styled.div`
+export const NullRow = styled.tr`
+  display: flex;
+`;
+
+export const NullCell = styled.td`
+  width: 100%;
   text-align: center;
-  color : #aaa;
-  margin : 1rem 0 1rem 0;
-  ${bodyText}
+  color: #aaa;
+  padding: 1rem 0;
+  ${bodyText};
 `;
