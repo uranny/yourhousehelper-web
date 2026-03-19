@@ -19,6 +19,17 @@ export function useCreateReportMutation() {
   });
 }
 
+export function useReportQuery(id: number) {
+  return useQuery<ReportItem>({
+    queryKey: [QUERY_KEYS.REPORT_GET_ID, id],
+    queryFn: async () => {
+      const res = await reportApi.get({ id });
+      return res.data;
+    },
+    enabled: Number.isFinite(id) && id > 0,
+  });
+}
+
 export function useReportsQuery() {
   return useQuery<ReportItem[]>({
     queryKey: [QUERY_KEYS.REPORT_GET],

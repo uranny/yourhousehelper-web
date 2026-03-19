@@ -1,5 +1,10 @@
 import CustomAxios from "../lib/CustomAxios";
-import { CreateReportRequest, CreateReportResponse, GetReportResponse } from "../types/report/report.type";
+import {
+  CreateReportRequest,
+  CreateReportResponse,
+  GetReportResponse,
+  GetReportRequest,
+} from "../types/report/report.type";
 import { BaseResponse } from "../types/util/response.type";
 
 const reportApi = {
@@ -16,9 +21,14 @@ const reportApi = {
       })
     ).data;
   },
-  list : async () :Promise<BaseResponse<GetReportResponse[]>>=> {
+  get: async ({
+    id,
+  }: GetReportRequest): Promise<BaseResponse<GetReportResponse>> => {
+    return (await CustomAxios.get(`/report/${id}`)).data;
+  },
+  list: async (): Promise<BaseResponse<GetReportResponse[]>> => {
     return (await CustomAxios.get("/report")).data;
-  }
+  },
 };
 
-export default reportApi
+export default reportApi;

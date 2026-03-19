@@ -9,4 +9,5 @@ export const QUERY_KEYS = {
   RECORD_DELETE: "record/delete",
   REPORT_CREATE: "report/create",
   REPORT_GET: "report/get",
+  REPORT_GET_ID: "report/get/id"
 };

@@ -13,11 +13,16 @@ interface CreateReportRequest{
 
 interface CreateReportResponse extends ReportItem {}
 
+interface GetReportRequest{
+  id : number
+}
+
 interface GetReportResponse extends ReportItem {}
 
 export {
-    ReportItem,
-    CreateReportRequest,
-    CreateReportResponse,
-    GetReportResponse
-}
+  ReportItem,
+  CreateReportRequest,
+  CreateReportResponse,
+  GetReportResponse,
+  GetReportRequest,
+};
