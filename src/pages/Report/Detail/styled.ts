@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../constants/color";
+import { bodyText, subtitleText } from "../../../constants/typography";
 
 export const Container = styled.section`
   display: flex;
@@ -17,6 +18,7 @@ export const BackButton = styled.button`
   border: 1px solid ${colors.BORDER};
   background: ${colors.SURFACE};
   color: ${colors.TEXT_SUB};
+  ${bodyText};
   border-radius: 0.8rem;
   padding: 0.7rem 1.2rem;
   cursor: pointer;
@@ -35,18 +37,18 @@ export const Card = styled.article`
 export const Title = styled.h1`
   margin: 0;
   color: ${colors.TEXT};
-  font-size: 2rem;
+  ${subtitleText};
 `;
 
 export const Date = styled.p`
   margin: 0;
   color: ${colors.TEXT_SUB};
-  font-size: 1.3rem;
+  ${bodyText};
 `;
 
 export const Content = styled.div`
   color: ${colors.TEXT_SUB};
-  font-size: 1.35rem;
+  ${bodyText};
   line-height: 1.7;
   word-break: break-word;
 
@@ -64,5 +66,5 @@ export const Content = styled.div`
 export const EmptyText = styled.p`
   margin: 0;
   color: ${colors.TEXT_SUB};
-  font-size: 1.4rem;
+  ${bodyText};
 `;

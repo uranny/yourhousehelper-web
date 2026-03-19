@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../constants/color";
+import { bodyText, subtitleText } from "../../../constants/typography";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -34,8 +35,7 @@ export const ModalHeader = styled.div`
 export const ModalTitle = styled.h2`
   margin: 0;
   color: ${colors.TEXT};
-  font-size: 1.8rem;
-  font-weight: 700;
+  ${subtitleText};
 `;
 
 export const CloseButton = styled.button`
@@ -71,7 +71,7 @@ export const SelectGroup = styled.div`
 
 export const Label = styled.label`
   color: ${colors.TEXT_SUB};
-  font-size: 1.4rem;
+  ${bodyText};
   font-weight: 500;
 `;
 
@@ -81,7 +81,7 @@ export const Select = styled.select`
   border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
   color: ${colors.TEXT_SUB};
-  font-size: 1.35rem;
+  ${bodyText};
   cursor: pointer;
 
   &:focus {
@@ -102,7 +102,7 @@ export const DateInfo = styled.p`
   background: ${colors.BACKGROUND};
   border-radius: 0.6rem;
   color: ${colors.TEXT_SUB};
-  font-size: 1.35rem;
+  ${bodyText};
   text-align: center;
 `;
 
@@ -120,7 +120,7 @@ export const CancelButton = styled.button`
   border: 0.1rem ${colors.BORDER};
   border-radius: 0.6rem;
   color: ${colors.TEXT_SUB};
-  font-size: 1.35rem;
+  ${bodyText};
   cursor: pointer;
   transition: all 0.2s;
 
@@ -135,7 +135,7 @@ export const SubmitButton = styled.button`
   border: none;
   border-radius: 0.6rem;
   color: ${colors.TEXT};
-  font-size: 1.35rem;
+  ${bodyText};
   cursor: pointer;
   transition: all 0.2s;
 

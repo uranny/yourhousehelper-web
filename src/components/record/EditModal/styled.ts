@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { bodyText, subtitleText } from "../../../constants/typography";import { colors } from "../../../constants/color";
+import { bodyText, subtitleText } from "../../../constants/typography";
+import { colors } from "../../../constants/color";
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -49,7 +50,7 @@ export const Select = styled.select`
   background: #181a28;
   border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
-  color: #fff;
+  color: ${colors.TEXT};
   padding: 0.5rem 0.8rem;
   ${bodyText};
 `;

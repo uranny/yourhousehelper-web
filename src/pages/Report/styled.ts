@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { colors } from "../../constants/color";
+import { bodyText, subtitleText } from "../../constants/typography";
 
 export const Container = styled.section`
 	display: flex;
@@ -18,7 +19,7 @@ export const Header = styled.div`
 
 export const Title = styled.h1`
 	color: ${colors.TEXT_SUB};
-	font-size: 2rem;
+	${subtitleText};
 	font-weight: 700;
 	margin: 0;
 	flex: 1;
@@ -30,7 +31,7 @@ export const CreateButton = styled.button`
 	color: ${colors.TEXT};
 	padding: 0.8rem 1.6rem;
 	border-radius: 0.8rem;
-	font-size: 1.35rem;
+	${bodyText};
 	font-weight: 600;
 	cursor: pointer;
 	white-space: nowrap;
@@ -75,20 +76,20 @@ export const ReportCard = styled(Link)`
 
 export const CardTitle = styled.h2`
 	color: ${colors.TEXT};
-	font-size: 1.6rem;
+	${bodyText};
 	font-weight: 700;
 	margin: 0;
 `;
 
 export const CardDate = styled.p`
 	color: ${colors.TEXT_SUB};
-	font-size: 1.3rem;
+	${bodyText};
 	margin: 0;
 `;
 
 export const CardContent = styled.div`
 	color: ${colors.TEXT_SUB};
-	font-size: 1.35rem;
+	${bodyText};
 	line-height: 1.6;
 	word-break: break-word;
 
