@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { bodyText } from "../../constants/typography";
+import { colors } from "../../constants/color";
 
 export const DashboardPageWrapper = styled.div`
   margin: 0 auto;
@@ -16,13 +17,13 @@ export const DashboardYearSelectBar = styled.div`
 `;
 
 export const Label = styled.label`
-  color: #fff;
+  color: ${colors.TEXT};
   ${bodyText};
 `;
 
 export const Select = styled.select`
-  background: #23263a;
-  color: #fff;
+  background: ${colors.SURFACE};
+  color: ${colors.TEXT};
   border: none;
   border-radius: 0.6rem;
   padding: 0.5rem 1rem;
@@ -31,13 +32,13 @@ export const Select = styled.select`
   transition: background 0.2s;
 
   &:hover {
-    background: #2d3148;
+    background: ${colors.SURFACE};
   }
 `;
 
 export const Button = styled.button`
-  background: #5b5fc7;
-  color: #fff;
+  background: ${colors.PRIMARY};
+  color: ${colors.TEXT};
   border: none;
   border-radius: 0.6rem;
   padding: 0.7rem 1.5rem;
@@ -47,7 +48,7 @@ export const Button = styled.button`
 `;
 
 export const TableWrapper = styled.div`
-  background: #23263a;
+  background: ${colors.SURFACE};
   border-radius: 1.2rem;
   padding: 1.5rem;
   overflow-x: auto;
@@ -55,7 +56,7 @@ export const TableWrapper = styled.div`
 
 export const Table = styled.table`
   width: 100%;
-  color: #fff;
+  color: ${colors.TEXT};
   border-collapse: collapse;
   ${bodyText};
   overflow-x: auto;
@@ -70,7 +71,7 @@ type TrProps = {
 };
 
 export const Tr = styled.tr<TrProps>`
-  border-bottom: 0.1rem solid ${props => props.$isHeader ? '#444' : '#333'};
+  border-bottom: 0.1rem solid ${colors.BORDER};
 `;
 
 type ThProps = {
@@ -80,7 +81,7 @@ type ThProps = {
 export const Th = styled.th<ThProps>`
   flex: 1;
   padding: 0.5rem;
-  color: ${props => props.$color || '#fff'};
+  color: ${props => props.$color || colors.TEXT};
   ${bodyText};
 `;
 
@@ -93,6 +94,6 @@ export const Td = styled.td<TdProps>`
   flex: 1;
   padding: 0.5rem;
   text-align: center;
-  color: ${props => props.$color || '#fff'};
+  color: ${props => props.$color || colors.TEXT};
   ${bodyText};
 `;

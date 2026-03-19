@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../../constants/color";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -14,13 +15,12 @@ export const Overlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: #23293d;
-  border: 1px solid #31384f;
+  background: ${colors.SURFACE};
+  border: 1px solid ${colors.BORDER};
   border-radius: 1.2rem;
   padding: 0;
-  min-width: 400px;
-  max-width: 500px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 40rem;
+  max-width: 50rem;
 `;
 
 export const ModalHeader = styled.div`
@@ -28,12 +28,12 @@ export const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 1.6rem;
-  border-bottom: 1px solid #31384f;
+  border-bottom: 0.1rem solid ${colors.BORDER};
 `;
 
 export const ModalTitle = styled.h2`
   margin: 0;
-  color: #ffffff;
+  color: ${colors.TEXT};
   font-size: 1.8rem;
   font-weight: 700;
 `;
@@ -41,7 +41,7 @@ export const ModalTitle = styled.h2`
 export const CloseButton = styled.button`
   background: none;
   border: none;
-  color: #b8c1e0;
+  color: ${colors.TEXT_SUB};
   font-size: 2.4rem;
   cursor: pointer;
   padding: 0;
@@ -52,7 +52,7 @@ export const CloseButton = styled.button`
   justify-content: center;
 
   &:hover {
-    color: #ffffff;
+    color: ${colors.TEXT};
   }
 `;
 
@@ -70,38 +70,38 @@ export const SelectGroup = styled.div`
 `;
 
 export const Label = styled.label`
-  color: #e7ebfb;
+  color: ${colors.TEXT_SUB};
   font-size: 1.4rem;
   font-weight: 500;
 `;
 
 export const Select = styled.select`
   padding: 0.8rem 1rem;
-  background: #1a1f31;
-  border: 1px solid #3a4361;
+  background: ${colors.BACKGROUND};
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
-  color: #e7ebfb;
+  color: ${colors.TEXT_SUB};
   font-size: 1.35rem;
   cursor: pointer;
 
   &:focus {
     outline: none;
-    border-color: #5b5fc7;
-    background: #20253c;
+    border-color: ${colors.PRIMARY};
+    background: ${colors.BACKGROUND};
   }
 
   option {
-    background: #23293d;
-    color: #e7ebfb;
+    background: ${colors.SURFACE};
+    color: ${colors.TEXT_SUB};
   }
 `;
 
 export const DateInfo = styled.p`
   margin: 0;
   padding: 1rem;
-  background: #1a1f31;
+  background: ${colors.BACKGROUND};
   border-radius: 0.6rem;
-  color: #b8c1e0;
+  color: ${colors.TEXT_SUB};
   font-size: 1.35rem;
   text-align: center;
 `;
@@ -111,37 +111,36 @@ export const ModalFooter = styled.div`
   justify-content: flex-end;
   gap: 1rem;
   padding: 1.6rem;
-  border-top: 1px solid #31384f;
+  border-top: 0.1rem solid ${colors.BORDER};
 `;
 
 export const CancelButton = styled.button`
   padding: 0.7rem 1.6rem;
-  background: #1a1f31;
-  border: 1px solid #3a4361;
+  background: ${colors.PRIMARY};
+  border: 0.1rem ${colors.BORDER};
   border-radius: 0.6rem;
-  color: #e7ebfb;
+  color: ${colors.TEXT_SUB};
   font-size: 1.35rem;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: #20253c;
-    border-color: #4a5270;
+    background: ${colors.SECONDARY};
   }
 `;
 
 export const SubmitButton = styled.button`
   padding: 0.7rem 1.6rem;
-  background: #5b5fc7;
+  background: ${colors.PRIMARY};
   border: none;
   border-radius: 0.6rem;
-  color: #ffffff;
+  color: ${colors.TEXT};
   font-size: 1.35rem;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover:not(:disabled) {
-    background: #4a4fa8;
+    background: ${colors.SURFACE};
   }
 
   &:disabled {

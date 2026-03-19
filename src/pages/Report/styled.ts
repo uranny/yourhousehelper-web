@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { colors } from "../../constants/color";
 
 export const Container = styled.section`
 	display: flex;
@@ -16,7 +17,7 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-	color: #f1f3f9;
+	color: ${colors.TEXT_SUB};
 	font-size: 2rem;
 	font-weight: 700;
 	margin: 0;
@@ -24,9 +25,9 @@ export const Title = styled.h1`
 `;
 
 export const CreateButton = styled.button`
-	background: #5b5fc7;
+	background: ${colors.PRIMARY};
 	border: none;
-	color: #ffffff;
+	color: ${colors.TEXT};
 	padding: 0.8rem 1.6rem;
 	border-radius: 0.8rem;
 	font-size: 1.35rem;
@@ -36,7 +37,7 @@ export const CreateButton = styled.button`
 	transition: all 0.2s;
 
 	&:hover {
-		background: #4a4fa8;
+		background: ${colors.SECONDARY};
 	}
 
 	&:active {
@@ -45,10 +46,18 @@ export const CreateButton = styled.button`
 `;
 
 export const ReportList = styled.div`
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 1.6rem;
 	width: 100%;
+
+	@media (max-width: 1024px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (max-width: 512px) {
+		grid-template-columns: 1fr;
+	}
 `;
 
 export const ReportCard = styled(Link)`
@@ -57,37 +66,28 @@ export const ReportCard = styled(Link)`
 	gap: 1rem;
 	padding: 1.6rem;
 	border-radius: 1.2rem;
-	background: #23293d;
-	border: 1px solid #31384f;
-	color: #e7ebfb;
+	background: ${colors.SURFACE};
+	border: 1px solid ${colors.BORDER};
+	color: ${colors.TEXT_SUB};
 	text-decoration: none;
 	min-width: 0;
-	flex: 0 0 calc((100% - 1.6rem * 3) / 4);
-
-	@media (max-width: 1024px) {
-		flex: 0 0 calc((100% - 1.6rem * 2) / 3);
-	}
-
-	@media (max-width: 512px) {
-		flex: 0 0 100%;
-	}
 `;
 
 export const CardTitle = styled.h2`
-	color: #ffffff;
+	color: ${colors.TEXT};
 	font-size: 1.6rem;
 	font-weight: 700;
 	margin: 0;
 `;
 
 export const CardDate = styled.p`
-	color: #b8c1e0;
+	color: ${colors.TEXT_SUB};
 	font-size: 1.3rem;
 	margin: 0;
 `;
 
 export const CardContent = styled.div`
-	color: #dbe1f7;
+	color: ${colors.TEXT_SUB};
 	font-size: 1.35rem;
 	line-height: 1.6;
 	word-break: break-word;

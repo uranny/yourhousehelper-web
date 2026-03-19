@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodyText } from "../../../constants/typography";
+import { colors } from "../../../constants/color";
 
 export const InputBox = styled.form`
   display: flex;
@@ -18,8 +19,8 @@ export const InputBox = styled.form`
 
 export const Input = styled.input`
   flex: 1;
-  background: #23263a;
-  border: 0.15rem solid #5b5fc7;
+  background: ${colors.SURFACE};
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
   color: #fff;
   padding: 0.6rem;
@@ -28,10 +29,10 @@ export const Input = styled.input`
 
 export const Date = styled.input`
   flex: 1;
-  background: #23263a;
-  border: 0.15rem solid #5b5fc7;
+  background: ${colors.SURFACE};
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
-  color: #fff;
+  color: ${colors.TEXT};
   padding: 0.4rem;
   ${bodyText};
 `;
@@ -39,16 +40,16 @@ export const Date = styled.input`
 export const Select = styled.select`
   flex: 1;
   padding: 0.6rem;
-  border: 0.15rem solid #5b5fc7;
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
   ${bodyText};
-  color: #fff;
-  background: #23263a;
+  color: ${colors.TEXT};
+  background: ${colors.SURFACE};
 `;
 
 export const Button = styled.button`
-  background: #5b5fc7;
-  color: #fff;
+  background: ${colors.PRIMARY};
+  color: ${colors.TEXT};
   border: none;
   border-radius: 0.6rem;
   padding: 0.6rem 1.6rem;
@@ -56,7 +57,7 @@ export const Button = styled.button`
   cursor: pointer;
   transition: background 0.2s;
   &:hover {
-    background: #3ad29f;
-    color: #fff;
+    background: ${colors.SECONDARY};
+    color: ${colors.TEXT};
   }
 `;

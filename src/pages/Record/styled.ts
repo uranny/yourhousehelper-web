@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodyText } from "../../constants/typography";
+import { colors } from "../../constants/color";
 
 export const RecordPageWrapper = styled.div`
   margin: 0 auto;
@@ -23,21 +24,17 @@ export const SelectGroup = styled.div`
 `;
 
 export const Label = styled.label`
-  color: #fff;
+  color: ${colors.TEXT};
   ${bodyText};
 `;
 
 export const Select = styled.select`
-  background: #23263a;
-  color: #fff;
+  background: ${colors.SURFACE};
+  color: ${colors.TEXT};
   border: none;
   border-radius: 0.6rem;
   padding: 0.5rem 1rem;
   ${bodyText};
   cursor: pointer;
   transition: background 0.2s;
-
-  &:hover {
-    background: #2d3148;
-  }
 `;

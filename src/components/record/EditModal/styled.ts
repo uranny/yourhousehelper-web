@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { bodyText, subtitleText } from "../../../constants/typography";
-
+import { bodyText, subtitleText } from "../../../constants/typography";import { colors } from "../../../constants/color";
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -14,13 +13,13 @@ export const Overlay = styled.div`
   justify-content: center;
 `;
 export const ModalBox = styled.div`
-  background: #23263a;
+  background: ${colors.BACKGROUND};
   border-radius: 1.2rem;
   padding: 2.2rem 2rem 1.5rem 2rem;
   min-width: 32rem;
   max-width: 95vw;
-  box-shadow: 0 0.4rem 3.2rem 0 #0008;
-  color: #fff;
+  box-shadow: 0 0.4rem 3.2rem 0 ${colors.BACKGROUND};
+  color: ${colors.TEXT};
 `;
 export const Title = styled.h2`
   margin-top: 0;
@@ -39,16 +38,16 @@ export const Label = styled.label`
 `;
 export const Input = styled.input`
   background: #181a28;
-  border: 0.1rem solid #5b5fc7;
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
-  color: #fff;
+  color: ${colors.TEXT};
   padding: 0.5rem 0.8rem;
   ${bodyText};
   outline: none;
 `;
 export const Select = styled.select`
   background: #181a28;
-  border: 0.1rem solid #5b5fc7;
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 0.6rem;
   color: #fff;
   padding: 0.5rem 0.8rem;
@@ -60,8 +59,8 @@ export const ButtonRow = styled.div`
   gap: 1rem;
 `;
 export const Button = styled.button`
-  background: #5b5fc7;
-  color: #fff;
+  background: ${colors.PRIMARY};
+  color: ${colors.TEXT};
   border: none;
   border-radius: 0.6rem;
   padding: 0.5rem 1.2rem;
@@ -69,7 +68,7 @@ export const Button = styled.button`
   cursor: pointer;
   transition: background 0.2s;
   &:hover {
-    background: #3ad29f;
-    color: #23263a;
+    background: ${colors.SECONDARY};
+    color: ${colors.SURFACE};
   }
 `;

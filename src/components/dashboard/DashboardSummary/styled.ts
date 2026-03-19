@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodyText, subtitleText } from "../../../constants/typography";
+import { colors } from "../../../constants/color";
 
 export const SummaryBox = styled.div`
   display: flex;
@@ -12,13 +13,13 @@ export const SummaryBox = styled.div`
 `;
 
 export const SummaryTitle = styled.div`
-  color: #fff;
+  color: ${colors.TEXT};
   ${subtitleText};
   margin-bottom: 0.5rem;
 `;
 
 export const SummaryValue = styled.div`
-  color: ${(props) => props.color || "#fff"};
+  color: ${(props) => props.color || colors.TEXT};
   ${bodyText};
   max-width: 18rem;
   overflow: hidden;

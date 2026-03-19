@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { bodyText } from "../../constants/typography";
+import { colors } from "../../constants/color";
 
 export const HeaderBar = styled.header`
   position: fixed;
   width : 100%;
   margin: 0, auto;
-  background: rgb(29, 32, 50);
-  color: #e3e6f3;
+  background: ${colors.SURFACE};
+  color: ${colors.TEXT_SUB};
   padding: 0.5rem 0 0.5rem 0;
   align-items: center;
   justify-content: space-between;
@@ -26,7 +27,7 @@ export const HeaderWrapper = styled.div`
 
 export const HeaderLogo = styled(Link)`
   ${bodyText};
-  color: #fff;
+  color: ${colors.TEXT};
   text-align: left;
   border: none;
   outline: none;
@@ -44,7 +45,7 @@ export const HeaderMenu = styled.div`
     gap: 3rem
   }
   @media (max-width : 512px) {
-    gap: 1rem
+    gap: 2rem
   }
 `;
 export const HeaderItem = styled.li``;
@@ -54,7 +55,7 @@ export const HeaderLink = styled(Link)`
   justify-content: center;
   text-align: center;
   background: none;
-  color: #e3e6f3;
+  color: ${colors.TEXT_SUB};
   border: none;
   outline: none;
   text-decoration-line: none;
@@ -65,8 +66,8 @@ export const HeaderLink = styled(Link)`
     color 0.15s;
   border-bottom: 0.2rem solid transparent;
   &:hover {
-    background: #23263a;
-    color: #5b5fc7;
-    border-bottom: 0.2rem solid #5b5fc7;
+    background: ${colors.SURFACE};
+    color: ${colors.PRIMARY};
+    border-bottom: 0.2rem solid ${colors.PRIMARY};
   }
 `;

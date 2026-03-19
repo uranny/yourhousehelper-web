@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodyText, subtitleText, titleText } from "../../constants/typography";
+import { colors } from "../../constants/color";
 
 export const Layout = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const Layout = styled.div`
 `;
 
 export const HeroSection = styled.div`
-  background: linear-gradient(140deg, #23263a 0%, #1b1f31 70%);
+  background: ${colors.SURFACE};
   border: 0.1rem solid #333a57;
   border-radius: 1.6rem;
   padding: 4rem 1.5rem 3rem 1.5rem;
@@ -21,13 +22,13 @@ export const HeroSection = styled.div`
 export const HeroTitle = styled.h1`
   margin: auto;
   ${titleText};
-  color: #ffffff;
+  color: ${colors.TEXT};
 `;
 
 export const HeroSubtitle = styled.p`
   margin: auto;
   ${subtitleText};
-  color: #bfc6d1;
+  color: ${colors.TEXT_SUB};
 `;
 
 export const StartButton = styled.button`
@@ -37,27 +38,27 @@ export const StartButton = styled.button`
   border: none;
   border-radius: 1rem;
   padding: 0.7rem 1.2rem;
-  background: #5b5fc7;
-  color: #ffffff;
+  background: ${colors.PRIMARY};
+  color: ${colors.TEXT};
   ${bodyText};
   cursor: pointer;
   transition: 0.2s ease;
 
   &:hover {
-    background: #3ad29f;
-    color: #1b1f31;
+    background: ${colors.SECONDARY};
+    color: ${colors.SURFACE};
   }
 `;
 
 export const Description = styled.p`
   margin: 0;
-  background: #23263a;
+  background: ${colors.SURFACE};
   border-radius: 1.2rem;
-  border: 0.1rem solid #333a57;
+  border: 0.1rem solid ${colors.BORDER};
   text-align: center;
   padding: 1rem 1.1rem;
   line-height: 1.7;
-  color: #d3d9e8;
+  color: ${colors.TEXT_SUB};
   ${bodyText};
 `;
 
@@ -70,7 +71,7 @@ export const FeatureSection = styled.section`
 
 export const SectionTitle = styled.div`
   margin: 0;
-  color: #ffffff;
+  color: ${colors.TEXT};
   text-align : center;
   ${titleText};
 `;
@@ -86,8 +87,8 @@ export const FeatureGrid = styled.div`
 `;
 
 export const FeatureCard = styled.div`
-  background: #23263a;
-  border: 0.1rem solid #333a57;
+  background: ${colors.SURFACE};
+  border: 0.1rem solid ${colors.BORDER};
   border-radius: 1.2rem;
   padding: 2rem;
   display: flex;
@@ -96,19 +97,19 @@ export const FeatureCard = styled.div`
 `;
 
 export const FeatureOrder = styled.div`
-  color: #5b5fc7;
+  color: ${colors.PRIMARY};
   ${bodyText};
 `;
 
 export const FeatureTitle = styled.h3`
   margin: 0;
-  color: #ffffff;
+  color: ${colors.TEXT};
   ${subtitleText};
 `;
 
 export const FeatureContent = styled.p`
   margin: 0.3rem 0 0;
-  color: #bfc6d1;
+  color: ${colors.TEXT_SUB};
   white-space: pre-line;
   line-height: 1.6;
   ${bodyText};

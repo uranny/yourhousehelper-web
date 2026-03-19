@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { bodyText } from "../../../constants/typography";
+import { colors } from "../../../constants/color";
 
 export const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
-  background: #23263a;
+  background: ${colors.SURFACE};
   border-radius: 1rem;
   box-shadow: none;
 `;
@@ -19,20 +20,20 @@ export const Table = styled.table`
 
 export const Th = styled.th`
   flex: 1;
-  background: #23263a;
-  color: #fff;
+  background: ${colors.SURFACE};
+  color: ${colors.TEXT};
   padding: 0.7rem 0.5rem;
-  border-bottom: 0.15rem solid #5b5fc7;
+  border-bottom: 0.1rem solid ${colors.BORDER};
   ${bodyText};
 `;
 
 export const Td = styled.td`
   flex: 1;
-  color: #fff;
+  background: ${colors.SURFACE};
   padding: 0.7rem 0.5rem;
   text-align: center;
   ${bodyText};
-  border-bottom: 0.1rem solid #23263a;
+  border-bottom: 0.1rem solid ${colors.BORDER};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -42,13 +43,13 @@ export const Tr = styled.tr`
   display: flex;
   flex: 1;
   &:nth-child(even) {
-    background: #23263a;
+    background: ${colors.SURFACE};
   }
 `;
 
 export const ActionButton = styled.button`
   background: none;
-  color: #fff;
+  color: ${colors.TEXT};
   border: none;
   cursor: pointer;
   ${bodyText};
@@ -61,7 +62,7 @@ export const NullRow = styled.tr`
 export const NullCell = styled.td`
   width: 100%;
   text-align: center;
-  color: #aaa;
+  color: ${colors.TEXT_SUB};
   padding: 1rem 0;
   ${bodyText};
 `;

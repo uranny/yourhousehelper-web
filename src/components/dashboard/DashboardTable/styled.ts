@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { bodyText } from "../../../constants/typography";
+import { colors } from "../../../constants/color";
 
 export const TableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
-  background: #23263a;
+  background: ${colors.SURFACE};
   border-radius: 1rem;
   margin-bottom: 1.2rem;
   box-shadow: none;
@@ -17,19 +18,19 @@ export const Table = styled.table`
 `;
 
 export const Th = styled.th`
-  background: #23263a;
-  color: #fff;
+  background: ${colors.SURFACE};
+  color: ${colors.TEXT};
   padding: 0.7rem 0.5rem;
-  border-bottom: 0.15rem solid #5b5fc7;
+  border-bottom: 0.1rem solid ${colors.BORDER};
   ${bodyText};
 `;
 
 export const Td = styled.td`
-  color: #fff;
+  color: ${colors.TEXT};
   padding: 0.7rem 0.5rem;
   text-align: center;
   ${bodyText};
-  border-bottom: 0.1rem solid #23263a;
+  border-bottom: 0.1rem solid ${colors.BORDER};
   max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -38,6 +39,6 @@ export const Td = styled.td`
 
 export const Tr = styled.tr`
   &:nth-child(even) {
-    background: #23263a;
+    background: ${colors.SURFACE};
   }
 `;

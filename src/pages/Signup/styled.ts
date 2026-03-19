@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodyText, titleText } from "../../constants/typography";
+import { colors } from "../../constants/color";
 
 export const Layout = styled.div`
   margin: 0 auto;
@@ -16,21 +17,21 @@ export const InputRow = styled.div`
   flex-direction: column;
 `;
 export const Label = styled.label`
-  color: #bfc6d1;
+  color: ${colors.TEXT_SUB};
   ${bodyText};
 `;
 export const Input = styled.input`
   flex: 1;
   padding: 0.7rem 1rem;
-  border: 0.15rem solid #5b5fc7;
+  border: 0.15rem solid ${colors.PRIMARY};
   border-radius: 0.6rem;
   ${bodyText};
-  background: #181c2a;
-  color: #e3e6f3;
+  background: ${colors.BACKGROUND};
+  color: ${colors.TEXT_SUB};
 `;
 export const Button = styled.button`
-  background: #5b5fc7;
-  color: #fff;
+  background: ${colors.PRIMARY};
+  color: ${colors.TEXT};
   width: 100%;
   border: none;
   border-radius: 0.6rem;
@@ -38,13 +39,13 @@ export const Button = styled.button`
   ${bodyText};
   cursor: pointer;
   &:disabled {
-    background: #444;
-    color: #bbb;
+    background: ${colors.SURFACE};
+    color: ${colors.TEXT_SUB};
   }
 `;
 export const TextBtn = styled.button`
   background: none;
-  color: #3ad29f;
+  color: ${colors.SECONDARY};
   border: none;
   ${bodyText};
   cursor: pointer;
@@ -53,6 +54,6 @@ export const TextBtn = styled.button`
   margin-bottom: 2rem;
 `;
 export const Title = styled.div`
-  color: #fff;
+  color: ${colors.TEXT};
   ${titleText};
 `;
