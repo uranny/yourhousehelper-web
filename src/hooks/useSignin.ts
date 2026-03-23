@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTE_KEYS from "../constants/route";
 import { useSigninMutation } from "../queries/signin/signin.query";
 import { showToast } from "../utils/toast";
+import TOAST_KEYS from "../constants/toast";
 
 export function useSignin() {
   const [id, setId] = useState("");
@@ -39,7 +40,7 @@ export function useSignin() {
   const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) =>
     setPw(e.target.value);
 
-  const handleMutationError = (e: Error) => showToast("error", e.message);
+  const handleMutationError = (e: Error) => showToast(TOAST_KEYS.ERROR, e);
 
   const handleNavigateSignup = () => navigate(ROUTE_KEYS.SIGNUP);
 
@@ -51,7 +52,7 @@ export function useSignin() {
         onSuccess: (res) => {
           const { accessToken, refreshToken } = res.data;
           login(accessToken, refreshToken);
-          showToast("success", "로그인에 성공하셨습니다.");
+          showToast(TOAST_KEYS.SUCCESS, "로그인에 성공하셨습니다.");
           navigate(ROUTE_KEYS.DASHBOARD, { replace: true });
         },
         onError: handleMutationError,

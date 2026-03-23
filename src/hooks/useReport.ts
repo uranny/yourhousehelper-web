@@ -6,6 +6,7 @@ import {
 } from "../queries/report/report.query";
 import { CreateReportRequest } from "../types/report/report.type";
 import { showToast } from "../utils/toast";
+import TOAST_KEYS from "../constants/toast";
 
 function useGetReportById(id: number) {
   return useReportQuery(id);
@@ -63,12 +64,12 @@ export function useReport() {
     };
 
     createReport(data, {
-      onSuccess: () => {
-        showToast("success", `${year}년 ${month}월 보고서가 생성되었습니다.`);
+      onSuccess: (data) => {
+        showToast(TOAST_KEYS.SUCCESS, data.message);
         closeCreateModal();
       },
-      onError: () => {
-        showToast("error", "보고서 생성에 실패했습니다.");
+      onError: (err: Error) => {
+        showToast(TOAST_KEYS.ERROR, err);
       },
     });
   }, [year, month, getDaysInMonth, createReport, closeCreateModal]);

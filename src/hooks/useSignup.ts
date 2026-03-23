@@ -3,6 +3,7 @@ import { useSignupMutation } from "../queries/signup/signup.query";
 import { showToast } from "../utils/toast";
 import ROUTE_KEYS from "../constants/route";
 import { useNavigate } from "react-router-dom";
+import TOAST_KEYS from "../constants/toast";
 
 export function useSignup() {
   const [id, setId] = useState("");
@@ -68,11 +69,7 @@ export function useSignup() {
   const handleNavigateSignin = () => navigate(ROUTE_KEYS.SIGNIN);
 
   const handleMutationError = (e: string | Error) => {
-    if (typeof e === "string") {
-      showToast("error", e);
-      return;
-    }
-    showToast("error", e.message);
+    showToast(TOAST_KEYS.ERROR, e);
   };
 
   const handleSignup = () => {
@@ -101,7 +98,7 @@ export function useSignup() {
       { username: id, password: pw, reason: reason, finalMoney: finalMoney },
       {
         onSuccess: () => {
-          showToast("success", "회원가입에 성공하셨습니다.");
+          showToast(TOAST_KEYS.SUCCESS, "회원가입에 성공하셨습니다.");
           setTimeout(() => {
             window.location.href = ROUTE_KEYS.DASHBOARD;
           }, 1200);
