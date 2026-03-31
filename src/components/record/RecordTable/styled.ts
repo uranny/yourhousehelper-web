@@ -32,6 +32,7 @@ export const Td = styled.td`
   background: ${colors.SURFACE};
   padding: 0.7rem 0.5rem;
   text-align: center;
+  color: ${colors.TEXT};
   ${bodyText};
   border-bottom: 0.1rem solid ${colors.BORDER};
   overflow: hidden;
