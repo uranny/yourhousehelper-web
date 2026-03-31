@@ -2,6 +2,8 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import ROUTE_KEYS from "../constants/route";
 import { ReportProvider } from "../contexts/report";
+import { colors } from "../constants/color";
+import Loading from "../components/loading";
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Record = lazy(() => import("../pages/Record"));
@@ -21,7 +23,7 @@ function ReportLayout() {
 
 function RouterSetup() {
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense fallback={<Loading/>}>
       <Routes>
         <Route path={ROUTE_KEYS.ROOT} element={<Start />} />
         <Route path={ROUTE_KEYS.DASHBOARD} element={<Dashboard />} />
