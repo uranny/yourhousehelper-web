@@ -5,4 +5,4 @@ interface BaseResponse<T> {
   statusCode: string;
 }
 
-export { BaseResponse };
+export type { BaseResponse };

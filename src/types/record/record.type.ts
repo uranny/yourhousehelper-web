@@ -34,7 +34,7 @@ interface DeleteRecordResponse {}
 type RecordForm = RecordItem;
 type RecordEntity = GetRecordItem;
 
-export {
+export type {
   RecordItem,
   GetRecordItem,
   RecordForm,

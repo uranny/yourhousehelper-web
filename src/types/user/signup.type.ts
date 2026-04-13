@@ -7,4 +7,4 @@ interface SignupRequest {
 
 interface SignupResponse {}
 
-export { SignupResponse, SignupRequest };
+export type { SignupResponse, SignupRequest };
