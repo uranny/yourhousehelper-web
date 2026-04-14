@@ -4,16 +4,7 @@ import { ReissueResponse } from "../types/user/reissue.type";
 import COOKIES_KEYS from "../constants/cookies";
 import useAuthStore from "../store/useAuthStore";
 
-declare global {
-  interface ImportMeta {
-    env: {
-      VITE_API_URL: string;
-      [key: string]: any;
-    };
-  }
-}
-
-const url = import.meta.env.VITE_API_URL;
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 const CustomAxios = axios.create({
   baseURL: url, // 실제 서버 baseURL로 변경 필요
