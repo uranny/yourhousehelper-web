@@ -16,3 +16,5 @@ export const DEFAULT_RECORD = {
   description: "",
   date: "",
 };
+
+export const RECORD_LIST_TAG = "record-list";

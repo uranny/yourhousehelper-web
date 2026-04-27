@@ -5,7 +5,6 @@ import { apiFetch } from "@/lib/ApiFetch";
 import type { SigninResponse } from "@/types/user/signin.type";
 import { SignupResponse } from "@/types/user/signup.type";
 import type { BaseResponse } from "@/types/util/response.type";
-import { rename } from "fs";
 import { cookies } from "next/headers";
 
 export type AuthActionState = {
