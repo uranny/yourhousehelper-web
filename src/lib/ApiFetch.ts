@@ -6,7 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!BASE_URL) {
   throw new Error(
-    "NEXT_PUBLIC_API_URL is not set. Please check your .env file."
+    "NEXT_PUBLIC_API_URL is not set. Please check your .env file.",
   );
 }
 
@@ -27,9 +27,9 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
 
     const refreshRes = await fetch(`${BASE_URL}/user/reissue`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
+      body: JSON.stringify({
+        refreshToken: refreshToken,
+      }),
     });
 
     if (!refreshRes.ok) {
