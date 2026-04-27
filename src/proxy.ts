@@ -6,7 +6,6 @@ import ROUTE_KEYS from "./constants/route";
 export function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const accessToken = req.cookies.get(COOKIES_KEYS.ACCESS_TOKEN)?.value;
-  console.log("proxy:",accessToken)
 
   const isAssetRequest =
     pathname.startsWith("/_next") ||
