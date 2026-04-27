@@ -14,7 +14,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main
-            className={`px-80 py-4 pt-22 flex flex-row items-center justify-between max-[1024px]:px-[1.6rem] max-[1024px]:pt-20 max-[512px]:pt-19`}
+            className={`px-80 py-4 pt-34 flex flex-row items-center justify-between max-[1024px]:px-[1.6rem] max-[1024px]:pt-32 max-[512px]:pt-30`}
           >
             {children}
           </main>
