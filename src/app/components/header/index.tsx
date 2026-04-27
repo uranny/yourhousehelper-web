@@ -4,27 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ROUTE_KEYS from "../../../constants/route";
 import { bodyText } from "../../../constants/typography";
-import useAuthStore from "../../../store/useAuthStore";
 
 export default function Header() {
-  const isLogin = useAuthStore((state) => state.isLogin);
   const pathname = usePathname();
 
   const menuItems = [
     {
       label: "대시 보드",
-      activePath: ROUTE_KEYS.DASHBOARD,
-      href: isLogin ? ROUTE_KEYS.DASHBOARD : ROUTE_KEYS.SIGNIN,
+      href: ROUTE_KEYS.DASHBOARD,
     },
     {
       label: "수입 · 지출 관리",
-      activePath: ROUTE_KEYS.RECORD,
-      href: isLogin ? ROUTE_KEYS.RECORD : ROUTE_KEYS.SIGNIN,
+      href: ROUTE_KEYS.RECORD,
     },
     {
       label: "분석 보고서",
-      activePath: ROUTE_KEYS.REPORT,
-      href: isLogin ? ROUTE_KEYS.REPORT : ROUTE_KEYS.SIGNIN,
+      href: ROUTE_KEYS.REPORT,
     },
   ];
 
@@ -43,7 +38,7 @@ export default function Header() {
           aria-label="메인 메뉴"
         >
           {menuItems.map((item) => {
-            const isActive = pathname === item.activePath;
+            const isActive = pathname === item.href;
 
             return (
               <Link

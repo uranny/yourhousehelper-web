@@ -2,6 +2,7 @@ import Link from "next/link";
 import ROUTE_KEYS from "@/constants/route";
 import { bodyText, titleText } from "@/constants/typography";
 import AuthForm, { type AuthField } from "../components/auth-form";
+import { signin } from "@/action/auth";
 
 export default function Page() {
   const fields: AuthField[] = [
@@ -45,7 +46,7 @@ export default function Page() {
   return (
     <>
       <p className={`${titleText}`}>회원가입</p>
-      <AuthForm fields={fields} submitText="회원가입" />
+      <AuthForm fields={fields} submitText="회원가입" propsAction={signin}/>
       <Link
         className={`cursor-pointer text-center text-secondary underline ${bodyText}`}
         href={ROUTE_KEYS.SIGNIN}

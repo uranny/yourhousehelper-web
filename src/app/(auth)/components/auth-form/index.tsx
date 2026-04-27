@@ -1,8 +1,13 @@
 "use client";
 
-import type { FormEvent, HTMLInputTypeAttribute } from "react";
+import { useActionState, useEffect, type HTMLInputTypeAttribute } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/app/components/button";
 import Input from "@/app/components/input";
+import ROUTE_KEYS from "@/constants/route";
+import TOAST_KEYS from "@/constants/toast";
+import type { AuthActionState } from "@/action/auth";
+import { showToast } from "@/utils/toast";
 
 export type AuthField = {
   name: string;
@@ -15,26 +20,36 @@ export type AuthField = {
 export default function AuthForm({
   fields,
   submitText,
-  onSubmit,
+  propsAction,
 }: {
   fields: AuthField[];
   submitText: string;
-  onSubmit?: (values: Record<string, string>) => void | Promise<void>;
+  propsAction: (
+    prevState: AuthActionState,
+    formData: FormData,
+  ) => Promise<AuthActionState>;
 }) {
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [state, action, isPending] = useActionState<AuthActionState, FormData>(
+    propsAction,
+    { status: false, message: "" },
+  );
+  const router = useRouter();
 
-    if (!onSubmit) {
+  useEffect(() => {
+    if (!state.message) {
       return;
     }
 
-    const formData = new FormData(event.currentTarget);
-    const values = Object.fromEntries(formData.entries()) as Record<string, string>;
-    await onSubmit(values);
-  };
+    if (!state.status) {
+      showToast(TOAST_KEYS.ERROR, state.message);
+      return;
+    }
+
+    router.push(ROUTE_KEYS.DASHBOARD);
+  }, [state, router]);
 
   return (
-    <form className="flex flex-col gap-6" method="post" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-6" action={action}>
       {fields.map((field) => (
         <Input
           key={field.name}
@@ -45,7 +60,7 @@ export default function AuthForm({
           label={field.label}
         />
       ))}
-      <Button text={submitText} type="submit" />
+      <Button disabled={isPending} text={submitText} type="submit" />
     </form>
   );
 }
