@@ -1,4 +1,4 @@
-import { getRecordListByRange } from "@/server/record/list";
+import { apiFetch } from "@/lib/ApiFetch";
 
 export async function GET(req: Request) {
   try {
@@ -13,19 +13,30 @@ export async function GET(req: Request) {
       });
     }
 
-    const result = await getRecordListByRange(startDate, endDate);
+    const res = await apiFetch(
+      `/record?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      },
+    );
 
-    if (!result.ok) {
+    const payload = (await res.json().catch(() => ({}))) as {
+      message?: string;
+      data?: unknown[];
+    };
+
+    if (!res.ok) {
       return Response.json({
         status: false,
-        message: result.message,
+        message: payload.message || "기록 조회 실패",
       });
     }
 
     return Response.json({
       status: true,
-      message: result.message,
-      data: result.data,
+      message: payload.message || "기록 조회 성공",
+      data: payload.data || [],
     });
   } catch (error) {
     return Response.json({

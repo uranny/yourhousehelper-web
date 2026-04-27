@@ -1,8 +1,14 @@
 import "server-only";
 
 import { RECORD_BACK_KEYS } from "@/constants/record";
-import { getRecordListByRange } from "@/server/record/list";
 import type { RecordEntity } from "@/types/record/record.type";
+import { headers } from "next/headers";
+
+type RecordListApiResponse = {
+  status: boolean;
+  message: string;
+  data?: RecordEntity[];
+};
 
 type MonthStat = {
   income: number;
@@ -45,9 +51,30 @@ const getYearRange = (year: number) => ({
 
 export async function getDashboardYearData(year: number): Promise<DashboardYearData> {
   const { startDate, endDate } = getYearRange(year);
-  const result = await getRecordListByRange(startDate, endDate);
+  const requestHeaders = await headers();
+  const protocol = requestHeaders.get("x-forwarded-proto") || "http";
+  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host");
 
-  if (!result.ok) {
+  if (!host) {
+    throw new Error("Host header is missing");
+  }
+
+  const res = await fetch(
+    `${protocol}://${host}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        cookie: requestHeaders.get("cookie") || "",
+      },
+    },
+  );
+
+  const payload = (await res.json().catch(() => null)) as
+    | RecordListApiResponse
+    | null;
+
+  if (!res.ok || !payload?.status) {
     return {
       year,
       records: [],
@@ -66,7 +93,7 @@ export async function getDashboardYearData(year: number): Promise<DashboardYearD
     };
   }
 
-  const records = result.data;
+  const records = payload.data || [];
   const monthStats = createEmptyMonthStats();
 
   for (const record of records) {
