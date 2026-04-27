@@ -20,10 +20,12 @@ export type AuthField = {
 export default function AuthForm({
   fields,
   submitText,
+  successPage,
   propsAction,
 }: {
   fields: AuthField[];
   submitText: string;
+  successPage : string
   propsAction: (
     prevState: AuthActionState,
     formData: FormData,
@@ -45,7 +47,7 @@ export default function AuthForm({
       return;
     }
 
-    router.push(ROUTE_KEYS.DASHBOARD);
+    router.push(successPage);
   }, [state, router]);
 
   return (

@@ -25,7 +25,14 @@ export default function Page() {
   return (
     <>
       <p className={`${titleText}`}>로그인</p>
-      <AuthForm fields={fields} submitText="로그인" propsAction={signin} />
+      <AuthForm
+        fields={fields}
+        submitText="로그인"
+        propsAction={signin}
+        successPage={
+          ROUTE_KEYS.DASHBOARD + `?selectYear=${new Date().getFullYear()}`
+        }
+      />
       <Link
         className={`cursor-pointer text-center text-secondary underline ${bodyText}`}
         href={ROUTE_KEYS.SIGNUP}

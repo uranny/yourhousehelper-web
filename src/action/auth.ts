@@ -3,7 +3,9 @@
 import COOKIES_KEYS from "@/constants/cookies";
 import { apiFetch } from "@/lib/ApiFetch";
 import type { SigninResponse } from "@/types/user/signin.type";
+import { SignupResponse } from "@/types/user/signup.type";
 import type { BaseResponse } from "@/types/util/response.type";
+import { rename } from "fs";
 import { cookies } from "next/headers";
 
 export type AuthActionState = {
@@ -29,22 +31,19 @@ export const signin = async (
     const res = await apiFetch("/user/signin", {
       method: "POST",
       body: JSON.stringify({
-      username: username,
-      password: password,
+        username: username,
+        password: password,
       }),
     });
 
-    const result = (await res.json().catch(() => null)) as
-      | Partial<BaseResponse<SigninResponse>>
-      | null;
+    const result = (await res.json().catch(() => null)) as Partial<
+      BaseResponse<SigninResponse>
+    > | null;
 
     const data = result?.data;
 
     if (!res.ok || !data?.accessToken || !data?.refreshToken) {
-      return {
-        status: false,
-        message: result?.message || "실패!",
-      };
+      throw new Error("요청에 실패했습니다.");
     }
 
     const cookieStore = await cookies();
@@ -65,10 +64,58 @@ export const signin = async (
       status: true,
       message: result?.message || "로그인에 성공했습니다.",
     };
-  } catch (e) {
+  } catch (error) {
     return {
       status: false,
-      message: `${e}`,
+      message: error instanceof Error ? error.message : `${error}`,
+    };
+  }
+};
+
+export const signup = async (
+  prevState: AuthActionState,
+  formData: FormData,
+) => {
+  const username = formData.get("username");
+  const password = formData.get("password");
+  const passwordCheck = formData.get("password-check");
+  const reason = formData.get("reason");
+  const finalMoney = formData.get("finalMoney");
+
+  if (!username || !password || !passwordCheck || !reason || !finalMoney) {
+    return {
+      status: false,
+      message: "모든 항목을 채워주세요",
+    };
+  }
+
+  try {
+    const res = await apiFetch("/user/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        reason: reason,
+        finalMoney: Number(finalMoney),
+      }),
+    });
+    const result = (await res.json().catch(() => null)) as Partial<
+      BaseResponse<SignupResponse>
+    > | null;
+
+    if (!res.ok) {
+      throw new Error("요청에 실패했습니다.");
+    }
+
+    return {
+      status: true,
+      message: result?.message || "회원가입에 성공했습니다.",
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: 
+        error instanceof Error ? error.message : `${error}`,
     };
   }
 };
