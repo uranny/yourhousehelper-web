@@ -1,4 +1,4 @@
-import CustomAxios from "../lib/CustomAxios";
+import CustomAxios from "../../lib/CustomAxios";
 import {
   CreateRecordRequest,
   CreateRecordResponse,
@@ -7,8 +7,8 @@ import {
   GetRecordRequest,
   UpdateRecordRequest,
   UpdateRecordResponse,
-} from "../types/record/record.type";
-import { BaseResponse } from "../types/util/response.type";
+} from "../../types/record/record.type";
+import { BaseResponse } from "../../types/util/response.type";
 
 export const recordApi = {
   create: async (
