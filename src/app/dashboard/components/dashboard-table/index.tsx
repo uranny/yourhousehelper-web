@@ -1,71 +1,19 @@
-"use client";
-
-import { RECORD_BACK_KEYS } from "@/constants/record";
 import { bodyText } from "@/constants/typography";
-import { useYearRecords } from "@/queries/record/record.query";
-import type { RecordItem } from "@/types/record/record.type";
-import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import type { MonthlySummaryRow } from "../../index";
 
-export default function DashboardTable() {
-  const searchParams = useSearchParams();
-  const year = searchParams?.get("selectYear");
-  const { data: yearRecords = [] } = useYearRecords(Number(year));
+type DashboardTableProps = {
+  monthlySummary: MonthlySummaryRow[];
+  yearTotal: {
+    income: number;
+    expense: number;
+    net: number;
+  };
+};
 
-  const monthLabels = useMemo(
-    () => Array.from({ length: 12 }, (_, i) => i + 1),
-    [],
-  );
-
-  const monthStats = useMemo(() => {
-    const stats: Record<number, { income: number; expense: number }> = {};
-
-    for (let i = 1; i <= 12; i++) {
-      stats[i] = { income: 0, expense: 0 };
-    }
-
-    yearRecords.forEach((record: RecordItem) => {
-      const month = new Date(record.date).getMonth() + 1;
-      if (record.recordType === RECORD_BACK_KEYS.INCOME) {
-        stats[month].income += Number(record.cost) || 0;
-      } else {
-        stats[month].expense += Number(record.cost) || 0;
-      }
-    });
-
-    return stats;
-  }, [yearRecords]);
-
-  const monthlySummary = useMemo(
-    () =>
-      monthLabels.map((month) => ({
-        month,
-        income: monthStats[month]?.income || 0,
-        expense: monthStats[month]?.expense || 0,
-        net:
-          (monthStats[month]?.income || 0) - (monthStats[month]?.expense || 0),
-      })),
-    [monthLabels, monthStats],
-  );
-
-  const yearTotal = useMemo(() => {
-    let income = 0;
-    let expense = 0;
-
-    yearRecords.forEach((record: RecordItem) => {
-      if (record.recordType === RECORD_BACK_KEYS.INCOME) {
-        income += Number(record.cost) || 0;
-      } else {
-        expense += Number(record.cost) || 0;
-      }
-    });
-
-    return {
-      income,
-      expense,
-      net: income - expense,
-    };
-  }, [yearRecords]);
+export default function DashboardTable({
+  monthlySummary,
+  yearTotal,
+}: DashboardTableProps) {
   
   return (
     <div className="overflow-x-auto rounded-[1.2rem] bg-surface p-6">

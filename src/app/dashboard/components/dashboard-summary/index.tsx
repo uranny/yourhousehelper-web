@@ -1,34 +1,18 @@
-"use client";
-
-import { RECORD_BACK_KEYS } from "@/constants/record";
 import { bodyText, subtitleText } from "@/constants/typography";
-import { useYearRecords } from "@/queries/record/record.query";
-import { RecordItem } from "@/types/record/record.type";
-import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
 
-export default function DashboardSummary() {
-  const searchParams = useSearchParams();
-  const year = searchParams?.get("selectYear");
-  const { data: yearRecords = [] } = useYearRecords(Number(year));
-  const { income, expense, net } = useMemo(() => {
-    let income = 0;
-    let expense = 0;
+type DashboardSummaryProps = {
+  year: number;
+  income: number;
+  expense: number;
+  net: number;
+};
 
-    yearRecords.forEach((record: RecordItem) => {
-      if (record.recordType === RECORD_BACK_KEYS.INCOME) {
-        income += Number(record.cost) || 0;
-      } else {
-        expense += Number(record.cost) || 0;
-      }
-    });
-
-    return {
-      income,
-      expense,
-      net: income - expense,
-    };
-  }, [yearRecords]);
+export default function DashboardSummary({
+  year,
+  income,
+  expense,
+  net,
+}: DashboardSummaryProps) {
   return (
     <div className="flex items-center justify-around gap-8 rounded-[1.2rem] bg-surface px-4 py-8">
       <div>

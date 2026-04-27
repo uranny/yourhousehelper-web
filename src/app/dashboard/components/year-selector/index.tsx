@@ -1,24 +1,19 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { bodyText } from "@/constants/typography";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 
-export default function YearSelector() {
-  const DEFAULT_YEAR = new Date().getFullYear();
+type YearSelectorProps = {
+  selectedYear: number;
+};
+
+export default function YearSelector({ selectedYear }: YearSelectorProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [selectYear, setSelectYear] = useState(DEFAULT_YEAR)
-
-  const year = searchParams?.get("selectYear") || DEFAULT_YEAR;
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     router.push(`?selectYear=${e.target.value}`);
   };
-
-  useEffect(() => {
-    setSelectYear(Number(year || new Date().getFullYear()));
-  }, [year]);
 
   return (
     <div className="flex items-center gap-4">
@@ -27,7 +22,7 @@ export default function YearSelector() {
       </label>
       <select
         id="dashboard-year-select"
-        value={selectYear}
+        value={selectedYear}
         onChange={handleChange}
         className={`${bodyText} cursor-pointer rounded-md border-none bg-surface px-4 py-2 text-text`}
       >

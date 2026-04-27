@@ -11,11 +11,9 @@ import {
   Legend,
 } from "chart.js";
 import { subtitleText } from "@/constants/typography";
-import { useSearchParams } from "next/navigation";
-import { useYearRecords } from "@/queries/record/record.query";
 import { useMemo } from "react";
-import { RecordItem } from "@/types/record/record.type";
-import { RECORD_BACK_KEYS, RECORD_FRONT_KEYS } from "@/constants/record";
+import { RECORD_FRONT_KEYS } from "@/constants/record";
+import type { MonthStat } from "../../index";
 
 const MONTH_LABELS = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -28,33 +26,11 @@ ChartJS.register(
   Legend,
 );
 
-export default function YearlyGraph() {
-  const searchParams = useSearchParams();
-  const year = searchParams?.get("selectYear");
-  const { data: yearRecords = [] } = useYearRecords(Number(year));
+type YearlyGraphProps = {
+  monthStats: Record<number, MonthStat>;
+};
 
-  const monthStats = useMemo(() => {
-    const stats: Record<number, { income: number; expense: number }> = {};
-
-    for (let i = 1; i <= 12; i++) {
-      stats[i] = { income: 0, expense: 0 };
-    }
-
-    yearRecords.forEach((record: RecordItem) => {
-      const month = new Date(record.date).getMonth() + 1;
-      if (!Number.isFinite(month) || month < 1 || month > 12) {
-        return;
-      }
-
-      if (record.recordType === RECORD_BACK_KEYS.INCOME) {
-        stats[month].income += Number(record.cost) || 0;
-      } else {
-        stats[month].expense += Number(record.cost) || 0;
-      }
-    });
-
-    return stats;
-  }, [yearRecords]);
+export default function YearlyGraph({ monthStats }: YearlyGraphProps) {
 
   const totalGraphData = useMemo(
     () => ({
