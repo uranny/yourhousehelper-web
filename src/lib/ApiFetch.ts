@@ -2,6 +2,13 @@ import "server-only";
 import COOKIES_KEYS from "@/constants/cookies";
 import { cookies } from "next/headers";
 
+type ApiFetchOptions = RequestInit & {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+};
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!BASE_URL) {
@@ -10,7 +17,7 @@ if (!BASE_URL) {
   );
 }
 
-export async function apiFetch(path: string, options: RequestInit = {}) {
+export async function apiFetch(path: string, options: ApiFetchOptions = {}) {
   const accessToken = (await cookies()).get(COOKIES_KEYS.ACCESS_TOKEN)?.value;
 
   let res = await fetch(`${BASE_URL}${path}`, {
