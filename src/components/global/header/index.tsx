@@ -49,7 +49,6 @@ export default function Header() {
         >
           {menuItems.map((item) => {
             const isActive = (pathname ?? "").startsWith(item.activeLink);
-            console.log("isActive:", item.label, isActive)
             return (
               <Link
                 key={item.label}

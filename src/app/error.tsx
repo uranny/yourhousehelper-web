@@ -13,7 +13,6 @@ export default function Error({
   reset: () => void;
 }) {
   const router = useRouter();
-  console.log(error);
   return (
     <div>
       <p className={`w-full ${titleText} text-center`}>문제가 발생했어요</p>
