@@ -1,4 +1,3 @@
-import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 import type { ToastType } from "../types/util/toast.type";
 
@@ -9,13 +8,6 @@ export const showToast = (
 ) => {
   if (typeof message === "string" && message.trim()) {
     toast[type](message);
-    return;
-  }
-
-  if (isAxiosError(message)) {
-    toast[type](
-      message.response?.data?.message ?? fallbackMessage,
-    );
     return;
   }
 

@@ -12,10 +12,6 @@ export default function Header() {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
 
-  useEffect(() => {
-    console.log("pathname:", pathname)
-  }, [pathname])
-
   const menuItems = [
     {
       label: "대시 보드",
