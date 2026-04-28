@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import type { ToastType } from "../types/util/toast.type";
+import type { ToastType } from "@/types/util/toast.type";
 
 export const showToast = (
   type: ToastType,

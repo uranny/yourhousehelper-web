@@ -1,5 +1,5 @@
-import ReportCard from "./components/report-card";
-import CreateReportModal from "./components/create-report-modal";
+import ReportCard from "@/components/report/report-card";
+import CreateReportModal from "@/components/report/create-report-modal";
 import { ReportItem } from "@/types/report/report.type";
 import { BaseResponse } from "@/types/util/response.type";
 import { subtitleText, bodyText } from "@/constants/typography";

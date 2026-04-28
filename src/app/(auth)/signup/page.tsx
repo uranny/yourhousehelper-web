@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ROUTE_KEYS from "@/constants/route";
 import { bodyText, titleText } from "@/constants/typography";
-import AuthForm, { type AuthField } from "../components/auth-form";
+import AuthForm, { type AuthField } from "@/components/auth/auth-form";
 import { signup } from "@/action/auth";
 
 export default function Page() {

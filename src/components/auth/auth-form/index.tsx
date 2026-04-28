@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect, type HTMLInputTypeAttribute } from "react";
 import { useRouter } from "next/navigation";
-import Button from "@/app/components/button";
-import Input from "@/app/components/input";
+import Button from "@/components/global/button";
+import Input from "@/components/global/input";
 import ROUTE_KEYS from "@/constants/route";
 import TOAST_KEYS from "@/constants/toast";
 import type { AuthActionState } from "@/action/auth";

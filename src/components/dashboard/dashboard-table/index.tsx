@@ -1,5 +1,5 @@
 import { bodyText } from "@/constants/typography";
-import type { MonthlySummaryRow } from "../../index";
+import type { MonthlySummaryRow } from "@/app/dashboard";
 
 type DashboardTableProps = {
   monthlySummary: MonthlySummaryRow[];

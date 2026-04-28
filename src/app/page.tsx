@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { bodyText, subtitleText, titleText } from "../constants/typography";
+import { bodyText, subtitleText, titleText } from "@/constants/typography";
 import Link from "next/link";
 import ROUTE_KEYS from "@/constants/route";
 

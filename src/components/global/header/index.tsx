@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import ROUTE_KEYS from "../../../constants/route";
-import { bodyText } from "../../../constants/typography";
+import ROUTE_KEYS from "@/constants/route";
+import { bodyText } from "@/constants/typography";
 import { useEffect } from "react";
 
 export default function Header() {

@@ -1,4 +1,4 @@
-import ReportDetail from "./components/report-detail";
+import ReportDetail from "@/components/report/report-detail";
 import { ReportItem } from "@/types/report/report.type";
 import { BaseResponse } from "@/types/util/response.type";
 import { bodyText } from "@/constants/typography";

@@ -1,6 +1,6 @@
-import RecordInput from "./components/record-input";
-import RecordTable from "./components/record-table";
-import PeriodSeletor from "./components/period-seletor";
+import RecordInput from "@/components/record/record-input";
+import RecordTable from "@/components/record/record-table";
+import PeriodSeletor from "@/components/record/period-seletor";
 import { headers } from "next/headers";
 import type { RecordEntity } from "@/types/record/record.type";
 import { RECORD_LIST_TAG } from "@/constants/record";

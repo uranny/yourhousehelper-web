@@ -1,8 +1,8 @@
-import DashboardSummary from "./components/dashboard-summary";
-import YearlyGraph from "./components/yearly-graph";
-import YearSelector from "./components/year-selector";
-import DashboardTable from "./components/dashboard-table";
-import { getDashboardYearData } from "./index";
+import YearSelector from "@/components/dashboard/year-selector";
+import { getDashboardYearData } from "@/app/dashboard";
+import DashboardSummary from "@/components/dashboard/dashboard-summary";
+import YearlyGraph from "@/components/dashboard/yearly-graph";
+import DashboardTable from "@/components/dashboard/dashboard-table";
 
 type DashboardPageProps = {
   searchParams: Promise<{

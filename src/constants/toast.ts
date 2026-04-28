@@ -1,4 +1,4 @@
-import type { ToastType } from "../types/util/toast.type"
+import type { ToastType } from "@/types/util/toast.type"
 
 const TOAST_KEYS : {
     INFO : ToastType,

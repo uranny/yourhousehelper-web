@@ -1,8 +1,8 @@
 "use client";
 
 import { editRecordAction, type RecordActionState } from "@/action/record";
-import Button from "@/app/components/button";
-import Input from "@/app/components/input";
+import Button from "@/components/global/button";
+import Input from "@/components/global/input";
 import { bodyText } from "@/constants/typography";
 import type { RecordEntity } from "@/types/record/record.type";
 import { useActionState, useEffect, useState } from "react";

@@ -4,7 +4,7 @@ import { useActionState, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createReportAction } from "@/action/report";
 import { showToast } from "@/utils/toast";
-import Button from "@/app/components/button";
+import Button from "@/components/global/button";
 import { bodyText, subtitleText } from "@/constants/typography";
 
 export default function CreateReportModal() {

@@ -13,7 +13,7 @@ import {
 import { subtitleText } from "@/constants/typography";
 import { useMemo } from "react";
 import { RECORD_FRONT_KEYS } from "@/constants/record";
-import type { MonthStat } from "../../index";
+import type { MonthStat } from "@/app/dashboard";
 
 const MONTH_LABELS = Array.from({ length: 12 }, (_, i) => i + 1);
 

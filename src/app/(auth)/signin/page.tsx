@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AuthForm, { type AuthField } from "../components/auth-form";
+import AuthForm, { type AuthField } from "@/components/auth/auth-form";
 import ROUTE_KEYS from "@/constants/route";
 import { bodyText, titleText } from "@/constants/typography";
 import { signin } from "@/action/auth";

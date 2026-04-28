@@ -1,7 +1,7 @@
 import { deleteRecord } from "@/action/record";
-import Button from "@/app/components/button";
+import Button from "@/components/global/button";
 import type { RecordEntity } from "@/types/record/record.type";
-import EditModal from "../edit-modal";
+import EditModal from "@/components/record/edit-modal";
 import { bodyText } from "@/constants/typography";
 
 const TYPE_LABEL: Record<RecordEntity["recordType"], string> = {

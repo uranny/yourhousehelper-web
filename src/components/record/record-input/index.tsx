@@ -4,8 +4,8 @@ import {
   createRecordAction,
   type RecordActionState,
 } from "@/action/record";
-import Button from "@/app/components/button";
-import Input from "@/app/components/input";
+import Button from "@/components/global/button";
+import Input from "@/components/global/input";
 import { bodyText } from "@/constants/typography";
 import { useActionState } from "react";
 

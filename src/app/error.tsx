@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { startTransition } from "react";
-import Button from "./components/button";
+import Button from "@/components/global/button";
 import { subtitleText, titleText } from "@/constants/typography";
 
 export default function Error({

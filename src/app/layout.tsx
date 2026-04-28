@@ -1,6 +1,6 @@
 import "./globals.css";
-import Header from "./components/header";
-import GlobalToastContainer from "@/components/toast";
+import Header from "@/components/global/header";
+import GlobalToastContainer from "@/components/global/toast";
 export default function RootLayout({
   children,
 }: Readonly<{

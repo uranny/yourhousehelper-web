@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import COOKIES_KEYS from "./constants/cookies";
-import ROUTE_KEYS from "./constants/route";
+import COOKIES_KEYS from "@/constants/cookies";
+import ROUTE_KEYS from "@/constants/route";
 
 export function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
