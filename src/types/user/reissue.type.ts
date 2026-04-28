@@ -7,4 +7,4 @@ interface ReissueResponse {
   refreshToken: string;
 }
 
-export { ReissueRequest, ReissueResponse };
+export type { ReissueRequest, ReissueResponse };

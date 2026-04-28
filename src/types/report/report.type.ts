@@ -19,7 +19,7 @@ interface GetReportRequest{
 
 interface GetReportResponse extends ReportItem {}
 
-export {
+export type {
   ReportItem,
   CreateReportRequest,
   CreateReportResponse,

@@ -8,4 +8,4 @@ interface SigninResponse {
   refreshToken: string;
 }
 
-export { SigninRequest, SigninResponse };
+export type { SigninRequest, SigninResponse };

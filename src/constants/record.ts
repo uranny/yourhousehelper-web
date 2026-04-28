@@ -1,4 +1,4 @@
-import { RecordType } from "../types/record/record.type";
+import { RecordType } from "@/types/record/record.type";
 
 export const RECORD_BACK_KEYS = {
   INCOME: "INCOME",
@@ -16,3 +16,5 @@ export const DEFAULT_RECORD = {
   description: "",
   date: "",
 };
+
+export const RECORD_LIST_TAG = "record-list";
