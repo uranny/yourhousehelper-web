@@ -39,6 +39,7 @@ export default function RecordInput({ defaultDate }: RecordInputProps) {
         name="cost"
         type="number"
         placeholder="금액"
+        initialValue=""
         showLabel={false}
         min={0}
         max={2147483647}
@@ -47,6 +48,7 @@ export default function RecordInput({ defaultDate }: RecordInputProps) {
       <Input
         name="description"
         type="text"
+        initialValue=""
         placeholder="사유"
         showLabel={false}
       />

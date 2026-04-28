@@ -52,15 +52,8 @@ const getYearRange = (year: number) => ({
 export async function getDashboardYearData(year: number): Promise<DashboardYearData> {
   const { startDate, endDate } = getYearRange(year);
   const requestHeaders = await headers();
-  const protocol = requestHeaders.get("x-forwarded-proto") || "http";
-  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host");
-
-  if (!host) {
-    throw new Error("Host header is missing");
-  }
-
   const res = await fetch(
-    `${protocol}://${host}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
     {
       method: "GET",
       cache: "no-store",

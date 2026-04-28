@@ -1,25 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import ROUTE_KEYS from "../../../constants/route";
 import { bodyText } from "../../../constants/typography";
+import { useEffect } from "react";
 
 export default function Header() {
   const pathname = usePathname();
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+
+  useEffect(() => {
+    console.log("pathname:", pathname)
+  }, [pathname])
 
   const menuItems = [
     {
       label: "대시 보드",
-      href: ROUTE_KEYS.DASHBOARD,
+      href: ROUTE_KEYS.DASHBOARD + `?selectYear=${currentYear}`,
+      activeLink: ROUTE_KEYS.DASHBOARD,
     },
     {
       label: "수입 · 지출 관리",
-      href: ROUTE_KEYS.RECORD,
+      href:
+        ROUTE_KEYS.RECORD +
+        `?selectYear=${currentYear}` +
+        `&selectMonth=${currentMonth}`,
+      activeLink: ROUTE_KEYS.RECORD,
     },
     {
       label: "분석 보고서",
       href: ROUTE_KEYS.REPORT,
+      activeLink: ROUTE_KEYS.REPORT,
     },
   ];
 
@@ -38,16 +52,16 @@ export default function Header() {
           aria-label="메인 메뉴"
         >
           {menuItems.map((item) => {
-            const isActive = pathname === item.href;
-
+            const isActive = (pathname ?? "").startsWith(item.activeLink);
+            console.log("isActive:", item.label, isActive)
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className={`${bodyText} flex cursor-pointer items-center justify-center border-b-[0.2rem] border-b-transparent bg-transparent text-center text-text no-underline outline-none transition-[background,color,border-color] duration-150 ${
+                className={`${bodyText} flex cursor-pointer items-center justify-center border-b-[0.2rem] bg-transparent text-center no-underline outline-none transition-[background,color,border-color] duration-150 ${
                   isActive
-                    ? `border-b-primary text-primary ${bodyText}`
-                    : "hover:border-b-primary hover:bg-surface hover:text-primary"
+                    ? "border-b-primary text-primary"
+                    : "border-b-transparent text-text hover:border-b-primary hover:bg-surface hover:text-primary"
                 }`}
               >
                 {item.label}

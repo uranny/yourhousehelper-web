@@ -16,7 +16,7 @@ export default function DashboardTable({
 }: DashboardTableProps) {
   
   return (
-    <div className="overflow-x-auto rounded-[1.2rem] bg-surface p-6">
+    <div className="rounded-[1.2rem] bg-surface p-6">
       <table className="w-full border-collapse bg-transparent">
         <thead>
           <tr className="border-b border-border">
