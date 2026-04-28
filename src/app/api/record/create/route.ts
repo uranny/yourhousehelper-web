@@ -27,9 +27,7 @@ export async function POST(req: Request) {
     return Response.json({
       status: false,
       message:
-        error instanceof Error
-          ? error.message
-          : "서버 오류가 발생했습니다",
+        error instanceof Error ? error.message : "서버 오류가 발생했습니다",
     });
   }
 }

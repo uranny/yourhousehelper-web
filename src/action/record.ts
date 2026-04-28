@@ -33,15 +33,9 @@ const parseIntCost = (value: FormDataEntryValue) => {
 
 const getBaseUrlFromHeaders = async () => {
   const requestHeaders = await headers();
-  const protocol = requestHeaders.get("x-forwarded-proto") || "http";
-  const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host");
-
-  if (!host) {
-    throw new Error("Host header is missing");
-  }
 
   return {
-    baseUrl: `${protocol}://${host}`,
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     cookie: requestHeaders.get("cookie") || "",
   };
 };
