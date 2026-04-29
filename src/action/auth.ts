@@ -13,7 +13,7 @@ export type AuthActionState = {
 };
 
 export const signin = async (
-  prevState: AuthActionState,
+  prevState : AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> => {
   const username = formData.get("username");
@@ -39,20 +39,31 @@ export const signin = async (
       BaseResponse<SigninResponse>
     > | null;
 
-    const data = result?.data;
+    if (!res.ok) {
+      return {
+        status: false,
+        message: result?.message || "로그인에 실패했습니다.",
+      };
+    }
 
-    if (!res.ok || !data?.accessToken || !data?.refreshToken) {
-      throw new Error("요청에 실패했습니다.");
+    const accessToken = result?.data?.accessToken;
+    const refreshToken = result?.data?.refreshToken;
+
+    if (!accessToken || !refreshToken) {
+      return {
+        status: false,
+        message: result?.message || "로그인 응답이 올바르지 않습니다.",
+      };
     }
 
     const cookieStore = await cookies();
-    cookieStore.set(COOKIES_KEYS.ACCESS_TOKEN, data.accessToken, {
+    cookieStore.set(COOKIES_KEYS.ACCESS_TOKEN, accessToken, {
       httpOnly: true,
       sameSite: "lax",
       path: "/",
       secure: process.env.NODE_ENV === "production",
     });
-    cookieStore.set(COOKIES_KEYS.REFRESH_TOKEN, data.refreshToken, {
+    cookieStore.set(COOKIES_KEYS.REFRESH_TOKEN, refreshToken, {
       httpOnly: true,
       sameSite: "lax",
       path: "/",

@@ -52,6 +52,7 @@ export async function POST(req: Request) {
       message: "로그인 성공",
     });
   } catch (error) {
+    console.log(error)
     return Response.json({
       status: false,
       message:
