@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import YearSelector from "@/components/dashboard/year-selector";
 import { getDashboardYearData } from "@/app/dashboard";
 import DashboardSummary from "@/components/dashboard/dashboard-summary";
@@ -10,9 +11,20 @@ type DashboardPageProps = {
   }>;
 };
 
-export default async function Page({ searchParams }: DashboardPageProps) {
+function DashboardSkeleton() {
+  return (
+    <div className="m-0 flex w-full flex-col gap-8">
+      <div className="skeleton h-12 w-40 rounded-2xl" />
+      <div className="skeleton h-24 w-full rounded-3xl" />
+      <div className="skeleton h-64 w-full rounded-3xl" />
+      <div className="skeleton h-80 w-full rounded-3xl" />
+    </div>
+  );
+}
+
+async function Dashboard({ searchParams }: DashboardPageProps) {
   const { selectYear } = await searchParams;
-  const year = Number(selectYear)
+  const year = Number(selectYear);
   const dashboardData = await getDashboardYearData(year);
 
   return (
@@ -30,5 +42,13 @@ export default async function Page({ searchParams }: DashboardPageProps) {
         yearTotal={dashboardData.yearTotal}
       />
     </div>
+  );
+}
+
+export default function Page({ searchParams }: DashboardPageProps) {
+  return (
+    <Suspense fallback={<DashboardSkeleton />}>
+      <Dashboard searchParams={searchParams} />
+    </Suspense>
   );
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ReportCard from "@/components/report/report-card";
 import CreateReportModal from "@/components/report/create-report-modal";
 import { ReportItem } from "@/types/report/report.type";
@@ -5,7 +6,23 @@ import { BaseResponse } from "@/types/util/response.type";
 import { subtitleText, bodyText } from "@/constants/typography";
 import { headers } from "next/headers";
 
-export default async function ReportPage() {
+function ReportSkeleton() {
+  return (
+    <div className="flex w-full flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <div className="skeleton h-8 w-56 rounded-2xl" />
+        <div className="skeleton h-10 w-32 rounded-2xl" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="skeleton h-56 rounded-3xl" />
+        <div className="skeleton h-56 rounded-3xl" />
+        <div className="skeleton h-56 rounded-3xl" />
+      </div>
+    </div>
+  );
+}
+
+async function ReportContent() {
   const requestHeaders = await headers();
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/report/list`,
@@ -46,5 +63,13 @@ export default async function ReportPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ReportPage() {
+  return (
+    <Suspense fallback={<ReportSkeleton />}>
+      <ReportContent />
+    </Suspense>
   );
 }

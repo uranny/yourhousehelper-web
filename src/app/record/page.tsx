@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import RecordInput from "@/components/record/record-input";
 import RecordTable from "@/components/record/record-table";
 import PeriodSeletor from "@/components/record/period-seletor";
@@ -23,7 +24,17 @@ const toDateRange = (year: number, month: number) => {
   };
 };
 
-export default async function Page({ searchParams }: RecordPageProps) {
+function RecordSkeleton() {
+  return (
+    <div className="m-0 mx-auto flex w-full flex-col gap-8">
+      <div className="skeleton h-12 w-full rounded-3xl" />
+      <div className="skeleton h-20 w-full rounded-3xl" />
+      <div className="skeleton h-96 w-full rounded-3xl" />
+    </div>
+  );
+}
+
+async function RecordContent({ searchParams }: RecordPageProps) {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const params = await searchParams;
@@ -71,5 +82,13 @@ export default async function Page({ searchParams }: RecordPageProps) {
       />
       <RecordTable rows={records} />
     </div>
+  );
+}
+
+export default function Page({ searchParams }: RecordPageProps) {
+  return (
+    <Suspense fallback={<RecordSkeleton />}>
+      <RecordContent searchParams={searchParams} />
+    </Suspense>
   );
 }
