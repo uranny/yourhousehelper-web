@@ -1,14 +1,12 @@
 "use client";
 
 import { useActionState, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createReportAction } from "@/action/report";
 import { showToast } from "@/utils/toast";
 import Button from "@/components/global/button";
 import { bodyText, subtitleText } from "@/constants/typography";
 
-export default function CreateReportModal() {
-  const router = useRouter();
+export default function CreateReportModal({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [month, setMonth] = useState(String(new Date().getMonth() + 1));
@@ -32,11 +30,13 @@ export default function CreateReportModal() {
     if (state?.success) {
       showToast("success", "보고서가 생성되었습니다.");
       closeModal();
-      router.refresh();
+      if (onSuccess) {
+        onSuccess();
+      }
     } else if (state?.error) {
       showToast("error", state.error);
     }
-  }, [router, state]);
+  }, [state, onSuccess]);
 
   const parsedYear = Number(year);
   const parsedMonth = Number(month);
