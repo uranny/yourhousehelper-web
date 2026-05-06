@@ -3,7 +3,13 @@ import { apiFetch } from "@/lib/ApiFetch";
 
 export async function GET(request: NextRequest) {
   try {
-    const response = await apiFetch("/report", {method : "GET"});
+    const response = await apiFetch("/report", {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        tags: ["report-list"],
+      },
+    });
     const data = await response.json();
 
     if (!response.ok) {

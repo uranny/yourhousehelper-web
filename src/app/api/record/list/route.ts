@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/ApiFetch";
+import { RECORD_LIST_TAG } from "@/constants/record";
 
 export async function GET(req: Request) {
   try {
@@ -17,7 +18,10 @@ export async function GET(req: Request) {
       `/record?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
       {
         method: "GET",
-        cache: "no-store",
+        cache: "force-cache",
+        next: {
+          tags: [RECORD_LIST_TAG],
+        },
       },
     );
 
