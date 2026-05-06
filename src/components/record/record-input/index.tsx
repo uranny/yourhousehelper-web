@@ -7,13 +7,14 @@ import {
 import Button from "@/components/global/button";
 import Input from "@/components/global/input";
 import { bodyText } from "@/constants/typography";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 type RecordInputProps = {
   defaultDate: string;
+  onSuccess?: () => void;
 };
 
-export default function RecordInput({ defaultDate }: RecordInputProps) {
+export default function RecordInput({ defaultDate, onSuccess }: RecordInputProps) {
   const [state, action, isPending] = useActionState<RecordActionState, FormData>(
     createRecordAction,
     {
@@ -21,6 +22,12 @@ export default function RecordInput({ defaultDate }: RecordInputProps) {
       message: "",
     },
   );
+
+  useEffect(() => {
+    if (state.status && onSuccess) {
+      onSuccess();
+    }
+  }, [state.status, onSuccess]);
 
   return (
     <form

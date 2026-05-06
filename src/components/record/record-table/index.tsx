@@ -1,8 +1,8 @@
-import { deleteRecord } from "@/action/record";
 import Button from "@/components/global/button";
 import type { RecordEntity } from "@/types/record/record.type";
 import EditModal from "@/components/record/edit-modal";
 import { bodyText } from "@/constants/typography";
+import DeleteRecordButton from "@/components/record/delete-record-button";
 
 const TYPE_LABEL: Record<RecordEntity["recordType"], string> = {
   INCOME: "수입",
@@ -11,9 +11,10 @@ const TYPE_LABEL: Record<RecordEntity["recordType"], string> = {
 
 type RecordTableProps = {
   rows: RecordEntity[];
+  onSuccess?: () => void;
 };
 
-export default function RecordTable({ rows }: RecordTableProps) {
+export default function RecordTable({ rows, onSuccess }: RecordTableProps) {
   return (
     <>
       <div className="w-full overflow-x-auto rounded-2xl bg-surface">
@@ -84,17 +85,10 @@ export default function RecordTable({ rows }: RecordTableProps) {
                     {row.description}
                   </td>
                   <td className="border-b border-border p-3 text-center">
-                    <EditModal row={row} />
+                    <EditModal row={row} onSuccess={onSuccess} />
                   </td>
                   <td className="border-b border-border p-3 text-center">
-                    <form action={deleteRecord}>
-                      <input type="hidden" name="id" value={row.id} />
-                      <Button
-                        type="submit"
-                        text="삭제"
-                        className="w-auto! border-0! bg-transparent! p-0! text-text! active:bg-transparent!"
-                      />
-                    </form>
+                    <DeleteRecordButton id={row.id} onSuccess={onSuccess} />
                   </td>
                 </tr>
               ))

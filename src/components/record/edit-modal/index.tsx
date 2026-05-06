@@ -9,9 +9,10 @@ import { useActionState, useEffect, useState } from "react";
 
 type EditModalProps = {
   row: RecordEntity;
+  onSuccess?: () => void;
 };
 
-export default function EditModal({ row }: EditModalProps) {
+export default function EditModal({ row, onSuccess }: EditModalProps) {
   const [open, setOpen] = useState(false);
   const [state, action, isPending] = useActionState<RecordActionState, FormData>(
     editRecordAction,
@@ -24,8 +25,11 @@ export default function EditModal({ row }: EditModalProps) {
   useEffect(() => {
     if (state.status) {
       setOpen(false);
+      if (onSuccess) {
+        onSuccess();
+      }
     }
-  }, [state.status]);
+  }, [state.status, onSuccess]);
 
   return (
     <>
@@ -35,55 +39,55 @@ export default function EditModal({ row }: EditModalProps) {
         onClick={() => setOpen(true)}
         className="w-auto! border-0! bg-transparent! p-0! text-text! active:bg-transparent!"
       />
-
-      {!open ? null : <div className="fixed inset-0 z-999 bg-black/45" onClick={() => setOpen(false)} />}
-
       {!open ? null : (
-      <form
-        action={action}
-        className={`fixed left-1/2 top-1/2 z-1000 flex w-88 -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-[0.8rem] border border-border bg-background p-3 text-left shadow-xl ${bodyText}`}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <input type="hidden" name="id" value={row.id} />
-        <Input
-          type="date"
-          name="date"
-          initialValue={row.date}
-          showLabel={false}
-        />
-        <select
-          name="recordType"
-          defaultValue={row.recordType}
-          className={`w-full rounded-lg border border-border bg-surface px-3 py-2 text-text ${bodyText}`}
+        <div className="fixed inset-0 z-999 bg-black/45" onClick={() => setOpen(false)} />
+      )}
+      {!open ? null : (
+        <form
+          action={action}
+          className={`fixed left-1/2 top-1/2 z-1000 flex w-88 -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-[0.8rem] border border-border bg-background p-3 text-left shadow-xl ${bodyText}`}
+          onClick={(event) => event.stopPropagation()}
         >
-          <option value="INCOME">수입</option>
-          <option value="EXPENSE">지출</option>
-        </select>
-        <Input
-          type="number"
-          name="cost"
-          initialValue={String(row.cost)}
-          showLabel={false}
-          min={0}
-          max={2147483647}
-          step={1}
-        />
-        <Input
-          type="text"
-          name="description"
-          initialValue={row.description}
-          showLabel={false}
-        />
-        <Button
-          type="submit"
-          disabled={isPending}
-          text={isPending ? "저장 중..." : "저장"}
-          className="rounded-lg! border-0!"
-        />
-        {!state.status && state.message ? (
-          <p className={`${bodyText} text-primary`}>{state.message}</p>
-        ) : null}
-      </form>
+          <input type="hidden" name="id" value={row.id} />
+          <Input
+            type="date"
+            name="date"
+            initialValue={row.date}
+            showLabel={false}
+          />
+          <select
+            name="recordType"
+            defaultValue={row.recordType}
+            className={`w-full rounded-lg border border-border bg-surface px-3 py-2 text-text ${bodyText}`}
+          >
+            <option value="INCOME">수입</option>
+            <option value="EXPENSE">지출</option>
+          </select>
+          <Input
+            type="number"
+            name="cost"
+            initialValue={String(row.cost)}
+            showLabel={false}
+            min={0}
+            max={2147483647}
+            step={1}
+          />
+          <Input
+            type="text"
+            name="description"
+            initialValue={row.description}
+            showLabel={false}
+          />
+          <Button
+            type="submit"
+            disabled={isPending}
+            text={isPending ? "저장 중..." : "저장"}
+            className="rounded-lg! border-0!"
+          />
+          {!state.status && state.message ? (
+            <p className={`${bodyText} text-primary`}>{state.message}</p>
+          ) : null}
+        </form>
       )}
     </>
   );
