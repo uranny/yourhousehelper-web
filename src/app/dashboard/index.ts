@@ -2,7 +2,7 @@ import "server-only";
 
 import { RECORD_BACK_KEYS } from "@/constants/record";
 import type { RecordEntity } from "@/types/record/record.type";
-import { headers } from "next/headers";
+import { apiFetch } from "@/lib/ApiFetch";
 
 type RecordListApiResponse = {
   status: boolean;
@@ -51,15 +51,13 @@ const getYearRange = (year: number) => ({
 
 export async function getDashboardYearData(year: number): Promise<DashboardYearData> {
   const { startDate, endDate } = getYearRange(year);
-  const requestHeaders = await headers();
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+  const res = await apiFetch(
+    `/record?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
     {
       method: "GET",
-      cache: "no-store",
-      headers: {
-        cookie: requestHeaders.get("cookie") || "",
-      },
+      next : {
+        revalidate : 60,
+      }
     },
   );
 
