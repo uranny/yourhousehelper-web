@@ -46,8 +46,8 @@ export async function createReportAction(
       return { success: false, error: "보고서 생성에 실패했습니다." };
     }
 
-    revalidateTag("report-list", "max");
-    revalidateTag("report-detail", "max");
+    revalidateTag("report-list", { expire: 0 });
+    revalidateTag("report-detail", { expire: 0 });
 
     return { success: true };
   } catch (error) {

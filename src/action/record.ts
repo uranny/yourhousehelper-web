@@ -201,10 +201,28 @@ export const deleteRecord = async (
       throw new Error(payload?.message || "기록 삭제에 실패했습니다.");
     }
 
-    revalidateTag(RECORD_LIST_TAG, {expire : 0});
+    revalidateTag(RECORD_LIST_TAG, { expire: 0 });
   } catch (error) {
     throw new Error(
       error instanceof Error ? error.message : "요청에 실패했습니다.",
     );
+  }
+};
+
+export const deleteRecordAction = async (
+  prevState: RecordActionState,
+  formData: FormData,
+): Promise<RecordActionState> => {
+  try {
+    await deleteRecord(formData);
+    return {
+      status: true,
+      message: "기록 삭제에 성공했습니다.",
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error instanceof Error ? error.message : "요청에 실패했습니다.",
+    };
   }
 };
