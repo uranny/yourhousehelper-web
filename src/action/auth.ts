@@ -42,7 +42,7 @@ export const signin = async (
     if (!res.ok) {
       return {
         status: false,
-        message: result?.message || "로그인에 실패했습니다.",
+        message: result?.message || `로그인에 실패했습니다. ${res}`,
       };
     }
 
