@@ -17,7 +17,12 @@ export default function Error({
   return (
     <div>
       <p className={`w-full ${titleText} text-center`}>문제가 발생했어요</p>
-      <p className={`w-full ${subtitleText} text-red-400 text-center`}>{error.message}</p>
+      <p className={`w-full ${subtitleText} text-red-400 text-center`}>
+        {error.message}
+      </p>
+      <p className={`w-full ${subtitleText} text-red-400 text-center`}>
+        {error.digest}
+      </p>
       <Button
         text="다시 시도"
         onClick={() => {
