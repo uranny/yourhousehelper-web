@@ -1,27 +1,30 @@
 "use client";
 
-import { useMemo } from "react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/components/global/button";
 import { bodyText, titleText, subtitleText } from "@/constants/typography";
 
 export default function NotFound() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const [details, setDetails] = useState({
+    fullPath: "",
+    timestamp: "",
+    userAgent: "",
+  });
 
-  const details = useMemo(() => {
-    const query = searchParams.toString();
-    const fullPath = query ? `${pathname}?${query}` : pathname;
+  useEffect(() => {
+    const query = window.location.search;
+    const fullPath = `${window.location.pathname}${query}`;
     const timestamp = new Date().toLocaleString("ko-KR");
-    const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const userAgent = navigator.userAgent;
 
-    return {
+    setDetails({
       fullPath,
       timestamp,
       userAgent,
-    };
-  }, [pathname, searchParams]);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4">
@@ -31,10 +34,10 @@ export default function NotFound() {
       </p>
       <div className="w-full max-w-[720px] p-4 border border-border rounded-2xl bg-white/5">
         <p className={`${bodyText} text-text-sub`}>
-          경로: <span className="text-text">{details.fullPath}</span>
+          경로: <span className="text-text">{details.fullPath || "-"}</span>
         </p>
         <p className={`${bodyText} text-text-sub`}>
-          시간: <span className="text-text">{details.timestamp}</span>
+          시간: <span className="text-text">{details.timestamp || "-"}</span>
         </p>
         {details.userAgent && (
           <p className={`${bodyText} text-text-sub break-all`}>
