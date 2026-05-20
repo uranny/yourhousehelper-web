@@ -13,7 +13,7 @@ import {
 import { subtitleText } from "@/constants/typography";
 import { useMemo } from "react";
 import { RECORD_FRONT_KEYS } from "@/constants/record";
-import type { MonthStat } from "@/app/dashboard";
+import { useDashboardStore } from "@/store/dashboard";
 
 const MONTH_LABELS = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -26,11 +26,13 @@ ChartJS.register(
   Legend,
 );
 
-type YearlyGraphProps = {
-  monthStats: Record<number, MonthStat>;
-};
+export default function YearlyGraph() {
+  const { data } = useDashboardStore();
+  const monthStats = data?.monthStats || {};
 
-export default function YearlyGraph({ monthStats }: YearlyGraphProps) {
+  if (!data) {
+    return null;
+  }
 
   const totalGraphData = useMemo(
     () => ({

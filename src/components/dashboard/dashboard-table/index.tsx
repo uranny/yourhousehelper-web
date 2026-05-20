@@ -1,20 +1,17 @@
+"use client";
+
 import { bodyText } from "@/constants/typography";
-import type { MonthlySummaryRow } from "@/app/dashboard";
+import { useDashboardStore } from "@/store/dashboard";
 
-type DashboardTableProps = {
-  monthlySummary: MonthlySummaryRow[];
-  yearTotal: {
-    income: number;
-    expense: number;
-    net: number;
-  };
-};
+export default function DashboardTable() {
+  const { data } = useDashboardStore();
+  const monthlySummary = data?.monthlySummary || [];
+  const yearTotal = data?.yearTotal;
 
-export default function DashboardTable({
-  monthlySummary,
-  yearTotal,
-}: DashboardTableProps) {
-  
+  if (!data || !yearTotal) {
+    return null;
+  }
+
   return (
     <div className="rounded-[1.2rem] bg-surface p-6">
       <table className="w-full border-collapse bg-transparent">

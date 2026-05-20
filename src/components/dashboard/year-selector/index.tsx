@@ -3,16 +3,16 @@
 import { useRouter } from "next/navigation";
 import { bodyText } from "@/constants/typography";
 import { ChangeEvent } from "react";
+import { useDashboardStore } from "@/store/dashboard";
 
-type YearSelectorProps = {
-  selectedYear: number;
-};
-
-export default function YearSelector({ selectedYear }: YearSelectorProps) {
+export default function YearSelector() {
   const router = useRouter();
+  const { selectedYear, setYear } = useDashboardStore();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    router.push(`?selectYear=${e.target.value}`);
+    const nextYear = Number(e.target.value);
+    setYear(nextYear);
+    router.push(`?selectYear=${nextYear}`);
   };
 
   return (

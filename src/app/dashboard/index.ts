@@ -1,6 +1,7 @@
 import "server-only";
 
 import { RECORD_BACK_KEYS } from "@/constants/record";
+import type { DashboardYearData, MonthStat } from "@/types/dashboard/dashboard.type";
 import type { RecordEntity } from "@/types/record/record.type";
 import { apiFetch } from "@/lib/ApiFetch";
 
@@ -10,29 +11,6 @@ type RecordListApiResponse = {
   data?: RecordEntity[];
 };
 
-type MonthStat = {
-  income: number;
-  expense: number;
-};
-
-type MonthlySummaryRow = {
-  month: number;
-  income: number;
-  expense: number;
-  net: number;
-};
-
-type DashboardYearData = {
-  year: number;
-  records: RecordEntity[];
-  monthStats: Record<number, MonthStat>;
-  monthlySummary: MonthlySummaryRow[];
-  yearTotal: {
-    income: number;
-    expense: number;
-    net: number;
-  };
-};
 
 const createEmptyMonthStats = (): Record<number, MonthStat> => {
   const stats: Record<number, MonthStat> = {};
@@ -134,4 +112,4 @@ export async function getDashboardYearData(year: number): Promise<DashboardYearD
   };
 }
 
-export type { MonthStat, MonthlySummaryRow, DashboardYearData };
+export type { DashboardYearData };
