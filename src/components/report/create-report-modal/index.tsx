@@ -5,8 +5,9 @@ import { createReportAction } from "@/action/report";
 import { showToast } from "@/utils/toast";
 import Button from "@/components/global/button";
 import { bodyText, subtitleText } from "@/constants/typography";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function CreateReportModal({ onSuccess }: { onSuccess?: () => void }) {
+export default function CreateReportModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [month, setMonth] = useState(String(new Date().getMonth() + 1));
@@ -14,6 +15,7 @@ export default function CreateReportModal({ onSuccess }: { onSuccess?: () => voi
     createReportAction,
     null
   );
+  const queryClient = useQueryClient();
 
   const closeModal = () => setIsOpen(false);
 
@@ -30,13 +32,11 @@ export default function CreateReportModal({ onSuccess }: { onSuccess?: () => voi
     if (state?.success) {
       showToast("success", "보고서가 생성되었습니다.");
       closeModal();
-      if (onSuccess) {
-        onSuccess();
-      }
+      queryClient.invalidateQueries({ queryKey: ["report", "list"] });
     } else if (state?.error) {
       showToast("error", state.error);
     }
-  }, [state, onSuccess]);
+  }, [state, queryClient]);
 
   const parsedYear = Number(year);
   const parsedMonth = Number(month);
