@@ -7,14 +7,11 @@ import {
 import Button from "@/components/global/button";
 import Input from "@/components/global/input";
 import { bodyText } from "@/constants/typography";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useMemo } from "react";
+import { useRecordStore } from "@/store/record";
+import { useRecord } from "@/hooks/record/useRecord";
 
-type RecordInputProps = {
-  defaultDate: string;
-  onSuccess?: () => void;
-};
-
-export default function RecordInput({ defaultDate, onSuccess }: RecordInputProps) {
+export default function RecordInput() {
   const [state, action, isPending] = useActionState<RecordActionState, FormData>(
     createRecordAction,
     {
@@ -22,12 +19,18 @@ export default function RecordInput({ defaultDate, onSuccess }: RecordInputProps
       message: "",
     },
   );
+  const { selectedYear, selectedMonth } = useRecordStore();
+  const { refetch } = useRecord();
+  const defaultDate = useMemo(() => {
+    const paddedMonth = String(selectedMonth).padStart(2, "0");
+    return `${selectedYear}-${paddedMonth}-01`;
+  }, [selectedYear, selectedMonth]);
 
   useEffect(() => {
-    if (state.status && onSuccess) {
-      onSuccess();
+    if (state.status) {
+      refetch();
     }
-  }, [state.status, onSuccess]);
+  }, [state.status, refetch]);
 
   return (
     <form

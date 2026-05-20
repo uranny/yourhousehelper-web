@@ -3,10 +3,10 @@
 import { useActionState, useEffect } from "react";
 import { deleteRecordAction, type RecordActionState } from "@/action/record";
 import Button from "@/components/global/button";
+import { useRecord } from "@/hooks/record/useRecord";
 
 type DeleteRecordButtonProps = {
   id: number;
-  onSuccess?: () => void;
 };
 
 const initialState: RecordActionState = {
@@ -14,17 +14,18 @@ const initialState: RecordActionState = {
   message: "",
 };
 
-export default function DeleteRecordButton({ id, onSuccess }: DeleteRecordButtonProps) {
+export default function DeleteRecordButton({ id }: DeleteRecordButtonProps) {
   const [state, action, isPending] = useActionState<RecordActionState, FormData>(
     deleteRecordAction,
     initialState,
   );
+  const { refetch } = useRecord();
 
   useEffect(() => {
-    if (state.status && onSuccess) {
-      onSuccess();
+    if (state.status) {
+      refetch();
     }
-  }, [state.status, onSuccess]);
+  }, [state.status, refetch]);
 
   return (
     <form action={action}>

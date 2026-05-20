@@ -1,20 +1,18 @@
-import Button from "@/components/global/button";
+"use client";
+
 import type { RecordEntity } from "@/types/record/record.type";
 import EditModal from "@/components/record/edit-modal";
 import { bodyText } from "@/constants/typography";
 import DeleteRecordButton from "@/components/record/delete-record-button";
+import { useRecordStore } from "@/store/record";
 
 const TYPE_LABEL: Record<RecordEntity["recordType"], string> = {
   INCOME: "수입",
   EXPENSE: "지출",
 };
 
-type RecordTableProps = {
-  rows: RecordEntity[];
-  onSuccess?: () => void;
-};
-
-export default function RecordTable({ rows, onSuccess }: RecordTableProps) {
+export default function RecordTable() {
+  const { records: rows } = useRecordStore();
   return (
     <>
       <div className="w-full overflow-x-auto rounded-2xl bg-surface">
@@ -85,10 +83,10 @@ export default function RecordTable({ rows, onSuccess }: RecordTableProps) {
                     {row.description}
                   </td>
                   <td className="border-b border-border p-3 text-center">
-                    <EditModal row={row} onSuccess={onSuccess} />
+                    <EditModal row={row} />
                   </td>
                   <td className="border-b border-border p-3 text-center">
-                    <DeleteRecordButton id={row.id} onSuccess={onSuccess} />
+                    <DeleteRecordButton id={row.id} />
                   </td>
                 </tr>
               ))
