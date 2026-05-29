@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { apiFetch } from "@/lib/ApiFetch";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(
   request: NextRequest,
@@ -19,6 +22,8 @@ export async function GET(
     const data = await response.json();
 
     if (!response.ok) {
+      revalidateTag("report-detail", { expire: 0 });
+      revalidateTag(`report-detail-${id}`, { expire: 0 });
       return NextResponse.json(data, { status: response.status });
     }
 
