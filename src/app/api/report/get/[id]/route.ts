@@ -9,6 +9,7 @@ export async function GET(
     const { id } = await params;
 
     const response = await apiFetch(`/report/${id}`, {
+      method : "GET",
       cache: "force-cache",
       next: {
         tags: ["report-detail", `report-detail-${id}`],
