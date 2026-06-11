@@ -6,7 +6,8 @@ import { bodyText, titleText } from "@/constants/typography";
 import { useReportStore } from "@/store/report";
 
 export default function ReportDetailView() {
-  const { report } = useReportStore();
+  const { report, isStreaming, streamingReportId } = useReportStore();
+  const isStreamingCurrentReport = isStreaming && report?.id === streamingReportId;
 
   if (!report) {
     return (
@@ -36,8 +37,16 @@ export default function ReportDetailView() {
         </p>
 
         <div className={`prose prose-sm max-w-none text-text ${bodyText}`}>
-          <ReactMarkdown>{report.content}</ReactMarkdown>
+          {report.content ? (
+            <ReactMarkdown>{report.content}</ReactMarkdown>
+          ) : isStreamingCurrentReport ? (
+            <p className="text-text-sub">보고서를 작성하는 중입니다...</p>
+          ) : null}
         </div>
+
+        {isStreamingCurrentReport ? (
+          <p className={`${bodyText} mt-6 text-text-sub`}>생성 중...</p>
+        ) : null}
       </div>
     </div>
   );

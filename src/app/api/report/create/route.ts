@@ -1,5 +1,105 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { apiFetch } from "@/lib/ApiFetch";
+
+const normalizeSseBuffer = (buffer: string) => buffer.replace(/\r\n/g, "\n");
+
+const hasEventName = (rawEvent: string, eventName: string) =>
+  rawEvent.split("\n").some((line) => {
+    if (!line || line.startsWith(":")) {
+      return false;
+    }
+
+    const separatorIndex = line.indexOf(":");
+    const field = separatorIndex === -1 ? line : line.slice(0, separatorIndex);
+    let value = separatorIndex === -1 ? "" : line.slice(separatorIndex + 1);
+
+    if (value.startsWith(" ")) {
+      value = value.slice(1);
+    }
+
+    return field === "event" && value === eventName;
+  });
+
+export const dynamic = "force-dynamic";
+
+const createRevalidatingStream = (body: ReadableStream<Uint8Array>) => {
+  const decoder = new TextDecoder();
+  const reader = body.getReader();
+  let buffer = "";
+  let completed = false;
+  let canceled = false;
+
+  const revalidateReportTags = () => {
+    if (completed) {
+      return;
+    }
+
+    completed = true;
+    revalidateTag("report-list", { expire: 0 });
+    revalidateTag("report-detail", { expire: 0 });
+  };
+
+  const consumeCompletedEvents = () => {
+    buffer = normalizeSseBuffer(buffer);
+
+    let boundaryIndex = buffer.indexOf("\n\n");
+    while (boundaryIndex !== -1) {
+      const rawEvent = buffer.slice(0, boundaryIndex);
+      buffer = buffer.slice(boundaryIndex + 2);
+
+      if (hasEventName(rawEvent, "complete")) {
+        revalidateReportTags();
+      }
+
+      boundaryIndex = buffer.indexOf("\n\n");
+    }
+  };
+
+  return new ReadableStream<Uint8Array>({
+    async start(controller) {
+      try {
+        while (!canceled) {
+          const { done, value } = await reader.read();
+
+          if (done) {
+            break;
+          }
+
+          buffer += decoder.decode(value, { stream: true });
+          consumeCompletedEvents();
+          controller.enqueue(value);
+        }
+
+        buffer += decoder.decode();
+        if (hasEventName(normalizeSseBuffer(buffer), "complete")) {
+          revalidateReportTags();
+        }
+
+        if (!canceled) {
+          controller.close();
+        }
+      } catch (error) {
+        if (completed || canceled) {
+          try {
+            controller.close();
+          } catch {
+            // The client may already have closed the response while changing routes.
+          }
+          return;
+        }
+
+        controller.error(error);
+      } finally {
+        reader.releaseLock();
+      }
+    },
+    cancel(reason) {
+      canceled = true;
+      return reader.cancel(reason).catch(() => undefined);
+    },
+  });
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,17 +114,40 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await apiFetch("/report?startDate=" + startDate + "&endDate=" + endDate, {
-      method: "POST",
-    });
-
-    const data = await response.json();
+    const response = await apiFetch(
+      `/report?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "text/event-stream",
+        },
+      },
+    );
 
     if (!response.ok) {
+      const data = await response.clone().json().catch(async () => ({
+        success: false,
+        message: await response.text().catch(() => "보고서 생성에 실패했습니다."),
+      }));
       return NextResponse.json(data, { status: response.status });
     }
 
-    return NextResponse.json(data);
+    if (!response.body) {
+      return NextResponse.json(
+        { success: false, message: "보고서 생성 스트림을 열 수 없습니다." },
+        { status: 502 },
+      );
+    }
+    revalidateTag("report-list", { expire: 0 });
+
+    return new Response(createRevalidatingStream(response.body), {
+      status: response.status,
+      headers: {
+        "Content-Type": response.headers.get("content-type") || "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        Connection: "keep-alive",
+      },
+    });
   } catch (error) {
     console.error("Create report error:", error);
     return NextResponse.json(

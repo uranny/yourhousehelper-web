@@ -1,23 +1,142 @@
 "use client";
 
-import { useActionState, useState, useEffect } from "react";
-import { createReportAction } from "@/action/report";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { showToast } from "@/utils/toast";
 import Button from "@/components/global/button";
 import { bodyText, subtitleText } from "@/constants/typography";
 import { useQueryClient } from "@tanstack/react-query";
+import { useReportStore } from "@/store/report";
+import type { ReportItem } from "@/types/report/report.type";
+
+type SseEvent = {
+  event: string;
+  data: string;
+};
+
+type ReportPeriod =
+  | {
+      startDate: string;
+      endDate: string;
+      error?: never;
+    }
+  | {
+      startDate?: never;
+      endDate?: never;
+      error: string;
+    };
+
+const parseSseEvent = (rawEvent: string): SseEvent | null => {
+  const lines = rawEvent.split("\n");
+  const dataLines: string[] = [];
+  let event = "message";
+
+  for (const line of lines) {
+    if (!line || line.startsWith(":")) {
+      continue;
+    }
+
+    const separatorIndex = line.indexOf(":");
+    const field = separatorIndex === -1 ? line : line.slice(0, separatorIndex);
+    let value = separatorIndex === -1 ? "" : line.slice(separatorIndex + 1);
+
+    if (value.startsWith(" ")) {
+      value = value.slice(1);
+    }
+
+    if (field === "event") {
+      event = value;
+    }
+
+    if (field === "data") {
+      dataLines.push(value);
+    }
+  }
+
+  if (dataLines.length === 0) {
+    return null;
+  }
+
+  return {
+    event,
+    data: dataLines.join("\n"),
+  };
+};
+
+const parseReport = (data: string): ReportItem => {
+  const report = JSON.parse(data) as ReportItem;
+
+  if (!Number.isFinite(report.id)) {
+    throw new Error("생성된 보고서 정보를 확인할 수 없습니다.");
+  }
+
+  return report;
+};
+
+const getReportPeriod = (year: string, month: string): ReportPeriod => {
+  if (!year || !month) {
+    return { error: "연도와 달을 선택해주세요." };
+  }
+
+  const yearNum = Number(year);
+  const monthNum = Number(month);
+
+  if (
+    !Number.isFinite(yearNum) ||
+    !Number.isFinite(monthNum) ||
+    monthNum < 1 ||
+    monthNum > 12
+  ) {
+    return { error: "유효하지 않은 날짜입니다." };
+  }
+
+  const monthText = String(monthNum).padStart(2, "0");
+  const lastDay = new Date(yearNum, monthNum, 0).getDate();
+
+  return {
+    startDate: `${yearNum}-${monthText}-01`,
+    endDate: `${yearNum}-${monthText}-${String(lastDay).padStart(2, "0")}`,
+  };
+};
+
+const getErrorMessage = async (response: Response) => {
+  const payload = await response.clone().json().catch(() => null);
+
+  if (
+    payload &&
+    typeof payload === "object" &&
+    "message" in payload &&
+    typeof payload.message === "string"
+  ) {
+    return payload.message;
+  }
+
+  const text = await response.text().catch(() => "");
+  return text || "보고서 생성에 실패했습니다.";
+};
 
 export default function CreateReportModal() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const mountedRef = useRef(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [month, setMonth] = useState(String(new Date().getMonth() + 1));
-  const [state, action, isPending] = useActionState(
-    createReportAction,
-    null
-  );
-  const queryClient = useQueryClient();
+  const {
+    setLoading,
+    setError,
+    startReportStream,
+    appendReportContent,
+    finishReportStream,
+    clearReportStream,
+  } = useReportStore();
 
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    if (!isCreating) {
+      setIsOpen(false);
+    }
+  };
 
   const years = Array.from({ length: 10 }, (_, i) =>
     String(new Date().getFullYear() - i)
@@ -29,14 +148,165 @@ export default function CreateReportModal() {
   };
 
   useEffect(() => {
-    if (state?.success) {
-      showToast("success", "보고서가 생성되었습니다.");
-      closeModal();
-      queryClient.invalidateQueries({ queryKey: ["report", "list"] });
-    } else if (state?.error) {
-      showToast("error", state.error);
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const handleStreamEvent = (sseEvent: SseEvent) => {
+    if (sseEvent.event === "error") {
+      throw new Error(sseEvent.data || "보고서 생성 중 오류가 발생했습니다.");
     }
-  }, [state, queryClient]);
+
+    if (sseEvent.event === "content") {
+      appendReportContent(sseEvent.data);
+      return null;
+    }
+
+    if (sseEvent.event === "start") {
+      const report = parseReport(sseEvent.data);
+      startReportStream(report);
+      queryClient.setQueryData(["report", "detail", report.id], report);
+      queryClient.setQueryData<ReportItem[]>(["report", "list"], (reports) =>
+        reports
+          ? [report, ...reports.filter((item) => item.id !== report.id)]
+          : reports,
+      );
+      return report;
+    }
+
+    if (sseEvent.event === "complete") {
+      const report = parseReport(sseEvent.data);
+      queryClient.setQueryData(["report", "detail", report.id], report);
+      finishReportStream(report);
+      queryClient.invalidateQueries({ queryKey: ["report", "list"] });
+      queryClient.invalidateQueries({ queryKey: ["report", "detail", report.id] });
+      showToast("success", "보고서가 생성되었습니다.");
+      return report;
+    }
+
+    return null;
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isCreating) {
+      return;
+    }
+
+    const period = getReportPeriod(year, month);
+    if ("error" in period) {
+      showToast("error", period.error);
+      return;
+    }
+
+    let streamStarted = false;
+    let startedReport: ReportItem | null = null;
+
+    setIsCreating(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        `/api/report/create?startDate=${encodeURIComponent(period.startDate)}&endDate=${encodeURIComponent(period.endDate)}`,
+        {
+          method: "POST",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(await getErrorMessage(response));
+      }
+
+      if (!response.body) {
+        throw new Error("보고서 생성 스트림을 열 수 없습니다.");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      const navigateToReport = (reportId: number) => {
+        streamStarted = true;
+        if (mountedRef.current) {
+          setIsCreating(false);
+          setIsOpen(false);
+        }
+        router.push(`/report/${reportId}`);
+      };
+      const processParsedEvent = (parsedEvent: SseEvent) => {
+        const report = handleStreamEvent(parsedEvent);
+
+        if (parsedEvent.event === "start" && report) {
+          startedReport = report;
+        }
+
+        if (
+          !streamStarted &&
+          parsedEvent.event === "content" &&
+          startedReport
+        ) {
+          navigateToReport(startedReport.id);
+        }
+
+        if (!streamStarted && parsedEvent.event === "complete" && report) {
+          navigateToReport(report.id);
+        }
+      };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        buffer = buffer.replace(/\r\n/g, "\n");
+
+        if (done) {
+          break;
+        }
+
+        buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, "\n");
+        let boundaryIndex = buffer.indexOf("\n\n");
+
+        while (boundaryIndex !== -1) {
+          const rawEvent = buffer.slice(0, boundaryIndex);
+          buffer = buffer.slice(boundaryIndex + 2);
+          const parsedEvent = parseSseEvent(rawEvent);
+
+          if (parsedEvent) {
+            processParsedEvent(parsedEvent);
+          }
+
+          boundaryIndex = buffer.indexOf("\n\n");
+        }
+      }
+
+      buffer += decoder.decode().replace(/\r\n/g, "\n");
+      const parsedEvent = parseSseEvent(buffer);
+      if (parsedEvent) {
+        processParsedEvent(parsedEvent);
+      }
+
+      if (!streamStarted) {
+        throw new Error("보고서 생성 스트림이 시작되지 않았습니다.");
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다.";
+
+      clearReportStream();
+      setError(message);
+      showToast("error", message);
+
+      if (mountedRef.current) {
+        setIsCreating(false);
+      }
+    } finally {
+      if (!streamStarted && mountedRef.current) {
+        setLoading(false);
+      }
+    }
+  };
 
   const parsedYear = Number(year);
   const parsedMonth = Number(month);
@@ -69,13 +339,14 @@ export default function CreateReportModal() {
               />
             </div>
 
-            <form action={action} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-1 flex-col gap-1">
                 <label className={`${bodyText} text-text`}>연도</label>
                 <select
                   name="year"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
+                  disabled={isCreating}
                   className={`w-full bg-surface border border-border rounded-2xl text-text px-4 py-2 ${bodyText}`}
                 >
                   {years.map((y) => (
@@ -92,6 +363,7 @@ export default function CreateReportModal() {
                   name="month"
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}
+                  disabled={isCreating}
                   className={`w-full bg-surface border border-border rounded-2xl text-text px-4 py-2 ${bodyText}`}
                 >
                   {months.map((m) => (
@@ -113,12 +385,13 @@ export default function CreateReportModal() {
                 <Button
                   text="취소"
                   onClick={closeModal}
+                  disabled={isCreating}
                   className="bg-surface! border-border! text-text-sub!"
                 />
                 <Button
                   type="submit"
-                  disabled={isPending}
-                  text={isPending ? "생성 중..." : "생성"}
+                  disabled={isCreating}
+                  text={isCreating ? "생성 중..." : "생성"}
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>

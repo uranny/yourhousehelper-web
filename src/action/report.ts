@@ -2,8 +2,6 @@
 
 import { revalidateTag } from "next/cache";
 import { apiFetch } from "@/lib/ApiFetch";
-import { CreateReportRequest, CreateReportResponse } from "@/types/report/report.type";
-import { BaseResponse } from "@/types/util/response.type";
 
 export async function createReportAction(
   prevState: { success?: boolean; error?: string } | null,
@@ -33,17 +31,22 @@ export async function createReportAction(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.clone().json().catch(async () => ({
+        message: await response.text().catch(() => "보고서 생성에 실패했습니다."),
+      }));
       return {
         success: false,
         error: errorData.message || "보고서 생성에 실패했습니다.",
       };
     }
 
-    const data: BaseResponse<CreateReportResponse> = await response.json();
-
-    if (!data.data) {
-      return { success: false, error: "보고서 생성에 실패했습니다." };
+    const streamBody = await response.text();
+    if (!streamBody.includes("event: complete")) {
+      const errorMessage = streamBody.match(/event: error\s+data: ([^\n]+)/)?.[1];
+      return {
+        success: false,
+        error: errorMessage || "보고서 생성에 실패했습니다.",
+      };
     }
 
     revalidateTag("report-list", { expire: 0 });

@@ -82,7 +82,7 @@ const createReportRequest = async (payload: {
 
 export function useReportList() {
   const queryClient = useQueryClient();
-  const { isLoading, error, setLoading, setError, setReports, setReport } =
+  const { isLoading, error, setLoading, setError, setReports } =
     useReportStore();
 
   const listQuery = useSuspenseQuery({
@@ -136,12 +136,23 @@ export function useReportList() {
 }
 
 export function useReportDetail(reportId: number) {
-  const { isLoading, error, setLoading, setError, setReport } =
-    useReportStore();
+  const {
+    report,
+    isLoading,
+    isStreaming,
+    streamingReportId,
+    error,
+    setLoading,
+    setError,
+    setReport,
+  } = useReportStore();
+  const isStreamingCurrentReport = isStreaming && streamingReportId === reportId;
 
   useEffect(() => {
-    setReport(null);
-  }, [reportId, setReport]);
+    if (!isStreamingCurrentReport) {
+      setReport(null);
+    }
+  }, [isStreamingCurrentReport, reportId, setReport]);
 
   const detailQuery = useSuspenseQuery({
     queryKey: ["report", "detail", reportId],
@@ -149,14 +160,22 @@ export function useReportDetail(reportId: number) {
   });
 
   useEffect(() => {
-    setLoading(detailQuery.isFetching);
-  }, [detailQuery.isFetching, setLoading]);
+    setLoading(isStreamingCurrentReport ? false : detailQuery.isFetching);
+  }, [detailQuery.isFetching, isStreamingCurrentReport, setLoading]);
 
   useEffect(() => {
     if (detailQuery.data) {
+      const hasNewerStreamingContent =
+        report?.id === reportId &&
+        report.content.length > detailQuery.data.content.length;
+
+      if (isStreamingCurrentReport || hasNewerStreamingContent) {
+        return;
+      }
+
       setReport(detailQuery.data);
     }
-  }, [detailQuery.data, setReport]);
+  }, [detailQuery.data, isStreamingCurrentReport, report, reportId, setReport]);
 
   useEffect(() => {
     if (detailQuery.error) {
