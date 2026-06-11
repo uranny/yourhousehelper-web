@@ -10,6 +10,7 @@ type ErrorPayload = {
 };
 
 const normalizeSseBuffer = (buffer: string) => buffer.replace(/\r\n/g, "\n");
+const sseEncoder = new TextEncoder();
 
 const hasEventName = (rawEvent: string, eventName: string) =>
   rawEvent.split("\n").some((line) => {
@@ -29,6 +30,26 @@ const hasEventName = (rawEvent: string, eventName: string) =>
   });
 
 export const dynamic = "force-dynamic";
+
+const getErrorMessage = (error: unknown, fallbackMessage: string) => {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+
+  if (typeof error === "string" && error.trim()) {
+    return error;
+  }
+
+  return fallbackMessage;
+};
+
+const createErrorResponse = (payload: object, status: number) =>
+  NextResponse.json(payload, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+    },
+  });
 
 const getPayloadMessage = (payload: ErrorPayload | null) => {
   if (!payload) {
@@ -62,6 +83,15 @@ const getUpstreamErrorPayload = async (response: Response) => {
     statusCode: payload?.statusCode ?? response.status,
     message,
   };
+};
+
+const createSseEventChunk = (eventName: string, data: string) => {
+  const dataLines = data
+    .split(/\r?\n/)
+    .map((line) => `data: ${line}`)
+    .join("\n");
+
+  return sseEncoder.encode(`event: ${eventName}\n${dataLines}\n\n`);
 };
 
 const createRevalidatingStream = (body: ReadableStream<Uint8Array>) => {
@@ -130,7 +160,17 @@ const createRevalidatingStream = (body: ReadableStream<Uint8Array>) => {
           return;
         }
 
-        controller.error(error);
+        const message = getErrorMessage(
+          error,
+          "보고서 생성 스트림이 중단되었습니다.",
+        );
+
+        try {
+          controller.enqueue(createSseEventChunk("error", message));
+          controller.close();
+        } catch {
+          controller.error(error);
+        }
       } finally {
         reader.releaseLock();
       }
@@ -149,9 +189,9 @@ export async function POST(request: NextRequest) {
     const endDate = searchParams.get("endDate");
 
     if (!startDate || !endDate) {
-      return NextResponse.json(
+      return createErrorResponse(
         { success: false, message: "startDate와 endDate는 필수입니다." },
-        { status: 400 }
+        400,
       );
     }
 
@@ -167,13 +207,13 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const data = await getUpstreamErrorPayload(response);
-      return NextResponse.json(data, { status: response.status });
+      return createErrorResponse(data, response.status);
     }
 
     if (!response.body) {
-      return NextResponse.json(
+      return createErrorResponse(
         { success: false, message: "보고서 생성 스트림을 열 수 없습니다." },
-        { status: 502 },
+        502,
       );
     }
     revalidateTag("report-list", { expire: 0 });
@@ -188,14 +228,11 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Create report error:", error);
-    const message =
-      error instanceof Error && error.message
-        ? error.message
-        : "보고서 생성에 실패했습니다.";
+    const message = getErrorMessage(error, "보고서 생성에 실패했습니다.");
 
-    return NextResponse.json(
+    return createErrorResponse(
       { success: false, message },
-      { status: 500 }
+      500,
     );
   }
 }
