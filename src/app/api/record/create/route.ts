@@ -1,4 +1,6 @@
 import { apiFetch } from "@/lib/ApiFetch";
+import { revalidateTag } from "next/cache";
+import { RECORD_LIST_TAG } from "@/constants/record";
 
 export async function POST(req: Request) {
   try {
@@ -12,11 +14,16 @@ export async function POST(req: Request) {
     const payload = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      return Response.json({
-        status: false,
-        message: payload.message || "기록 생성 실패",
-      });
+      return Response.json(
+        {
+          status: false,
+          message: payload.message || "기록 생성 실패",
+        },
+        { status: res.status },
+      );
     }
+
+    revalidateTag(RECORD_LIST_TAG, { expire: 0 });
 
     return Response.json({
       status: true,

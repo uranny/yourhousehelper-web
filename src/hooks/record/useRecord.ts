@@ -13,6 +13,7 @@ type RecordListResponse = {
   status: boolean;
   message?: string;
   data?: RecordEntity[];
+  debug?: unknown;
 };
 
 type RecordMutationResponse = {
@@ -20,6 +21,9 @@ type RecordMutationResponse = {
   message?: string;
   data?: RecordEntity | null;
 };
+
+const recordListQueryKey = (year: number, month: number) =>
+  ["record", "list", year, month] as const;
 
 const toDateRange = (year: number, month: number) => {
   const paddedMonth = String(month).padStart(2, "0");
@@ -36,21 +40,67 @@ const getApiBaseUrl = () =>
     ? process.env.NEXT_PUBLIC_BASE_URL || ""
     : "";
 
+const stringifyDebug = (value: unknown) => {
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return String(value);
+  }
+};
+
+const isRecordInMonth = (record: RecordEntity, year: number, month: number) => {
+  const { startDate, endDate } = toDateRange(year, month);
+  return record.date >= startDate && record.date <= endDate;
+};
+
+const mergeRecordsById = (
+  preferredRecords: RecordEntity[],
+  fallbackRecords: RecordEntity[],
+) => {
+  const seenIds = new Set<number>();
+  const merged: RecordEntity[] = [];
+
+  for (const record of [...preferredRecords, ...fallbackRecords]) {
+    if (seenIds.has(record.id)) {
+      continue;
+    }
+
+    seenIds.add(record.id);
+    merged.push(record);
+  }
+
+  return merged;
+};
+
 const fetchRecordList = async (
   year: number,
   month: number,
 ): Promise<RecordEntity[]> => {
   const { startDate, endDate } = toDateRange(year, month);
   const baseUrl = getApiBaseUrl();
-  const response = await fetch(
-    `${baseUrl}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
-  );
+  const requestUrl = `${baseUrl}/api/record/list?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+  const response = await fetch(requestUrl);
   const payload = (await response.json().catch(() => null)) as
     | RecordListResponse
     | null;
 
   if (!response.ok || !payload?.status) {
-    throw new Error(payload?.message || "Failed to load records.");
+    const debug = {
+      requestUrl,
+      year,
+      month,
+      startDate,
+      endDate,
+      httpStatus: response.status,
+      httpStatusText: response.statusText,
+      payload,
+    };
+
+    console.error("[record/list] fetchRecordList failed", debug);
+
+    throw new Error(
+      `${payload?.message || "Failed to load records."}\n\nrecord-list debug:\n${stringifyDebug(debug)}`,
+    );
   }
 
   return payload.data || [];
@@ -132,14 +182,13 @@ export function useRecord(yearOverride?: number, monthOverride?: number) {
     : selectedMonth;
 
   const listQuery = useSuspenseQuery({
-    queryKey: ["record", "list", year, month],
+    queryKey: recordListQueryKey(year, month),
     queryFn: () => fetchRecordList(year, month),
   });
 
   const createMutation = useMutation({
     mutationFn: createRecordRequest,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["record", "list"] });
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
     onError: (err) => {
@@ -219,4 +268,70 @@ export function useRecord(yearOverride?: number, monthOverride?: number) {
     updateRecord: updateMutation,
     deleteRecord: deleteMutation,
   };
+}
+
+export function useCreateRecordForPeriod(year: number, month: number) {
+  const queryClient = useQueryClient();
+  const { records, setRecords, setError } = useRecordStore();
+  const queryKey = recordListQueryKey(year, month);
+
+  return useMutation({
+    mutationFn: createRecordRequest,
+    onMutate: async (newRecord) => {
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousRecords =
+        queryClient.getQueryData<RecordEntity[]>(queryKey) || records;
+      const optimisticRecord: RecordEntity = {
+        ...newRecord,
+        id: -Date.now(),
+      };
+
+      const nextRecords = isRecordInMonth(optimisticRecord, year, month)
+        ? mergeRecordsById([optimisticRecord], previousRecords)
+        : previousRecords;
+
+      queryClient.setQueryData(queryKey, nextRecords);
+      setRecords(nextRecords);
+      setError(null);
+
+      return { previousRecords, optimisticRecord };
+    },
+    onSuccess: (createdRecord, _newRecord, context) => {
+      if (!context) {
+        return;
+      }
+
+      if (!createdRecord) {
+        setError(null);
+        return;
+      }
+
+      if (isRecordInMonth(createdRecord, year, month)) {
+        const currentRecords =
+          queryClient.getQueryData<RecordEntity[]>(queryKey) || [];
+        const recordsWithoutOptimistic = currentRecords.filter(
+          (record) => record.id !== context.optimisticRecord.id,
+        );
+        const nextRecords = mergeRecordsById(
+          [createdRecord],
+          recordsWithoutOptimistic,
+        );
+
+        queryClient.setQueryData(queryKey, nextRecords);
+        setRecords(nextRecords);
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      setError(null);
+    },
+    onError: (err, _newRecord, context) => {
+      if (context) {
+        queryClient.setQueryData(queryKey, context.previousRecords);
+        setRecords(context.previousRecords);
+      }
+
+      setError(String(err));
+    },
+  });
 }
