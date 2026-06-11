@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { apiFetch } from "@/lib/ApiFetch";
 
+type ErrorPayload = {
+  message?: unknown;
+  error?: unknown;
+  status?: unknown;
+  statusCode?: unknown;
+};
+
 const normalizeSseBuffer = (buffer: string) => buffer.replace(/\r\n/g, "\n");
 
 const hasEventName = (rawEvent: string, eventName: string) =>
@@ -22,6 +29,40 @@ const hasEventName = (rawEvent: string, eventName: string) =>
   });
 
 export const dynamic = "force-dynamic";
+
+const getPayloadMessage = (payload: ErrorPayload | null) => {
+  if (!payload) {
+    return null;
+  }
+
+  if (typeof payload.message === "string" && payload.message.trim()) {
+    return payload.message;
+  }
+
+  if (typeof payload.error === "string" && payload.error.trim()) {
+    return payload.error;
+  }
+
+  return null;
+};
+
+const getUpstreamErrorPayload = async (response: Response) => {
+  const payload = (await response.clone().json().catch(() => null)) as
+    | ErrorPayload
+    | null;
+  const text = await response.text().catch(() => "");
+  const message =
+    getPayloadMessage(payload) ||
+    text.trim() ||
+    `보고서 생성에 실패했습니다. (${response.status})`;
+
+  return {
+    success: false,
+    status: payload?.status ?? response.status,
+    statusCode: payload?.statusCode ?? response.status,
+    message,
+  };
+};
 
 const createRevalidatingStream = (body: ReadableStream<Uint8Array>) => {
   const decoder = new TextDecoder();
@@ -125,10 +166,7 @@ export async function POST(request: NextRequest) {
     );
 
     if (!response.ok) {
-      const data = await response.clone().json().catch(async () => ({
-        success: false,
-        message: await response.text().catch(() => "보고서 생성에 실패했습니다."),
-      }));
+      const data = await getUpstreamErrorPayload(response);
       return NextResponse.json(data, { status: response.status });
     }
 
@@ -150,8 +188,13 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Create report error:", error);
+    const message =
+      error instanceof Error && error.message
+        ? error.message
+        : "보고서 생성에 실패했습니다.";
+
     return NextResponse.json(
-      { success: false, message: "보고서 생성에 실패했습니다." },
+      { success: false, message },
       { status: 500 }
     );
   }

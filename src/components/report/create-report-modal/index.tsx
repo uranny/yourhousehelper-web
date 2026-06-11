@@ -26,6 +26,21 @@ type ReportPeriod =
       error: string;
     };
 
+const getUnknownErrorMessage = (
+  error: unknown,
+  fallbackMessage = "알 수 없는 오류가 발생했습니다.",
+) => {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+
+  if (typeof error === "string" && error.trim()) {
+    return error;
+  }
+
+  return fallbackMessage;
+};
+
 const parseSseEvent = (rawEvent: string): SseEvent | null => {
   const lines = rawEvent.split("\n");
   const dataLines: string[] = [];
@@ -71,6 +86,33 @@ const parseReport = (data: string): ReportItem => {
   }
 
   return report;
+};
+
+const parseServerMessage = (data: string) => {
+  const trimmedData = data.trim();
+
+  if (!trimmedData) {
+    return "";
+  }
+
+  try {
+    const payload = JSON.parse(trimmedData) as {
+      message?: unknown;
+      error?: unknown;
+    };
+
+    if (typeof payload.message === "string" && payload.message.trim()) {
+      return payload.message;
+    }
+
+    if (typeof payload.error === "string" && payload.error.trim()) {
+      return payload.error;
+    }
+  } catch {
+    return trimmedData;
+  }
+
+  return trimmedData;
 };
 
 const getReportPeriod = (year: string, month: string): ReportPeriod => {
@@ -121,6 +163,7 @@ export default function CreateReportModal() {
   const mountedRef = useRef(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [month, setMonth] = useState(String(new Date().getMonth() + 1));
   const {
@@ -134,6 +177,7 @@ export default function CreateReportModal() {
 
   const closeModal = () => {
     if (!isCreating) {
+      setFormError(null);
       setIsOpen(false);
     }
   };
@@ -155,7 +199,9 @@ export default function CreateReportModal() {
 
   const handleStreamEvent = (sseEvent: SseEvent) => {
     if (sseEvent.event === "error") {
-      throw new Error(sseEvent.data || "보고서 생성 중 오류가 발생했습니다.");
+      throw new Error(
+        parseServerMessage(sseEvent.data) || "보고서 생성 중 오류가 발생했습니다.",
+      );
     }
 
     if (sseEvent.event === "content") {
@@ -197,7 +243,9 @@ export default function CreateReportModal() {
 
     const period = getReportPeriod(year, month);
     if ("error" in period) {
-      showToast("error", period.error);
+      const message = period.error || "유효하지 않은 날짜입니다.";
+      setFormError(message);
+      showToast("error", message);
       return;
     }
 
@@ -205,6 +253,7 @@ export default function CreateReportModal() {
     let startedReport: ReportItem | null = null;
 
     setIsCreating(true);
+    setFormError(null);
     setLoading(true);
     setError(null);
 
@@ -289,13 +338,11 @@ export default function CreateReportModal() {
         throw new Error("보고서 생성 스트림이 시작되지 않았습니다.");
       }
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "알 수 없는 오류가 발생했습니다.";
+      const message = getUnknownErrorMessage(error);
 
       clearReportStream();
       setError(message);
+      setFormError(message);
       showToast("error", message);
 
       if (mountedRef.current) {
@@ -395,6 +442,9 @@ export default function CreateReportModal() {
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
+              {formError ? (
+                <p className={`${bodyText} text-primary`}>{formError}</p>
+              ) : null}
             </form>
           </div>
         </div>

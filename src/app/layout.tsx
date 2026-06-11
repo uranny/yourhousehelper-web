@@ -2,6 +2,8 @@ import "./globals.css";
 import Header from "@/components/global/header";
 import GlobalToastContainer from "@/components/global/toast";
 import QueryProvider from "@/components/global/query-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 export default function RootLayout({
   children,
 }: Readonly<{
